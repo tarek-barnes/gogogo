@@ -7,7 +7,7 @@ import shutil
 import time
 
 driver = webdriver.Chrome()
-url = "https://ps.waltheri.net/database/player/Lee%20Sedol/"
+url = "https://ps.waltheri.net/database/player/Michael%20Redmond/"
 driver.get(url)
 time.sleep(5)
 
@@ -42,8 +42,6 @@ rows = table.find_elements(By.TAG_NAME, 'tr')[1:]  # Skip the header row
 
 print(">>> Collecting metadata for games")
 for row in rows:
-    # print(f">>> currently in row: {row}")
-    # breakpoint()
     cols = row.find_elements(By.TAG_NAME, 'td')
 
     b_player_name = cols[0].text.strip()
@@ -71,7 +69,7 @@ if len(download_game_buttons) != len(games):
     print(f">>> Potential issue - mismatch in game records found ({len(games)}) vs. download links found ({len(download_game_buttons)})")
 
 for k in range(len(games)):
-# for k in range(889, len(games)):
+# for k in range(367, len(games)):
     game_record = games[k]
     download_button = download_game_buttons[k]
     download_button.click()
@@ -86,9 +84,9 @@ for k in range(len(games)):
     # if not, usually this means there is a (b) or (s) before a rank for one of the user's names, and the regex over-filtered it out
     # so let's just refresh the download_file_path
     if not os.path.isfile(downloaded_file_path):
-        download_file_path_alternatives = [k for k in os.listdir(download_destination_path) if (k.startswith(game_record['BPlayer']) or k.startswith(game_record['WPlayer']))]
-        if len(download_file_path_alternatives) == 1:
-            download_file_path = download_file_path_alternatives[0]
+        downloaded_file_path_alternatives = [k for k in os.listdir(download_destination_path) if (k.startswith(game_record['BPlayer']) or k.startswith(game_record['WPlayer']))]
+        if len(downloaded_file_path_alternatives) == 1:
+            downloaded_file_path = download_destination_path + '/' + downloaded_file_path_alternatives[0]
 
     try:
         # TO DO:
@@ -100,9 +98,8 @@ for k in range(len(games)):
         # Rename the file
         updated_file_path = new_destination_path + '/' + game_record['UpdatedFileName']
         os.rename(new_file_path, updated_file_path)
-        time.sleep(5)
-
         print(f">>> Successfully downloaded {game_record['UpdatedFileName']} ----------------- game #{k+1}/{len(games)}")
+        time.sleep(5)
     except Exception as e:
         print(">>> An error occured trying to rename/move the file from ~/Downloads -> destination directory")
         print(f">>> Here's the error: {e}")
