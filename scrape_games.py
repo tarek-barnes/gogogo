@@ -82,6 +82,14 @@ for k in range(len(games)):
     new_destination_path = "/Users/tarek/github/gogogo/destination"
     new_file_path = new_destination_path + '/' + game_record['FileName']
 
+    # check if downloaded_file_path exists
+    # if not, usually this means there is a (b) or (s) before a rank for one of the user's names, and the regex over-filtered it out
+    # so let's just refresh the download_file_path
+    if not os.path.isfile(downloaded_file_path):
+        download_file_path_alternatives = [k for k in os.listdir(download_destination_path) if (k.startswith(game_record['BPlayer']) or k.startswith(game_record['WPlayer']))]
+        if len(download_file_path_alternatives) == 1:
+            download_file_path = download_file_path_alternatives[0]
+
     try:
         # TO DO:
         # - if a game has the same name, don't replace the duplicate, rather, give it a new name!!
@@ -94,7 +102,7 @@ for k in range(len(games)):
         os.rename(new_file_path, updated_file_path)
         time.sleep(5)
 
-        print(f">>> Successfully downloaded {game_record['UpdatedFileName']} --- game #{k+1}/{len(games)}")
+        print(f">>> Successfully downloaded {game_record['UpdatedFileName']} ----------------- game #{k+1}/{len(games)}")
     except Exception as e:
         print(">>> An error occured trying to rename/move the file from ~/Downloads -> destination directory")
         print(f">>> Here's the error: {e}")
