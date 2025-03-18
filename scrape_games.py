@@ -9,12 +9,36 @@ import re
 import shutil
 import time
 
+# Ding Hao
+# Fujisawa Shuko
+# Gu Li
+# Honinbo Shusaku
+# Ichiriki Ryo
+# Iyama Yuuta
+# Kato Masao
+# Ke Jie
+# Kim Jiseok
+# Kobayashi Koichi
+# Lee Changho
+# Lee Hajin
+# Lee Sedol
+# Li Xuanhao
+# Michael Redmond
+# Otake Hideo
+# Park Jungwhan
+# Rin Kaiho
+# Rui Naiwei
+# Takemiya Masaki
+# Tang Weixing
+# Xu Jiayang
+# Yang Dingxin
+
 # env vars
 DESTINATION_DIR = "/Users/tarek/github/gogogo/destination"
 DOWNLOAD_DIR = "/Users/tarek/Downloads"
 MAX_MOVES_IN_A_GAME = 400
 SKIP_FIRST_N_GAMES = 0  # NOTE: use the counting number corresponding to the last successfully downloaded game
-URL_TO_SCRAPE = "https://ps.waltheri.net/database/player/Shibano%20Toramaru/"
+URL_TO_SCRAPE = "https://ps.waltheri.net/database/player/Choi%20Jeong/"
 
 def count_moves_in_a_game(sgf_file_path: str) -> int:
     with open(sgf_file_path, 'r') as f:
@@ -27,6 +51,46 @@ def count_moves_in_a_game(sgf_file_path: str) -> int:
         if node.has_property('B') or node.has_property('W'):
             num_moves += 1
     return num_moves
+
+def fix_badly_formatted_sgf_file(sgf_file_path: str):
+    with open(sgf_file_path, 'rb') as f:
+        sgf_content = f.read()
+
+    badly_formatted_game = sgf.Sgf_game.from_bytes(sgf_content)
+    badly_formatted_game_as_str = badly_formatted_game.serialise().decode("utf-8")
+    badly_formatted_game_as_list = badly_formatted_game_as_str.split("\n")
+    badly_formatted_game_as_list = [k for k in badly_formatted_game_as_list if k]
+    badly_formatted_game_as_list = [k.split(';') for k in badly_formatted_game_as_list]
+    badly_formatted_game_as_flat_list = [j for k in badly_formatted_game_as_list for j in k if j]
+
+    first_line = badly_formatted_game_as_flat_list[0]
+    if first_line != '(':
+        print(">>> major error. file not formatted correctly. canceling process.")
+        return
+
+    os.remove(sgf_file_path)
+
+    with open(sgf_file_path, 'w') as f:
+        f.write(f"{first_line}\n")  # don't want the file to start with ;
+        move_num = 1
+        have_prefs_been_set = False
+        expected_next_mover = 'B'
+        for line in badly_formatted_game_as_flat_list[1:]:
+            if (line.startswith('B') or line.startswith('W')):
+                current_mover = 'B' if line.startswith('B') else 'W'
+                #  this means one side has played two moves in a row, which is illegal
+                if current_mover != expected_next_mover:
+                    f.write(")")
+                    break
+                f.write(f";{line}\n")
+                expected_next_mover = 'W' if expected_next_mover == 'B' else 'B'
+                move_num += 1
+            else:
+                if not have_prefs_been_set:
+                    f.write(f";{line}\n")
+                    have_prefs_been_set = True
+                else:
+                    f.write(f"{line}\n")
 
 def get_stats_player_winrates():
     # list of players = []
@@ -159,10 +223,13 @@ def download_one_game(driver: webdriver.Chrome, metadata_record: dict, download_
                 download_button.click()
                 time.sleep(4)
 
-        if count_moves_in_a_game(downloaded_file_path) >= MAX_MOVES_IN_A_GAME:
-            logging.warning(f"Skipping game #{num_games_so_far}: {game_record['UpdatedFileName']} due to improper formatting (too many moves)")
-            os.remove(downloaded_file_path)
-            return driver
+        # chicken - delete me later
+        if not count_moves_in_a_game(downloaded_file_path) >= MAX_MOVES_IN_A_GAME:
+            print(f">>> I don't want to be downloading NORMAL GAMES... downloading anyway")
+        else:
+            # chicken
+            logging.warning(f"Game #{num_games_so_far}: {game_record['UpdatedFileName']} is improperly formatted. Fixing...")
+            fix_badly_formatted_sgf_file(downloaded_file_path)
 
         shutil.move(downloaded_file_path, new_file_path)
 
