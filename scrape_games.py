@@ -9,21 +9,12 @@ import re
 import shutil
 import time
 
-# players to scrape:
-# Tang Weixing
-
-# Xu Jiayang (#17)
-# Byun Sangil (#22)
-# Ichiriki Ryo (#11 ranked player)
-# Ding Hao (#3 ranked player)
-
 # env vars
 DESTINATION_DIR = "/Users/tarek/github/gogogo/destination"
 DOWNLOAD_DIR = "/Users/tarek/Downloads"
 MAX_MOVES_IN_A_GAME = 400
-SKIP_FIRST_N_GAMES = 0  # helpful if a scrape fails mid-way through
-# to do: accept a list of URLs instead of one at a time
-URL_TO_SCRAPE = "https://ps.waltheri.net/database/player/Tang%20Weixing/"
+SKIP_FIRST_N_GAMES = 0  # NOTE: use the counting number corresponding to the last successfully downloaded game
+URL_TO_SCRAPE = "https://ps.waltheri.net/database/player/Shibano%20Toramaru/"
 
 def count_moves_in_a_game(sgf_file_path: str) -> int:
     with open(sgf_file_path, 'r') as f:
@@ -122,14 +113,16 @@ def get_games_download_buttons(driver: webdriver.Chrome, verbose: bool = False) 
     download_game_buttons = driver.find_elements(By.XPATH, '//a[@class="download-link"]')
     if verbose:
         logging.info(f"Successfully retrieved {len(download_game_buttons)} download buttons")
-    return (webdriver.Chrome, download_game_buttons)
+    return (driver, download_game_buttons)
 
 def download_all_games(driver: webdriver.Chrome, skip_first_n_games: int = 0, verbose: bool = False) -> webdriver.Chrome:
     (driver, games_metadata) = get_games_metadata(driver, verbose)
     (driver, games_download_buttons) = get_games_download_buttons(driver, verbose)
     if len(games_metadata) != len(games_download_buttons):
-        logging.error(">>> Critical error: number of metadata entries doesn't match number of games to download - canceling process")
-        return webdriver.Chrome
+        logging.error("Critical error: number of metadata entries doesn't match number of games to download - canceling process")
+        return driver
+    if skip_first_n_games > 0:
+        logging.warning(f"WARNING: STARTING PROCESS FROM GAME #{skip_first_n_games + 1}")
 
     num_games_so_far = skip_first_n_games + 1
     num_total_games = len(games_metadata)
