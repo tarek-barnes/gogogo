@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.common.exceptions import ElementNotInteractableException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webelement import WebElement
 from sgfmill import sgf
 
 import logging
@@ -9,44 +10,19 @@ import re
 import shutil
 import time
 
-# Ding Hao
-# Fujisawa Shuko
-# Gu Li
-# Honinbo Shusaku
-# Ichiriki Ryo
-# Iyama Yuuta
-# Kato Masao
-# Ke Jie
-# Kim Jiseok
-# Kobayashi Koichi
-# Lee Changho
-# Lee Hajin
-# Lee Sedol
-# Li Xuanhao
-# Michael Redmond
-# Otake Hideo
-# Park Jungwhan
-# Rin Kaiho
-# Rui Naiwei
-# Takemiya Masaki
-# Tang Weixing
-# Xu Jiayang
-# Yang Dingxin
-
 # env vars
 DESTINATION_DIR = "/Users/tarek/github/gogogo/destination"
 DOWNLOAD_DIR = "/Users/tarek/Downloads"
 MAX_MOVES_IN_A_GAME = 400
 SKIP_FIRST_N_GAMES = 0  # NOTE: use the counting number corresponding to the last successfully downloaded game
-URL_TO_SCRAPE = "https://ps.waltheri.net/database/player/Choi%20Jeong/"
+URL_TO_SCRAPE = "https://ps.waltheri.net/database/player/Yang%20Dingxin/"
 
 def count_moves_in_a_game(sgf_file_path: str) -> int:
     with open(sgf_file_path, 'r') as f:
         raw_sgf = f.read()
 
-    game = sgf.Sgf_game.from_string(raw_sgf)
     num_moves = 0
-
+    game = sgf.Sgf_game.from_string(raw_sgf)
     for node in game.get_main_sequence():
         if node.has_property('B') or node.has_property('W'):
             num_moves += 1
@@ -65,7 +41,7 @@ def fix_badly_formatted_sgf_file(sgf_file_path: str):
 
     first_line = badly_formatted_game_as_flat_list[0]
     if first_line != '(':
-        print(">>> major error. file not formatted correctly. canceling process.")
+        logging.error('Major error. File is not an SGF file. Canceling process.')
         return
 
     os.remove(sgf_file_path)
@@ -195,10 +171,8 @@ def download_all_games(driver: webdriver.Chrome, skip_first_n_games: int = 0, ve
         num_games_so_far += 1
     return driver
 
-def download_one_game(driver: webdriver.Chrome, metadata_record: dict, download_button: str, num_games_so_far: int, num_total_games: int, verbose: bool) -> webdriver.Chrome:
-    # to do: change download_button to correct type, a selenium element
+def download_one_game(driver: webdriver.Chrome, metadata_record: dict, download_button: WebElement, num_games_so_far: int, num_total_games: int, verbose: bool) -> webdriver.Chrome:
     game_record = metadata_record
-
     try:
         download_button.click()
         time.sleep(5)
@@ -223,11 +197,7 @@ def download_one_game(driver: webdriver.Chrome, metadata_record: dict, download_
                 download_button.click()
                 time.sleep(4)
 
-        # chicken - delete me later
-        if not count_moves_in_a_game(downloaded_file_path) >= MAX_MOVES_IN_A_GAME:
-            print(f">>> I don't want to be downloading NORMAL GAMES... downloading anyway")
-        else:
-            # chicken
+        if count_moves_in_a_game(downloaded_file_path) >= MAX_MOVES_IN_A_GAME:
             logging.warning(f"Game #{num_games_so_far}: {game_record['UpdatedFileName']} is improperly formatted. Fixing...")
             fix_badly_formatted_sgf_file(downloaded_file_path)
 
