@@ -10,12 +10,33 @@ import re
 import shutil
 import time
 
+# BUG - should be 0 matches
+# {'player': 'sakata', 'mindate': '2015', 'maxdate': None}
+# >>> DATE INPUT IS JUST A YEAR
+# >>> Found min date: 20150101
+# >>> Selected via: RANDOMLY WITH REPLACEMENT:
+# >>>>>> It's a Sakata Eio game
+# >>>>>> /Users/tarek/github/gogogo/pro_games/Sakata Eio/19800807-Sakata Eio-Sekiyama Toshio.sgf
+# >>> Thing copied to clipboard
+
+# TO DO
+# zhao chenyu - AI influenced
+# xie ke - AI influenced
+# peng liyao - good fundamentals
+# yamashita keigo - defensive
+# kong jie - defensive
+# go seigen - classic player
+# kitani minoru - classic player
+# cho u - classic player
+# fan tingyu - quiet modern brutality
+# ueno asami - top tier woman player (not in weatheria?)
+
 # env vars
 DESTINATION_DIR = "/Users/tarek/github/gogogo/destination"
 DOWNLOAD_DIR = "/Users/tarek/Downloads"
 MAX_MOVES_IN_A_GAME = 400
 SKIP_FIRST_N_GAMES = 0  # NOTE: use the counting number corresponding to the last successfully downloaded game
-URL_TO_SCRAPE = "https://ps.waltheri.net/database/player/Yang%20Dingxin/"
+URL_TO_SCRAPE = "https://ps.waltheri.net/database/player/Yamashita%20Keigo/"
 
 def count_moves_in_a_game(sgf_file_path: str) -> int:
     with open(sgf_file_path, 'r') as f:
