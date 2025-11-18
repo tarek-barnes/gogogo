@@ -1,0 +1,16 @@
+(;GM[1]FF[4]CA[UTF-8]AP[Sabaki:0.51.1]KM[6.5]SZ[19]DT[2025-06-10];B[pd];W[dp];B[pq];W[cd];B[ec];W[df]N[Classic vs Modern]C[The classic moves for Black are:
+
+];PL[B]AE[cc]N[Classic vs Modern]C[This move was popularized by AlphaGo. Aims for continuations (for White) at X.
+
+The classic moves for Black are A-E. It's possible to tenuki.
+
+F is more modern.]LB[cc:A][ch:F][hc:B][hd:C][ic:D][id:E]MA[dc][fd](;B[cc];W[bc];B[cb]C[A is the classic shape.
+
+Pincering at B & C is possible.
+
+Extending at D+ is fine too.]N[Options]LB[cm:F][cn:G][dd:A][di:D][dj:E][fd:B][gc:C](;W[dd];B[gc]N[Alternatives]LB[gd:B][hc:A][hd:C])(;W[gc];B[dd];W[ce];B[fe];W[jc])(;W[di];B[dd];W[ce]C[Black can tenuki here.]))(;B[hc];W[dc]LB[db:B][ed:A]C[A is better, White is happy to take A if B.](;B[ed];W[dh]LB[ci:A][di:B])(;B[db];W[ed]LB[cc:A]C[A looks appealing, but just leaves too much weakness, so it's a mistake.];B[eb]LB[cb:B][fc:A]C[A and B are both possible.]))(;B[hd];W[dc]LB[db:B][ed:A]C[A seems a little teeny tiny bit beter](;B[ed];W[dh]LB[di:A])(;B[db]LB[cb:A][ed:B]C[These are about the same, but if White A, Black can atari.];W[ed](;B[eb];W[cb])(;B[fd];W[eb];B[fc];W[cb])))(;B[ic];W[gc]C[Black should be expecting this.
+
+A-F are the top answers.
+X are possible but slow.]LB[cc:A][ee:B][ie:C][mc:F][nc:D][nd:E]MA[gb][lc](;B[cc]C[This makes things complicated.];W[bc];B[bd]C[Only move.
+
+White can respond with either A or B.]LB[be:B][dc:A](;W[dc];B[cb];W[bb]C[This gets complicated...]LB[db:A][dd:B](;B[db];W[ce]LB[dd:A][ee:B][fd:C])(;B[dd];W[ce];B[db]LB[ee:A][ff:B][fg:F][gf:E][hd:C][id:D]C[Also pretty complicated]))(;W[be];B[dd];W[ad]LB[hd:A][ie:B]))(;B[ee]LB[dc:A][ef:B][fg:E][ge:C][id:D]C[White has choices here too.];W[dc](;B[db];W[cb];B[ef];W[dg];B[dd];W[cc];B[ie])(;B[eb];W[ef];B[fe]LB[ff:B][gg:C][id:A]))(;B[ie];W[fd];B[cc];W[bc]C[Looks dicey for Black, but he can thrash around.]LB[bd:A][dd:B])))

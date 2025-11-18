@@ -8,79 +8,73 @@ import sys
 from collections import Counter
 from datetime import datetime
 
-# bug
-# ipython randomly_select_pro_game.py -- --player='iyama yuuta' --mindate='2001 12 11'
-# {'player': 'iyama yuuta', 'mindate': '2001 12 11', 'maxdate': None}
-# >>> DATE INPUT IS A DAY & MONTH & YEAR
-# >>> DOESNT CONTAIN MONTH NAME - ONLY NUM
-# >>> Found min date: 2011122001
-# >>> Selected via: RANDOMLY WITH REPLACEMENT:
-# >>>>>> It's a Iyama Yuuta game
-# >>>>>> /Users/tarek/github/gogogo/pro_games/Iyama Yuuta/20130110-Iyama Yuuta-Takao Shinji.sgf
-# >>> Thing copied to clipboard
+def parse_user_args(source_filepath: str, args_dict: dict) -> tuple:
+    matching_min_date = match_user_input__date(args_dict['mindate'], is_max_date=False) if args_dict['mindate'] else None
+    matching_max_date = match_user_input__date(args_dict['maxdate'], is_max_date=True) if args_dict['maxdate'] else None
+    matching_pros = match_user_input__pro_player(args_dict['player'], get_list_of_pro_players(source_filepath)) if args_dict['player'] else None
+    todays_date = True if args_dict['today'] else None
+    return (matching_min_date, matching_max_date, todays_date, matching_pros)
+
+def get_filepaths_of_acceptable_pros(source_filepath: str, user_player_name: str) -> list:
+    list_of_pro_games = []
+    matching_pros = get_list_of_pro_players(source_filepath) if user_player_name is None else user_player_name
+    source_filepaths = [f"{source_filepath}/{k}" for k in matching_pros]
+
+    for fp in source_filepaths:
+        for (root, _, files) in os.walk(fp):
+            for file in files:
+                if file.endswith('.sgf'):
+                    list_of_pro_games.append(os.path.join(root, file))
+
+    return list_of_pro_games
+
+def get_dates_matching_todays_date(min_year=None, max_year=None) -> str:
+    todays_month = datetime.now().month
+    todays_month = f"0{todays_month}" if len(str(todays_month)) == 1 else str(todays_month)
+    todays_day = datetime.now().day
+    todays_day = f"0{todays_day}" if len(str(todays_day)) == 1 else str(todays_day)
+    todays_month_day = f"{todays_month}{todays_day}"
+
+    min_year = 1500 if not min_year else min_year
+    max_year = (datetime.now().year + 1) if not max_year else max_year
+    return [f"{k}{todays_month_day}" for k in range(min_year, max_year)]
+
+def is_date_acceptable_to_the_user(this_date, user_min_date, user_max_date, user_todays_date) -> bool:
+    if (user_todays_date and this_date not in get_dates_matching_todays_date()):
+        return False
+    if (user_min_date and this_date < user_min_date):
+        return False
+    if (user_max_date and this_date > user_max_date):
+        return False
+    return True
+
+def get_date_from_game_filepath(pro_game_filepath: str) -> str:
+    return pro_game_filepath.split("/")[-1].split('-')[0]
+
+def filter_filepaths_by_acceptable_dates(list_of_pro_games, user_min_date, user_max_date, user_todays_date):
+    list_of_pro_games = list(set(list_of_pro_games))
+    did_user_provide_a_min_date = user_min_date is not None
+    did_user_provide_a_max_date = user_max_date is not None
+    did_user_provide_todays_date = user_todays_date is not None
+    did_user_provide_any_dates = (did_user_provide_a_min_date or did_user_provide_a_max_date or did_user_provide_todays_date)
+
+    if not did_user_provide_any_dates:
+        return list_of_pro_games
+    return [fp for fp in list_of_pro_games if is_date_acceptable_to_the_user(get_date_from_game_filepath(fp), user_min_date, user_max_date, user_todays_date)]
 
 def get_list_of_pro_games(source_filepath: str, args_dict: dict) -> list:
     list_of_pro_games = []
     multiple_source_filepaths = []
 
-    #  to do: generalize this later
-    if args_dict['maxdate']:
-        matching_max_date = match_user_input__date(args_dict['maxdate'], is_max_date=True)
-        print(f">>> Found max date: {matching_max_date}")
-    if args_dict['mindate']:
-        matching_min_date = match_user_input__date(args_dict['mindate'], is_max_date=False)
-        print(f">>> Found min date: {matching_min_date}")
-    if 'player' in args_dict:
-         matching_pros = match_user_input__pro_player(args_dict['player'], get_list_of_pro_players(source_filepath))
-         if type(matching_pros) == str:
-             source_filepath += "/"
-             source_filepath += matching_pros
-         elif type(matching_pros) == list:
-             for mp in matching_pros:
-                 this_filepath = source_filepath
-                 this_filepath += "/"
-                 this_filepath += mp
-                 multiple_source_filepaths.append(this_filepath)
+    (user_min_date, user_max_date, user_todays_date, user_player_name) = parse_user_args(source_filepath, args_dict)
 
-    # to do: delete me later... only one root filepath used to be accepted
-    if not multiple_source_filepaths:
-        for (root, _, files) in os.walk(source_filepath):
-            for file in files:
-                if file.endswith('.sgf'):
-                   list_of_pro_games.append(os.path.join(root, file))
-    else:
-        for fp in multiple_source_filepaths:
-            for (root, _, files) in os.walk(fp):
-                for file in files:
-                    if file.endswith('.sgf'):
-                        list_of_pro_games.append(os.path.join(root, file))
+    did_user_provide_a_min_date = user_min_date is not None
+    did_user_provide_a_max_date = user_max_date is not None
+    did_user_provide_todays_date = user_todays_date is not None
+    did_user_provide_a_player_name = user_player_name is not None
 
-
-    list_of_pro_games = list(set(list_of_pro_games))
-    list_of_pro_games_filtered_by_date = []
-    if args_dict['mindate'] and args_dict['maxdate']:
-        min_date = matching_min_date
-        max_date = matching_max_date
-        for pro_game in list_of_pro_games:
-            filename = pro_game.split("/")[-1]
-            filename_date = filename.split('-')[0]
-            if filename_date >= min_date and filename_date <= max_date:
-                list_of_pro_games_filtered_by_date.append(pro_game)
-    elif args_dict['mindate']:
-        min_date = matching_min_date
-        for pro_game in list_of_pro_games:
-            filename = pro_game.split("/")[-1]
-            filename_date = filename.split('-')[0]
-            if filename_date >= min_date:
-                list_of_pro_games_filtered_by_date.append(pro_game)
-    elif args_dict['maxdate']:
-        max_date = matching_max_date
-        for pro_game in list_of_pro_games:
-            filename = pro_game.split("/")[-1]
-            filename_date = filename.split('-')[0]
-            if filename_date <= max_date:
-                list_of_pro_games_filtered_by_date.append(pro_game)
-    list_of_pro_games = list_of_pro_games_filtered_by_date if list_of_pro_games_filtered_by_date else list_of_pro_games
+    list_of_pro_games = get_filepaths_of_acceptable_pros(source_filepath, user_player_name)
+    list_of_pro_games = filter_filepaths_by_acceptable_dates(list_of_pro_games, user_min_date, user_max_date, user_todays_date)
     return list_of_pro_games
 
 
@@ -191,7 +185,7 @@ def match_user_input__date_month_year(user_input: str) -> (str, str):
         else:
             # how to figure out which one is a year if they both have 2 digits?
             print(f">>> Issue with date matcher - we have a difficult use-case: {user_input}... canceling process")
-            return
+            return ('', '')
 
         inferred_month_num = "0" + inferred_month if len(inferred_month) == 1 else inferred_month
         inferred_year = match_user_input__date_year(inferred_year)
@@ -290,11 +284,42 @@ def match_user_input__date_day_month_year(user_input: str) -> (str, str, str):
     elif not does_user_input_contain_a_month_name:
         print(">>> DOESNT CONTAIN MONTH NAME - ONLY NUM")
         (first_date_val, second_date_val, third_date_val) = user_input.split(inferred_delimiter)
-        # chicken
-        # trying to fix a bug...
+        potential_years = [k for k in [first_date_val, second_date_val, third_date_val] if len(k) == 4]
         # if 3 nums are provided, the year should be the one that's 4 digits
-        if (len(first_date_val) == 4 or len(second_date_val) == 4 or len(third_date_val) == 4):
-            inferred_year = third_date_val if len(third_date_val) == 4 else second_date_val if len(second_date_val) == 4 else first_date_val
+        if len(potential_years) > 1:
+            # to do...?
+            pass
+        elif len(potential_years) == 1:
+            print(">>> SHOULD BE HURR")
+            inferred_year = potential_years[0]
+            if first_date_val == inferred_year:
+                if verify_user_input__date_month(third_date_val):
+                    inferred_month = "0" + third_date_val if len(third_date_val) == 1 else third_date_val
+                    inferred_day = "0" + second_date_val if len(second_date_val) == 1 else second_date_val
+                    return (inferred_day, inferred_month, inferred_year)
+                elif verify_user_input__date_month(second_date_val):
+                    inferred_month = "0" + second_date_val if len(second_date_val) == 1 else second_date_val
+                    inferred_day = "0" + third_date_val if len(third_date_val) == 1 else third_date_val
+                    return (inferred_day, inferred_month, inferred_year)
+            elif second_date_val == inferred_year:
+                if verify_user_input__date_month(third_date_val):
+                    inferred_month = "0" + third_date_val if len(third_date_val) == 1 else third_date_val
+                    inferred_day = "0" + first_date_val if len(first_date_val) == 1 else first_date_val
+                    return (inferred_day, inferred_month, inferred_year)
+                elif verify_user_input__date_month(first_date_val):
+                    inferred_month = "0" + first_date_val if len(first_date_val) == 1 else first_date_val
+                    inferred_day = "0" + third_date_val if len(third_date_val) == 1 else third_date_val
+                    return (inferred_day, inferred_month, inferred_year)
+            elif third_date_val == inferred_year:
+                if verify_user_input__date_month(second_date_val):
+                    inferred_month = "0" + second_date_val if len(second_date_val) == 1 else second_date_val
+                    inferred_day = "0" + first_date_val if len(first_date_val) == 1 else first_date_val
+                    return (inferred_day, inferred_month, inferred_year)
+                elif verify_user_input__date_month(first_date_val):
+                    inferred_month = "0" + first_date_val if len(first_date_val) == 1 else first_date_val
+                    inferred_day = "0" + second_date_val if len(second_date_val) == 1 else second_date_val
+                    return (inferred_day, inferred_month, inferred_year)
+
         #  american format: e.g. 12/31/90
         #  european format: e.g. 31/12/90
         elif verify_user_input__date_year(third_date_val):
@@ -309,6 +334,7 @@ def match_user_input__date_day_month_year(user_input: str) -> (str, str, str):
                 inferred_day = "0" + first_date_val if len(first_date_val) == 1 else first_date_val
                 # return f"{inferred_year}{inferred_month}{inferred_day}"
                 return (inferred_day, inferred_month, inferred_year)
+
         #  2009-*
         elif verify_user_input__date_year(first_date_val):
             inferred_year = match_user_input__date_year(first_date_val)
@@ -322,6 +348,7 @@ def match_user_input__date_day_month_year(user_input: str) -> (str, str, str):
                 inferred_day = "0" + third_date_val if len(third_date_val) == 1 else third_date_val
                 # return f"{inferred_year}{inferred_month}{inferred_day}"
                 return (inferred_day, inferred_month, inferred_year)
+
         #  unlikely case: year in middle, e.g. dec 2009 31 (wtf?!)
         elif verify_user_input__date_year(second_date_val):
             inferred_year = match_user_input__date_year(second_date_val)
@@ -338,8 +365,6 @@ def match_user_input__date_day_month_year(user_input: str) -> (str, str, str):
         else:
             print(">>> Error: Trying to figure out the date, input has year & month & day, but what do?")
             return ('', '', '')
-
-
 
 def get_list_of_month_names(are_month_names_abbreviated: bool = False) -> list:
     if are_month_names_abbreviated:
@@ -460,10 +485,11 @@ def main():
     parser.add_argument("-p", "--player", type=str, help="Games from one specific player")
     parser.add_argument("--mindate", type=str, help="Games on/after a certain date")
     parser.add_argument("--maxdate", type=str, help="Games on/before a certain date")
+    parser.add_argument("--today", action='store_true', help="Get historical games from this date")
     args = parser.parse_args()
     args_dict = vars(args)
 
-    print(args_dict)
+    print(f"here is the args_dict: {args_dict}")
 
     destination_dir = '/Users/tarek/github/gogogo/pro_games'
     list_of_pro_games = get_list_of_pro_games(destination_dir, args_dict)

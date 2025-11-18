@@ -20,15 +20,7 @@ import time
 # >>> Thing copied to clipboard
 
 # TO DO
-# zhao chenyu - AI influenced
-# xie ke - AI influenced
-# peng liyao - good fundamentals
-# yamashita keigo - defensive
-# kong jie - defensive
 # go seigen - classic player
-# kitani minoru - classic player
-# cho u - classic player
-# fan tingyu - quiet modern brutality
 # ueno asami - top tier woman player (not in weatheria?)
 
 # env vars
@@ -36,7 +28,7 @@ DESTINATION_DIR = "/Users/tarek/github/gogogo/destination"
 DOWNLOAD_DIR = "/Users/tarek/Downloads"
 MAX_MOVES_IN_A_GAME = 400
 SKIP_FIRST_N_GAMES = 0  # NOTE: use the counting number corresponding to the last successfully downloaded game
-URL_TO_SCRAPE = "https://ps.waltheri.net/database/player/Yamashita%20Keigo/"
+URL_TO_SCRAPE = "https://ps.waltheri.net/database/player/O%20Meien/"
 
 def count_moves_in_a_game(sgf_file_path: str) -> int:
     with open(sgf_file_path, 'r') as f:
