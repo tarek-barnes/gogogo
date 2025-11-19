@@ -76,14 +76,6 @@ def ensure_preview_is_the_active_window():
 
 
 def make_window_fullscreen():
-    # make sure preview is the active window
-    # applescript = '''
-    # tell application "Preview"
-    # activate
-    # end tell
-    # '''
-    # subprocess.run(['osascript', '-e', applescript])
-    # time.sleep(0.2)
     ensure_preview_is_the_active_window()
 
     pyautogui.keyDown('ctrl')
@@ -115,29 +107,10 @@ def make_window_magnification_to_actual_size_again():
 def open_answer_file_in_preview(filepath):
     subprocess.run(["open", filepath])
     time.sleep(0.3)
-
-    # # make sure preview is the active window
-    # applescript = '''
-    # tell application "Preview"
-    # activate
-    # end tell
-    # '''
-    # subprocess.run(['osascript', '-e', applescript])
-    # time.sleep(0.2)
-
     make_window_fullscreen()
 
 def click_markup_tool_in_preview():
     time.sleep(0.2)
-
-    # make sure preview is the active window
-    # applescript = '''
-    # tell application "Preview"
-    # activate
-    # end tell
-    # '''
-    # subprocess.run(['osascript', '-e', applescript])
-    # time.sleep(0.2)
     ensure_preview_is_the_active_window()
 
     # clicks the "markup toolbar" button

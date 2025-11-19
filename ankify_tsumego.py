@@ -23,18 +23,9 @@ def generate_image_html(image_filepath):
     return img_html
 
 def generate_card_skeleton(path_to_question, path_to_answer):
-    # with open(image_path, 'rb') as f:
-    #     img_data = f.read()
-    # img_base64 = base64.b64encode(img_data).decode('utf-8')
-    # img_html = f'<img src="data:image/png;base64,{img_base64}">'
     question_img_html = generate_image_html(path_to_question)
     answer_img_html = generate_image_html(path_to_answer)
 
-    # front = f"""
-    # {img_html}
-    # <div style="font-size:12px; position:absolute; bottom:0; width:100%; text-align:center;">
-    # </div>
-    # """
     return {
         "deckName": "Tsumego",
         "modelName": "Basic",
