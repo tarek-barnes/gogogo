@@ -19,6 +19,9 @@ import time
 # >>>>>> /Users/tarek/github/gogogo/pro_games/Sakata Eio/19800807-Sakata Eio-Sekiyama Toshio.sgf
 # >>> Thing copied to clipboard
 
+# first game cant be downloaded? get a breakpoint (sometimes)
+# can't quit browser at the end of scrape - get AttributeError: 'NoneType' object has no attribute 'quit'
+
 # TO DO
 # go seigen - classic player
 # ueno asami - top tier woman player (not in weatheria?)
@@ -28,7 +31,7 @@ DESTINATION_DIR = "/Users/tarek/github/gogogo/destination"
 DOWNLOAD_DIR = "/Users/tarek/Downloads"
 MAX_MOVES_IN_A_GAME = 400
 SKIP_FIRST_N_GAMES = 0  # NOTE: use the counting number corresponding to the last successfully downloaded game
-URL_TO_SCRAPE = "https://ps.waltheri.net/database/player/O%20Meien/"
+URL_TO_SCRAPE = "https://ps.waltheri.net/database/player/Kajiwara%20Takeo/"
 
 def count_moves_in_a_game(sgf_file_path: str) -> int:
     with open(sgf_file_path, 'r') as f:
