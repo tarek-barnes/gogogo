@@ -23,15 +23,15 @@ import time
 # can't quit browser at the end of scrape - get AttributeError: 'NoneType' object has no attribute 'quit'
 
 # TO DO
-# go seigen - classic player
 # ueno asami - top tier woman player (not in weatheria?)
+# kim eunji - top tier woman player, too new for weatheria
 
 # env vars
 DESTINATION_DIR = "/Users/tarek/github/gogogo/destination"
 DOWNLOAD_DIR = "/Users/tarek/Downloads"
 MAX_MOVES_IN_A_GAME = 400
 SKIP_FIRST_N_GAMES = 0  # NOTE: use the counting number corresponding to the last successfully downloaded game
-URL_TO_SCRAPE = "https://ps.waltheri.net/database/player/Kajiwara%20Takeo/"
+URL_TO_SCRAPE = "https://ps.waltheri.net/database/player/Takagawa%20Shukaku/"
 
 def count_moves_in_a_game(sgf_file_path: str) -> int:
     with open(sgf_file_path, 'r') as f:
@@ -83,14 +83,6 @@ def fix_badly_formatted_sgf_file(sgf_file_path: str):
                     have_prefs_been_set = True
                 else:
                     f.write(f"{line}\n")
-
-def get_stats_player_winrates():
-    # list of players = []
-    # for each player:
-    #  for each game: win+=1
-    #  return win/total
-    # some formatting
-    pass
 
 def start_driver(verbose: bool = False) -> webdriver.Chrome:
     return webdriver.Chrome()
@@ -178,7 +170,7 @@ def download_all_games(driver: webdriver.Chrome, skip_first_n_games: int = 0, ve
         logging.error("Critical error: number of metadata entries doesn't match number of games to download - canceling process")
         return driver
     if skip_first_n_games > 0:
-        logging.warning(f"WARNING: STARTING PROCESS FROM GAME #{skip_first_n_games + 1}")
+        logging.warning(f"STARTING PROCESS FROM GAME #{skip_first_n_games + 1}")
 
     num_games_so_far = skip_first_n_games + 1
     num_total_games = len(games_metadata)
