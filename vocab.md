@@ -38,3 +38,4 @@
 - トックリ形（とっくりがた）= sake bottle shape (一間トビ with けいま in the middle)
     > 犬の顔（いぬのかお）= dog face, synonym for トックリ形
 - 馬の顔（うまのかお）= horse head (一間トビ with おげいま in the middle)
+- 急所（きゅうしょ）= vital point
