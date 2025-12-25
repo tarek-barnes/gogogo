@@ -1,3 +1,8 @@
+from helper import (
+    count_moves_in_a_game,
+    is_sgf_file_formatted_in_the_expected_way,
+    fix_badly_formatted_sgf_file
+)
 from selenium import webdriver
 from selenium.common.exceptions import ElementNotInteractableException
 from selenium.webdriver.common.by import By
@@ -32,57 +37,6 @@ DOWNLOAD_DIR = "/Users/tarek/Downloads"
 MAX_MOVES_IN_A_GAME = 400
 SKIP_FIRST_N_GAMES = 0  # NOTE: use the counting number corresponding to the last successfully downloaded game
 URL_TO_SCRAPE = "https://ps.waltheri.net/database/player/Takagawa%20Shukaku/"
-
-def count_moves_in_a_game(sgf_file_path: str) -> int:
-    with open(sgf_file_path, 'r') as f:
-        raw_sgf = f.read()
-
-    num_moves = 0
-    game = sgf.Sgf_game.from_string(raw_sgf)
-    for node in game.get_main_sequence():
-        if node.has_property('B') or node.has_property('W'):
-            num_moves += 1
-    return num_moves
-
-def fix_badly_formatted_sgf_file(sgf_file_path: str):
-    with open(sgf_file_path, 'rb') as f:
-        sgf_content = f.read()
-
-    badly_formatted_game = sgf.Sgf_game.from_bytes(sgf_content)
-    badly_formatted_game_as_str = badly_formatted_game.serialise().decode("utf-8")
-    badly_formatted_game_as_list = badly_formatted_game_as_str.split("\n")
-    badly_formatted_game_as_list = [k for k in badly_formatted_game_as_list if k]
-    badly_formatted_game_as_list = [k.split(';') for k in badly_formatted_game_as_list]
-    badly_formatted_game_as_flat_list = [j for k in badly_formatted_game_as_list for j in k if j]
-
-    first_line = badly_formatted_game_as_flat_list[0]
-    if first_line != '(':
-        logging.error('Major error. File is not an SGF file. Canceling process.')
-        return
-
-    os.remove(sgf_file_path)
-
-    with open(sgf_file_path, 'w') as f:
-        f.write(f"{first_line}\n")  # don't want the file to start with ;
-        move_num = 1
-        have_prefs_been_set = False
-        expected_next_mover = 'B'
-        for line in badly_formatted_game_as_flat_list[1:]:
-            if (line.startswith('B') or line.startswith('W')):
-                current_mover = 'B' if line.startswith('B') else 'W'
-                #  this means one side has played two moves in a row, which is illegal
-                if current_mover != expected_next_mover:
-                    f.write(")")
-                    break
-                f.write(f";{line}\n")
-                expected_next_mover = 'W' if expected_next_mover == 'B' else 'B'
-                move_num += 1
-            else:
-                if not have_prefs_been_set:
-                    f.write(f";{line}\n")
-                    have_prefs_been_set = True
-                else:
-                    f.write(f"{line}\n")
 
 def start_driver(verbose: bool = False) -> webdriver.Chrome:
     return webdriver.Chrome()
@@ -206,8 +160,12 @@ def download_one_game(driver: webdriver.Chrome, metadata_record: dict, download_
                 time.sleep(4)
 
         if count_moves_in_a_game(downloaded_file_path) >= MAX_MOVES_IN_A_GAME:
-            logging.warning(f"Game #{num_games_so_far}: {game_record['UpdatedFileName']} is improperly formatted. Fixing...")
-            fix_badly_formatted_sgf_file(downloaded_file_path)
+            if not is_sgf_file_formatted_in_the_expected_way(downloaded_file_path):
+                logging.error('File is not an SGF file. Canceling process.')
+                return driver
+            else:
+                logging.warning(f"Game #{num_games_so_far}: {game_record['UpdatedFileName']} is improperly formatted. Fixing...")
+                fix_badly_formatted_sgf_file(downloaded_file_path)
 
         shutil.move(downloaded_file_path, new_file_path)
 
@@ -221,7 +179,6 @@ def download_one_game(driver: webdriver.Chrome, metadata_record: dict, download_
         logging.error("File not found... here's the exact error:")
         logging.error(e)
         breakpoint()
-        # return driver
     except Exception as e:
         print(">>> An unexpected error occurred while downloading a game")
         print(f">>> Here's the error: {e}")

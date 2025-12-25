@@ -1,7 +1,7 @@
 import os
 import re
 
-# these: https://github.com/yenw/computer-go-dataset/tree/master/Professional
+# Source of data: https://github.com/yenw/computer-go-dataset/tree/master/Professional
 
 DESTINATION_DIRNAME = "computer_go_destination"
 
@@ -63,8 +63,8 @@ def extract(file: str, destination_dir: str):
 
 def main():
     files_to_extract = [
-        '/Users/tarek/github/computer-go-dataset/Professional/pro1940-1999.txt',
-        '/Users/tarek/github/computer-go-dataset/Professional/pro2000+.txt'
+        '/Users/tarek/github/gogogo/bulk_datasets/computer-go-dataset/Professional/pro1940-1999.txt',
+        '/Users/tarek/github/gogogo/bulk_datasets/computer-go-dataset/Professional/pro2000+.txt'
     ]
 
     create_destination_dir()
