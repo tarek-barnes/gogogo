@@ -36,7 +36,7 @@ DESTINATION_DIR = "/Users/tarek/github/gogogo/destination"
 DOWNLOAD_DIR = "/Users/tarek/Downloads"
 MAX_MOVES_IN_A_GAME = 400
 SKIP_FIRST_N_GAMES = 0  # NOTE: use the counting number corresponding to the last successfully downloaded game
-URL_TO_SCRAPE = "https://ps.waltheri.net/database/player/Takagawa%20Shukaku/"
+URL_TO_SCRAPE = "https://ps.waltheri.net/database/player/Honinbo%20Dosaku/"
 
 def start_driver(verbose: bool = False) -> webdriver.Chrome:
     return webdriver.Chrome()
