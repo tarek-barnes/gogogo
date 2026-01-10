@@ -84,7 +84,7 @@ def add_all_new_tsumego_to_anki():
             counter += 1
         else:
             print(f">>> ERROR: Couldn't find matching answer for '{file_name}'... canceling process...")
-    print(f">>> Successfully added {counter} tsumego")
+    print(f"\n>>> +{counter} tsumego")
 
 def is_anki_running():
     for proc in psutil.process_iter(['name']):
@@ -107,12 +107,17 @@ def make_sure_anki_is_running():
     if not is_anki_running():
         start_anki_in_background()
 
+def count_total_number_of_tsumego():
+    num_tsumego = int(len(os.listdir(PROCESSED_DIR)) / 2)  # each tsumego has a corresponding answer
+    print(f">>> Total tsumego: {num_tsumego}")
+
 def main():
     os.makedirs(PROCESSED_DIR, exist_ok=True)
     os.makedirs(SOURCE_DIR, exist_ok=True)
-    make_sure_anki_is_running()
 
+    make_sure_anki_is_running()
     add_all_new_tsumego_to_anki()
+    count_total_number_of_tsumego()
 
 if __name__ == '__main__':
     main()

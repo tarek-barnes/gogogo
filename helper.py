@@ -6,6 +6,8 @@ from sgfmill import sgf
 
 import os
 
+PRO_DIR_ROOT = "/Users/tarek/github/gogogo/pro_games"
+
 
 ### handling raw data files
 
@@ -188,18 +190,49 @@ def fix_badly_formatted_sgf_file(sgf_file_path: str):
         legal_moves.append((color, point))
         last_color = color
     
-    output_filepath = f"/Users/tarek/nonsense/{sgf_file_path.split('/')[-1]}"
-    create_sgf_game_from_moves(output_filepath, metadata, legal_moves)
+    create_sgf_game_from_moves(sgf_file_path, metadata, legal_moves)
 
 
 def get_games_matching_date(filepath: str, pro_filepath: str) -> list:
     date_to_search = filepath.split("/")[-1].split("-")[0]
-    return [pro_filepath + "/" + k for k in os.listdir(pro_filepath) if k.split("-")[0] == date_to_search]
+    is_date_to_search_only_a_year = len(date_to_search) == 4
+    is_date_to_search_only_a_year_and_month = len(date_to_search) > 4 and len(date_to_search) <= 6
+    exact_date_matches = []
+    fuzzy_date_matches = []
+
+    for pro_fn in os.listdir(pro_filepath):
+        pro_fn_date = pro_fn.split("-")[0]
+        does_pro_game_only_have_a_year = len(pro_fn_date) == 4
+        does_pro_game_only_have_a_year_and_month = len(pro_fn_date) > 4 and len(pro_fn_date) <= 6
+        filepath = f"{pro_filepath}/{pro_fn}"
+        if pro_fn.split("-")[0] == date_to_search:
+            exact_date_matches.append(filepath)
+        # what if filepath is 19981121-Tanaka Masato-Cho Chikun.sgf
+        #      and pro_filepath is 1998-Tanaka Masato-Cho Chikun.sgf
+        elif (does_pro_game_only_have_a_year and date_to_search.startswith(pro_fn_date)):
+            fuzzy_date_matches.append(filepath)
+        # what if filepath is 19981121-Tanaka Masato-Cho Chikun.sgf
+        #      and pro_filepath is 199811-Tanaka Masato-Cho Chikun.sgf
+        elif (does_pro_game_only_have_a_year_and_month and date_to_search.startswith(pro_fn_date)):
+            fuzzy_date_matches.append(filepath)
+        # what if filepath is 1998-Tanaka Masato-Cho Chikun.sgf
+        #      and pro_filepath is 19981121-Tanaka Masato-Cho Chikun.sgf
+        elif (is_date_to_search_only_a_year and pro_fn_date.startswith(date_to_search)):
+            fuzzy_date_matches.append(filepath)
+        # what if filepath is 1998-Tanaka Masato-Cho Chikun.sgf
+        #      and pro_filepath is 19981121-Tanaka Masato-Cho Chikun.sgf
+        elif (is_date_to_search_only_a_year_and_month and pro_fn_date.startswith(date_to_search)):
+            fuzzy_date_matches.append(filepath)
+    return exact_date_matches + fuzzy_date_matches
 
 
 def get_list_of_dates(filepath: str) -> list:
     filenames = os.listdir(filepath)
     return [k.split("-")[0] for k in filenames]
+
+
+def get_list_of_pro_filepaths() -> list:
+    return sorted([f"{PRO_DIR_ROOT}/{k}" for k in os.listdir(PRO_DIR_ROOT)])
 
 
 # refers to a move by black or white, and not metadata

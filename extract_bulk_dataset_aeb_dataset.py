@@ -1,9 +1,11 @@
+from collections import Counter
 from datetime import datetime
 from helper import (
     analyze_two_similar_games,
     count_moves_in_a_game,
     count_number_of_same_moves,
     get_game,
+    get_list_of_pro_filepaths,
     get_matching_games,
     are_these_two_games_the_same
 )
@@ -15,7 +17,7 @@ import shutil
 
 # Source of data: https://homepages.cwi.nl/~aeb/go/games/
 
-# I created this w/ the following goals in mind:
+# I created this w/ the following goals in mind (added generalized funcs to helper.py):
 # - for a game, are any moves missing?
 # - for a game, how many total moves are the same? (currently only track until first diff)
 # - for a game, get all pieces of metadata
@@ -23,34 +25,12 @@ import shutil
 # - for a dataset, tell me how many games are 100% the same
 
 DESTINATION_DIR = "/Users/tarek/github/gogogo/staging"
+PRO_DIR_ROOT = "/Users/tarek/github/gogogo/pro_games"
+
 MAX_MOVES_IN_A_GAME = 400
 SOURCE_DIR = "/Users/tarek/github/gogogo/bulk_datasets/AEB/Cho_Chikun"
 PRO_DIR = ["/Users/tarek/github/gogogo/pro_games/Cho Chikun"]
 
-# specify no pro dir
-# specify >1 pro dirs
-
-
-    # Cho_Chikun
-    # Dosaku
-# Female Honinbo
-    # Go_Seigen
-# Gosei
-# Honinbo
-    # Honinbo_Jowa
-# Ing
-# Judan
-# Kisei
-# Meijin
-# NHK
-# Nakamura_Sumire
-# Oza
-# README.md
-# Ryusei
-    # Shusai
-    # Shusaku
-    # Takagawa
-# Tengen
 
 def get_sgf_filepaths_for_source_dir(source_dir=SOURCE_DIR):
     return [
@@ -59,6 +39,7 @@ def get_sgf_filepaths_for_source_dir(source_dir=SOURCE_DIR):
         for filename in filenames
         if filename.endswith('.sgf')
     ]
+
 
 # TODO: move to helper?
 def get_game_metadata_dict(game_filepath: str) -> dict:
@@ -76,10 +57,12 @@ def get_game_metadata_dict(game_filepath: str) -> dict:
                 metadata_dict[key] = [existing_val, val]
     return metadata_dict
 
+
 def remove_descriptives(raw_player_name: str) -> str:
     if "(" in raw_player_name:
         raw_player_name = raw_player_name.split("(")[0]
     return re.sub(r'[1-9]d', '', raw_player_name).strip()
+
 
 def format_player_name(raw_player_name: str) -> tuple:
     """
@@ -113,6 +96,7 @@ def format_player_name(raw_player_name: str) -> tuple:
     else:
         return (remove_descriptives(raw_player_name), False)
     
+
 def parse_published_date(published_date: str) -> tuple:
     """
     For older games, some date fields (usually DTX) start with 'Published'.
@@ -161,6 +145,7 @@ def parse_published_date(published_date: str) -> tuple:
 
     return (dt.year, dt.month, dt.day)
 
+
 def format_game_date(raw_date: str, delim: str = '-') -> str:
     """
     Want dates in format: YYYYMMDD. Probably a bad idea to overwrite `delim`.
@@ -199,6 +184,7 @@ def format_game_date(raw_date: str, delim: str = '-') -> str:
         clean_date = clean_date.split(",")[0]
     return clean_date
 
+
 def get_game_date(metadata_dict: dict) -> str:
     """Yes, the catch-all is necessary, ask me how I know."""
     if "DT" in metadata_dict:
@@ -206,6 +192,7 @@ def get_game_date(metadata_dict: dict) -> str:
     elif "DTX" in metadata_dict:
         return format_game_date(metadata_dict["DTX"])
     return "UNKNOWNDATE"
+
 
 def get_new_filename(filepath):
     metadata_dict = get_game_metadata_dict(filepath)
@@ -218,6 +205,7 @@ def get_new_filename(filepath):
 
 def get_new_filepath(filepath):
     return DESTINATION_DIR + "/" + get_new_filename(filepath)
+
 
 # TODO: move to helper?
 def get_game_similarity_score(filepath_a: str, filepath_b: str) -> int:
@@ -234,74 +222,16 @@ def get_game_similarity_score(filepath_a: str, filepath_b: str) -> int:
     else:
         return math.floor((num_same_moves / num_total_moves) * 100)
 
-# def process_new_file(filepath: str) -> dict:
-#     """
-#     Imports a new file from SOURCE_DIR and processes it into DESTINATION_DIR.
 
-#     Processing does the following:
-#         - Copy game from SOURCE_DIR and rename to standard convention
-#         - Matches game on existing games by date
-#         - Quantify similarity to existing games
-
-#     Returns dict w/ fields:
-#         `game_type`
-#         `matching_game_record`
-#         `similarity_score`
-#     """
-#     result_dict = {}
-#     print(f"Processing: {filepath}")
-
-#     is_this_a_new_game = False
-#     is_this_an_existing_game = False
-#     is_this_game_suspiciously_similar = False
-
-#     # copy source -> staging
-#     shutil.copy(filepath, get_new_filepath(filepath))
-#     filepath = get_new_filepath(filepath)  # update pointer
-
-#     if PRO_DIR:
-#         # ai prediction network
-#         potential_matches = get_matching_games(get_new_filepath(filepath), PRO_DIR)
-#         # TODO: remove the break from this for loop - need functionality to inform user if multiple games are highly similar
-#         for potential_match in potential_matches:
-#             if are_these_two_games_the_same(filepath, potential_match, min_num_same_moves=15):
-#                 similarity_score = get_game_similarity_score(filepath, potential_match)
-#                 result_dict['matching_game_record'] = potential_match
-
-#                 if similarity_score == 100:
-#                     is_this_an_existing_game = True
-#                 else:
-#                     is_this_game_suspiciously_similar = True
-
-#                 break  # this is temporarily fine, but needs to be removed eventually. if there are multiple similar games, the user should be informed
-
-#         if not (is_this_an_existing_game or is_this_game_suspiciously_similar):
-#             is_this_a_new_game = True
-#             similarity_score = 0
-
-#         if is_this_an_existing_game:
-#             os.remove(filepath)
-
-#         result_dict['game_type'] = (is_this_a_new_game,
-#                                     is_this_an_existing_game,
-#                                     is_this_game_suspiciously_similar)
-#         result_dict['similarity_score'] = similarity_score
-#     else:
-#         result_dict['game_type'] = (is_this_a_new_game,
-#                                     is_this_an_existing_game,
-#                                     is_this_game_suspiciously_similar)
-    
-#     return result_dict
-
-def run_ai_prediction_network(filepath: str, result_dict: dict) -> dict:
+def run_ai_prediction_network(filepath: str, list_of_existing_pro_filepaths: list, result_dict: dict) -> dict:
     """A bunch of if-statements. Shhhhh."""
-    if PRO_DIR == [] or PRO_DIR == ['']:
+    if list_of_existing_pro_filepaths == [] or list_of_existing_pro_filepaths == ['']:
         return (None, None)
 
     if 'matching_game_records' not in result_dict:
         result_dict['matching_game_records'] = []
 
-    potential_matches = get_matching_games(get_new_filepath(filepath), PRO_DIR)
+    potential_matches = get_matching_games(get_new_filepath(filepath), list_of_existing_pro_filepaths)
     for pm in potential_matches:
         if are_these_two_games_the_same(filepath, pm, min_num_same_moves=15):
             similarity_score = get_game_similarity_score(filepath, pm)
@@ -309,9 +239,10 @@ def run_ai_prediction_network(filepath: str, result_dict: dict) -> dict:
 
     return result_dict
 
-def process_new_file(filepath: str) -> dict:
+
+def import_new_game(filepath: str, list_of_existing_pro_filepaths: list) -> dict:
     """
-    Imports a new file from SOURCE_DIR and processes it into DESTINATION_DIR.
+    Import a new game from SOURCE_DIR and process it into DESTINATION_DIR.
 
     Processing does the following:
         - Copy game from SOURCE_DIR and rename to standard convention
@@ -324,17 +255,15 @@ def process_new_file(filepath: str) -> dict:
         `similarity_score`
     """
     result_dict = {}
-    print(f"Processing: {filepath}")
-
     is_this_a_new_game = False
     is_this_an_existing_game = False
     is_this_game_suspiciously_similar = False
 
-    # copy source -> staging
+    # copy to staging dir
     shutil.copy(filepath, get_new_filepath(filepath))
     filepath = get_new_filepath(filepath)  # update pointer
 
-    result_dict = run_ai_prediction_network(filepath, result_dict)
+    result_dict = run_ai_prediction_network(filepath, list_of_existing_pro_filepaths, result_dict)
 
     if result_dict["matching_game_records"] == []:
         is_this_a_new_game = True
@@ -352,39 +281,170 @@ def process_new_file(filepath: str) -> dict:
                             is_this_game_suspiciously_similar)
     return result_dict
 
-def main():
-    filepaths_to_process = get_sgf_filepaths_for_source_dir()
-    (num_new_games, num_existing_games, num_similar_games) = (0, 0, 0)
+
+def collate_new_games_for_user_review(filepaths_to_process: list, list_of_existing_pro_filepaths: list, limit_n_games: int = 0) -> tuple:
     mapping_filename_to_file_status = {}
-    # mapping_filename_to_similarity_score = {}
     mapping_filename_to_matching_games = {}
 
-    print("\nWelcome. Beginning process.")
-    print(f"Total games to process: {len(filepaths_to_process)}")
+    limit_n_games = len(filepaths_to_process) if limit_n_games == 0 else limit_n_games
+    print(f"Total games to process: {limit_n_games}")
 
     for fp in filepaths_to_process:
-        result_dict = process_new_file(fp)
-        mapping_filename_to_file_status[fp] = result_dict['game_type']
-        # mapping_filename_to_similarity_score[fp] = result_dict['similarity_score']
-        mapping_filename_to_matching_games[fp] = result_dict['matching_game_records']
-        (new, exi, sim) = result_dict['game_type']
+        result_dict = import_new_game(fp, list_of_existing_pro_filepaths)
+        mapping_filename_to_file_status[get_new_filepath(fp)] = result_dict['game_type']
+        mapping_filename_to_matching_games[get_new_filepath(fp)] = result_dict['matching_game_records']
 
-        num_new_games += int(new)
-        num_existing_games += int(exi)
-        num_similar_games += int(sim)
+    game_stats = Counter(mapping_filename_to_file_status.values())
+    num_new = game_stats[(1, 0, 0)]
+    num_existing = game_stats[(0, 1, 0)]
+    num_similar = game_stats[(0, 0, 1)]
 
-    print("\nProcess complete. Found the following:")
-    print(f">>> {num_new_games} new games.")
-    print(f">>> {num_existing_games} games you already have.")
-    print(f">>> {num_similar_games} games that are very similar but not 100% - please review them.")
+    print("Import complete:")
+    print(f">>> {num_new} new games.")
+    print(f">>> {num_existing} games you already have.")
+    print(f">>> {num_similar} games that are very similar but not 100%.")
 
-    for fp in mapping_filename_to_file_status:
-        matching_games = mapping_filename_to_matching_games[fp]
-        scores = [k[1] for k in matching_games]
-        if any([s > 0 and s < 100 for s in scores]):
-            # matching_games = mapping_filename_to_matching_games[fp]
-            analyze_two_similar_games(fp, matching_games)
+    return (mapping_filename_to_file_status, mapping_filename_to_matching_games)
 
+
+def get_mapping_bulk_dataset_filepath_to_existing_pro_filepath():
+    base_dataset = '/Users/tarek/github/gogogo/bulk_datasets/AEB'
+    return {f'{base_dataset}/Shusaku': [f'{PRO_DIR_ROOT}/Honinbo Shusaku'],
+            f'{base_dataset}/Cho_Chikun': [f'{PRO_DIR_ROOT}/Cho Chikun'],
+            f'{base_dataset}/Gosei': [],
+            f'{base_dataset}/Kisei': [],
+            f'{base_dataset}/Female Honinbo': [],
+            f'{base_dataset}/Meijin': [],
+            f'{base_dataset}/Honinbo_Jowa': [],
+            f'{base_dataset}/Tengen': [],
+            f'{base_dataset}/Go_Seigen': [f'{PRO_DIR_ROOT}/Go Seigen'],
+            f'{base_dataset}/Ing': [],
+            f'{base_dataset}/Honinbo': [],
+            f'{base_dataset}/Ryusei': [],
+            f'{base_dataset}/Judan': [],
+            f'{base_dataset}/Oza': [],
+            f'{base_dataset}/Shusai': [f'{PRO_DIR_ROOT}/Honinbo Shusai'],
+            f'{base_dataset}/Dosaku': [f'{PRO_DIR_ROOT}/Honinbo Dosaku'],
+            f'{base_dataset}/NHK': [],
+            f'{base_dataset}/Nakamura_Sumire': [],
+            f'{base_dataset}/Takagawa': [f'{PRO_DIR_ROOT}/Takagawa Kaku', f'{PRO_DIR_ROOT}/Takagawa Shukaku']}
+
+
+def process_existing_games(existing_games: list):
+    # to do
+    # delete games from staging
+    pass
+
+
+def process_similar_games(similar_games: list, mapping_filename_to_matching_games: dict):
+    # case 1:
+    #  len(game_a) > len(game_b) and 100% of game_b in game_a (or visa versa)
+    #
+    # case 2:
+    #  1 move delta b/w game_a and game_b
+    for sg in similar_games:
+        matching_games = mapping_filename_to_matching_games[sg]
+        analyze_two_similar_games(sg, matching_games)
+
+
+def process_new_games(new_games: list, list_of_existing_pro_filepaths: list):
+    print(f"Let's start with the new games")
+
+    #  figure out which directory to send the new games to
+    if len(list_of_existing_pro_filepaths) == 0 or list_of_existing_pro_filepaths == [""]:
+        print("It seems like you don't have a collection for this pro yet")
+        name_of_new_collection_response = get_user_input(">>>>> What should we name the new directory? > ")
+        name_of_new_collection = name_of_new_collection_response.title()
+        collection_filepath = f"{PRO_DIR_ROOT}/{name_of_new_collection}"
+        os.makedirs(collection_filepath, exist_ok=True)
+    elif len(list_of_existing_pro_filepaths) > 1:
+        print("This pro has multiple collections")
+        pros_with_nums = list(enumerate(list_of_existing_pro_filepaths, start=1))
+        collection_filepath = get_user_input__enumerated_list(pros_with_nums)
+    elif len(list_of_existing_pro_filepaths) == 1:
+        collection_filepath = list_of_existing_pro_filepaths[0]
+
+    # to do
+    # move game from staging -> pro dir
+
+    for ng in new_games[:20]:
+        print(f"'{ng}' ---> '{collection_filepath}/{ng.split('/')[-1]}'")
+
+
+def pretty_print_enumerated_list(enumerated_list: list):
+    for (i, thing) in enumerated_list:
+        print(f">>> #{i}: {thing}")
+
+
+def is_user_response__a_number(user_response: str) -> bool:
+    return all([k.isdigit() for k in user_response])
+
+
+def get_user_input__enumerated_list(enumerated_list: list, query_text: str = "which one would you like to use? > ") -> int:
+    pretty_print_enumerated_list(enumerated_list)
+    while True:
+        user_answer = input(f"{query_text}").lower().strip()
+        is_answer_an_acceptable_number = user_answer in [str(k[0]) for k in enumerated_list]
+        is_answer_an_acceptable_choice = user_answer in [k[1].lower() for k in enumerated_list]
+        if user_answer == "":
+            print("Please answer")
+        elif is_answer_an_acceptable_number:
+            return [n for (i, n) in enumerated_list if i == user_answer][0].title()
+        elif is_answer_an_acceptable_choice:
+            return user_answer.title()
+        elif is_user_response__a_number(user_answer) and not is_answer_an_acceptable_number:
+            print("Pick a number in the list you idiot")
+        elif not is_answer_an_acceptable_choice:
+            print("Pick a valid entry you dumbshit")
+        else:
+            print("Invalid response, try again")
+
+
+def get_user_input__yes_or_no(query_text: str = "what would you like to do? > ") -> int:
+    while True:
+        user_answer = input(f"{query_text}").lower().strip()
+        if user_answer == "":
+            print("Please answer")
+        elif user_answer == 'y': return 1
+        elif user_answer == 'n': return 0
+        else:
+            print("Invalid response, try again")
+
+
+def get_user_input(query_text: str = "what would you like to do? > ") -> str:
+    while True:
+        user_answer = input(f"{query_text}").lower().strip()
+        if user_answer == "":
+            print("Please answer")
+        return user_answer
+
+
+def main():
+    print("Welcome. Beginning process.")
+
+    mapping_aeb_to_existing_pros = get_mapping_bulk_dataset_filepath_to_existing_pro_filepath()
+    aeb_pros = sorted(mapping_aeb_to_existing_pros.keys())
+
+    for aeb_pro in aeb_pros:
+        list_of_existing_pro_filepaths = mapping_aeb_to_existing_pros[aeb_pro]
+        filepaths_to_process = get_sgf_filepaths_for_source_dir(aeb_pro)
+
+        print(f"\nImporting '{'/'.join(aeb_pro.split('/')[-2:])}'...")
+        new_games_for_user = collate_new_games_for_user_review(
+                                filepaths_to_process,
+                                list_of_existing_pro_filepaths)
+        (mapping_filename_to_file_status, mapping_filename_to_matching_games) = new_games_for_user
+
+        new_games = [fp for fp in mapping_filename_to_file_status if mapping_filename_to_file_status[fp] == (1, 0, 0)]
+        process_new_games(new_games, list_of_existing_pro_filepaths)
+
+        existing_games = [fp for fp in mapping_filename_to_file_status if mapping_filename_to_file_status[fp] == (0, 1, 0)]
+        process_existing_games(existing_games)
+
+        similar_games = [fp for fp in mapping_filename_to_file_status if mapping_filename_to_file_status[fp] == (0, 0, 1)]
+        process_similar_games(similar_games, mapping_filename_to_matching_games)
+
+        breakpoint()
 
 if __name__ == '__main__':
     main()
