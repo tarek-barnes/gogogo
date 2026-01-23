@@ -31,8 +31,8 @@ h1 { margin-bottom: 2rem; }
 
 .section-body.collapsed { display: none; }
 
-/* Table layout for entries */
-.table { display: table; width: 100%; table-layout: auto; border-collapse: collapse; }
+/* Table layout */
+.table { display: table; border-collapse: collapse; width: max-content; min-width: 100%; }
 
 .row { display: table-row; border-bottom: 1px dashed #9084C8; }
 
@@ -40,15 +40,20 @@ h1 { margin-bottom: 2rem; }
   display: table-cell;
   vertical-align: top;
   padding-right: 1rem;
-  white-space: nowrap;       /* keep everything on one line */
+  white-space: nowrap; /* keep everything on one line */
 }
 
+/* Term + example */
 .term { font-size: 2.5em; color: #C0391B; }
-.example { font-size: 1.6em; color: #A37F33; }
+.example { font-size: 1.6em; color: #A37F33; margin-top: 0.1em; }
+
+/* Reading */
 .reading { font-size: 1.8em; color: #4dabf7; }
+
+/* Meaning + explanation + notes */
 .meaning { font-size: 1.8em; color: #BF86DA; }
-.explanation { font-size: 1.6em; color: #0EA098; }
-.notes { font-size: 1.6em; color: #868e96; }
+.explanation { font-size: 1.6em; color: #0EA098; margin-top: 0.1em; }
+.notes { font-size: 1.6em; color: #868e96; margin-top: 0.1em; }
 
 /* Collapse arrow */
 .section-title::after {
@@ -59,6 +64,9 @@ h1 { margin-bottom: 2rem; }
 .section-body.collapsed + .section-title::after {
   content: " ▶";
 }
+
+/* Optional horizontal scroll if content too wide */
+#vocab { overflow-x: auto; }
 </style>
 </head>
 <body>
@@ -318,28 +326,28 @@ h1 { margin-bottom: 2rem; }
 const data = jsyaml.load(document.getElementById("vocab-data").textContent);
 const root = document.getElementById("vocab");
 
-// Step 1: Create invisible master table to compute column widths
-const masterTable = document.createElement('div');
-masterTable.style.display = 'table';
-masterTable.style.visibility = 'hidden';
-masterTable.style.position = 'absolute';
-masterTable.style.top = '-9999px';
-masterTable.style.tableLayout = 'auto';
-document.body.appendChild(masterTable);
+// Step 1: Measure max width of each column across all entries
+const measureDiv = document.createElement('div');
+measureDiv.style.position = 'absolute';
+measureDiv.style.visibility = 'hidden';
+measureDiv.style.top = '-9999px';
+document.body.appendChild(measureDiv);
 
+const colMaxWidths = [0,0,0]; // term, reading, meaning
 data.forEach(section => {
-  section.entries.forEach(entry => masterTable.appendChild(renderEntry(entry)));
+  section.entries.forEach(entry => {
+    const row = renderEntry(entry, true); // temporary measure
+    measureDiv.appendChild(row);
+    row.querySelectorAll('.cell').forEach((cell, i) => {
+      const width = cell.getBoundingClientRect().width;
+      if (width > colMaxWidths[i]) colMaxWidths[i] = width;
+    });
+    measureDiv.removeChild(row);
+  });
 });
+document.body.removeChild(measureDiv);
 
-// Get computed widths from master table
-const masterCells = masterTable.querySelectorAll('.row:first-child .cell');
-const colWidths = [];
-masterCells.forEach(cell => colWidths.push(cell.getBoundingClientRect().width));
-
-// Remove the master table
-document.body.removeChild(masterTable);
-
-// Step 2: Render visible tables using consistent widths
+// Step 2: Render visible sections using fixed column widths
 data.forEach(renderSection);
 
 function renderSection(section) {
@@ -359,21 +367,19 @@ function renderSection(section) {
 
   section.entries.forEach(entry => {
     const row = renderEntry(entry);
-    // Apply consistent column widths
     row.querySelectorAll('.cell').forEach((cell, i) => {
-      cell.style.width = colWidths[i] + "px";
+      cell.style.width = colMaxWidths[i] + "px";
     });
     table.appendChild(row);
   });
 
   body.appendChild(table);
   wrapper.appendChild(body);
-
   title.addEventListener("click", () => body.classList.toggle("collapsed"));
   root.appendChild(wrapper);
 }
 
-function renderEntry(entry) {
+function renderEntry(entry, forMeasure = false) {
   const row = document.createElement("div");
   row.className = "row";
 
