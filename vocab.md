@@ -1,5 +1,10 @@
 ### 囲碁用語
 
+## Missing
+    > トビ = jump
+    > 間 = literally space, measures distance between stones
+    > 狭（はざま）= interval, space
+
 ## Fuseki
 - 締まり, シマリ = corner enclosure
 - カカリ, 掛かり = corner approach

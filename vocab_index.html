@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>囲碁用語 Go Terminology</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js"></script>
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #111;
+      color: #eee;
+      line-height: 1.6;
+      padding: 2rem;
+    }
+
+    h1 {
+      margin-bottom: 2rem;
+    }
+
+    .vocab-section {
+      margin-bottom: 2.5rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      border-bottom: 2px solid #444;
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+      color: #adb5bd;
+    }
+
+    .entry {
+      display: grid;
+      grid-template-columns: auto auto auto 1fr;
+      gap: 0.4rem 1rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px dashed #333;
+    }
+
+    .term {
+      font-size: 3em;
+      color: #C0391B;
+    }
+
+    .reading {
+      color: #4dabf7;
+      font-size: 2em;
+    }
+
+    .meaning {
+      color: #BF86DA;
+      font-size: 2em;
+    }
+
+    .explanation {
+      color: #ffd43b;
+    }
+
+    .example,
+    .notes {
+      grid-column: 1 / -1;
+      margin-left: 0.2rem;
+      color: #b197fc;
+      font-style: italic;
+    }
+
+    .notes {
+      color: #868e96;
+      font-style: normal;
+    }
+  </style>
+</head>
+<body>
+
+<h1>囲碁用語 Go Terminology</h1>
+
+<script type="application/yaml" id="vocab-data">
+- section: 布石 Fuseki
+  entries:
+    - term: 締まり
+      reading: シマリ
+      meaning: corner enclosure
+
+    - term: 掛かり
+      reading: カカリ
+      meaning: corner approach
+
+    - term: ケイマガカリ
+      reading: 
+      meaning: one space low approach
+
+    - term: いっけんたがかり
+      reading: 
+      meaning: one space high approach
+
+    - term: おげいまがかり
+      reading: 
+      meaning: two space low approach
+
+    - term: にけんたがかり
+      reading: 
+      meaning: two space high approach
+
+    - term: 裾がかり
+      reading: すそがかり
+      meaning: skirt approach, sleeve approach
+      explanation: classic 2-5 invasion under 4-4
+
+    - term: 両ガカリ
+      reading: りょうがかり
+      meaning: double approach
+
+    - term: ハサミ
+      reading:
+      meaning: pincer 
+
+- section: Haeng-ma
+  entries:
+    - term: 一間トビ
+      reading: いっけんとび
+      meaning: one space jump
+
+    - term: 二間トビ
+      reading: にけんとび
+      meaning: two space jump
+
+    - term: ハザマトビ
+      reading:
+      meaning: diagonal jump, elephant's move
+      explanation: e.g. 6-6 from 4-4, nicknamed after chinese chess elephant
+
+    - term: ヒラキ
+      reading:
+      meaning: extension
+
+    - term: ヒラキヅメ
+      reading:
+      meaning: checking extension, i.e. serves additional purpose, like invasion threat
+
+    - term: 伸び
+      reading: ノビ
+      meaning: stretch / extend (usually towards center)
+
+    - term: 下がり
+      reading: サガリ
+      meaning: similar to 伸び, but away from center
+      explanation: 下がる（さがる）= to fall, drop, sink, hang, withdraw
+
+    - term: 曲がり
+      reading: マガリ
+      meaning: turn
+
+    - term: 割込み
+      reading: ワリコミ
+      meaning: wedge
+
+    - term: ノゾキ
+      reading: 
+      meaning: peep
+
+    - term: やぐらノゾキ
+      reading: 
+      meaning: double peep
+
+    - term: ツギ
+      reading: 
+      meaning: connect (locally)
+      explanation: use 連絡 (れんらく) as a strategic term, as in group A and B are connected
+
+    - term: 掛け継ぎ
+      reading: カケツギ
+      meaning: hanging connection
+      explanation: often via tiger mouth
+
+    - term: 堅継ぎ
+      reading: カタツギ
+      meaning: solid connection
+
+    - term: 二丁ツギ
+      reading: にちょうつぎ
+      meaning: bamboo connection
+
+- section: 形 Shapes
+  entries:
+    - term: 猫の顔
+      reading: ねこのかお
+      meaning: tiger mouth
+
+    - term: トックリ形
+      reading: とっくりがた
+      meaning: sake bottle shape
+      explanation: 一間トビ with けいま in the middle
+
+    - term: 犬の顔
+      reading: いぬのかお
+      meaning: dog face, same as トックリ形
+
+    - term: 馬の顔
+      reading: うまのかお
+      meaning: horse head
+      explanation: 一間トビ with おげいま in the middle
+
+    - term: 急所
+      reading: きゅうしょ 
+      meaning: vital point
+</script>
+
+<div id="vocab"></div>
+
+<script>
+  const data = jsyaml.load(
+    document.getElementById("vocab-data").textContent
+  )
+
+  const root = document.getElementById("vocab")
+
+  data.forEach(renderSection)
+
+  function renderSection(section) {
+    const wrapper = el("section", "vocab-section")
+
+    const title = el("h2", "section-title", section.section)
+    wrapper.appendChild(title)
+
+    section.entries.forEach(entry => {
+      wrapper.appendChild(renderEntry(entry))
+    })
+
+    root.appendChild(wrapper)
+  }
+
+  function renderEntry(entry) {
+    const div = el("div", "entry")
+
+    add(div, "term", entry.term)
+    add(div, "reading", entry.reading)
+    add(div, "meaning", entry.meaning)
+    add(div, "explanation", entry.explanation)
+    add(div, "example", entry.example)
+    add(div, "notes", entry.notes)
+
+    return div
+  }
+
+  function add(parent, cls, value) {
+    if (!value) return
+    parent.appendChild(el("span", cls, value))
+  }
+
+  function el(tag, cls, text) {
+    const e = document.createElement(tag)
+    if (cls) e.className = cls
+    if (text) e.textContent = text
+    return e
+  }
+</script>
+
+</body>
+</html>
