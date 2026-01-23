@@ -33,7 +33,6 @@
       user-select: none;
     }
 
-    /* Collapsed state */
     .section-body.collapsed {
       display: none;
     }
@@ -62,6 +61,8 @@
     }
 
     .explanation {
+      grid-column: auto;
+      font-style: italic;
       color: #ffd43b;
     }
 
@@ -94,8 +95,214 @@
 
 <h1>囲碁用語 Go Terminology</h1>
 
-<script type="application/yaml" id="vocab-data">
-- section: 布石 Fuseki
+<script type="application/yaml" id="vocab-data"> 
+- section: 石運び (いしはこび) Haeng-ma
+  entries:
+    - term: 一間トビ
+      reading: いっけんとび
+      meaning: one space jump
+
+    - term: 二間トビ
+      reading: にけんとび
+      meaning: two space jump
+
+    - term: ハザマトビ
+      reading:
+      meaning: diagonal jump, elephant's move
+      explanation: e.g. 6-6 from 4-4, nicknamed after chinese chess elephant
+
+    - term: ヒラキ
+      reading:
+      meaning: extension
+
+    - term: ヒラキヅメ
+      reading:
+      meaning: checking extension, i.e. serves additional purpose, like invasion threat
+
+    - term: 伸び
+      reading: ノビ
+      meaning: stretch / extend (usually towards center)
+
+    - term: 下がり
+      reading: サガリ
+      meaning: similar to 伸び, but away from center
+      explanation: 下がる（さがる）= to fall, drop, sink, hang, withdraw
+
+    - term: ズラずらずら
+      reading: 
+      meaning: sliding along
+      explanation: onomatopoeia
+
+    - term: 曲がり
+      reading: マガリ
+      meaning: turn
+
+    - term: 割込み
+      reading: ワリコミ
+      meaning: wedge
+
+    - term: ノゾキ
+      reading: 
+      meaning: peep
+
+    - term: やぐらノゾキ
+      reading: 
+      meaning: double peep
+
+    - term: ツギ
+      reading: 
+      meaning: direct connection
+      explanation: solid but not heavy
+
+    - term: 堅継ぎ
+      reading: カタツギ
+      meaning: solid connection
+      explanation: can be heavy
+
+    - term: 掛け継ぎ
+      reading: カケツギ
+      meaning: hanging connection
+      explanation: often via tiger mouth
+
+    - term: 二丁ツギ
+      reading: にちょうつぎ
+      meaning: bamboo connection
+
+    - term: 繋げます
+      reading: つなげます
+      meaning: connect (locally)
+      explanation: more general than ツギ (i.e. could be 掛け継ぎ)
+
+    - term: 連絡
+      reading: れんらく
+      meaning: connect (strategic)
+      explanation: group A and B are considered connected
+
+    - term: 詰める
+      reading: つめる
+      meaning: to fill
+      explanation: i.e. a liberty, a dame
+
+- section: 戦略 (せんりゃく) Strategy
+  entries:
+    - term: 威力
+      reading: いりょく
+      meaning: influence
+
+- section: 作戦 (さくせん) Tactics
+  entries:
+    - term: 攻め合い
+      reading: せめあい
+      meaning: capturing race
+
+    - term: ダメ詰まり
+      reading: ダメずまり
+      meaning: shortage of liberties
+
+    - term: 味
+      reading: あじ
+      meaning: potential
+      explanation: usually referred to as aji
+
+    - term: 味消し
+      reading: あじけし
+      meaning: removal of potential
+      explanation: usually a bad thing
+
+    - term: 狙い
+      reading: ねらい
+      meaning: threat
+      explanation: related to 味
+
+    - term: 利かし, 効かし
+      reading: きかし
+      meaning: sente move with whole board benefit
+      explanation: often treated lightly, complement to 味消し
+
+- section: 解説 (かいせつ) Commentary
+  entries:
+    - term: 対戦開始
+      reading: たいせんかいし
+      meaning: game start
+
+    - term: 複雑
+      reading: ふくざつ 
+      meaning: complicated
+
+    - term: せっかち
+      reading: 
+      meaning: impatient, hasty
+
+    - term: 悔し
+      reading: くやし
+      meaning: frustrating
+
+    - term: 我慢して
+      reading: がまんして
+      meaning: to endure
+      explanation: e.g. a situation
+
+    - term: 攻めたい
+      reading: せめたい
+      meaning: to want to attack
+
+    - term: 非常
+      reading: ひじょう
+      meaning: emergency
+      example: 非常に良くなかった。（ひじょうによくなかった。）
+
+    - term: これはつぶしかない
+      reading: 
+      meaning: there's no other option
+      explanation: aggressive expression
+
+    - term: めちゃくちゃ取り行く方針
+      reading: めちゃくちゃとりいくほうしん
+      meaning: all-out strategy (capture everything)
+
+    - term: とりあえずもうダめ詰めて
+      reading: とりあえずもうダめつめて
+      meaning: it's hopeless now
+
+    - term: 悩みますね
+      reading: なやみますね
+      meaning: that's troublesome
+      explanation: e.g. uncertain position
+
+    - term: 弱体化はしたん
+      reading: じゃくたいかはしたん
+      meaning: it's been weakened
+
+    - term: 真似しないで
+      reading: まねしないで
+      meaning: don't imitate this
+      explanation: e.g. that was a mistake, not honte, etc.
+
+- section: 形 (かたち) Shapes
+  entries:
+    - term: 猫の顔
+      reading: ねこのかお
+      meaning: tiger mouth
+
+    - term: トックリ形
+      reading: とっくりがた
+      meaning: sake bottle shape
+      explanation: 一間トビ with けいま in the middle
+
+    - term: 犬の顔
+      reading: いぬのかお
+      meaning: dog face, same as トックリ形
+
+    - term: 馬の顔
+      reading: うまのかお
+      meaning: horse head
+      explanation: 一間トビ with おげいま in the middle
+
+    - term: 急所
+      reading: きゅうしょ 
+      meaning: vital point
+
+- section: 布石 (ふせき) Opening Theory
   entries:
     - term: 締まり
       reading: シマリ
@@ -132,97 +339,7 @@
 
     - term: ハサミ
       reading:
-      meaning: pincer 
-
-- section: Haeng-ma
-  entries:
-    - term: 一間トビ
-      reading: いっけんとび
-      meaning: one space jump
-
-    - term: 二間トビ
-      reading: にけんとび
-      meaning: two space jump
-
-    - term: ハザマトビ
-      reading:
-      meaning: diagonal jump, elephant's move
-      explanation: e.g. 6-6 from 4-4, nicknamed after chinese chess elephant
-
-    - term: ヒラキ
-      reading:
-      meaning: extension
-
-    - term: ヒラキヅメ
-      reading:
-      meaning: checking extension, i.e. serves additional purpose, like invasion threat
-
-    - term: 伸び
-      reading: ノビ
-      meaning: stretch / extend (usually towards center)
-
-    - term: 下がり
-      reading: サガリ
-      meaning: similar to 伸び, but away from center
-      explanation: 下がる（さがる）= to fall, drop, sink, hang, withdraw
-
-    - term: 曲がり
-      reading: マガリ
-      meaning: turn
-
-    - term: 割込み
-      reading: ワリコミ
-      meaning: wedge
-
-    - term: ノゾキ
-      reading: 
-      meaning: peep
-
-    - term: やぐらノゾキ
-      reading: 
-      meaning: double peep
-
-    - term: ツギ
-      reading: 
-      meaning: connect (locally)
-      explanation: use 連絡 (れんらく) as a strategic term, as in group A and B are connected
-
-    - term: 掛け継ぎ
-      reading: カケツギ
-      meaning: hanging connection
-      explanation: often via tiger mouth
-
-    - term: 堅継ぎ
-      reading: カタツギ
-      meaning: solid connection
-
-    - term: 二丁ツギ
-      reading: にちょうつぎ
-      meaning: bamboo connection
-
-- section: 形 Shapes
-  entries:
-    - term: 猫の顔
-      reading: ねこのかお
-      meaning: tiger mouth
-
-    - term: トックリ形
-      reading: とっくりがた
-      meaning: sake bottle shape
-      explanation: 一間トビ with けいま in the middle
-
-    - term: 犬の顔
-      reading: いぬのかお
-      meaning: dog face, same as トックリ形
-
-    - term: 馬の顔
-      reading: うまのかお
-      meaning: horse head
-      explanation: 一間トビ with おげいま in the middle
-
-    - term: 急所
-      reading: きゅうしょ 
-      meaning: vital point
+      meaning: pincer
 </script>
 
 <div id="vocab"></div>
