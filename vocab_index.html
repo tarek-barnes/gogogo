@@ -27,8 +27,15 @@
       font-size: 2rem;
       border-bottom: 2px solid #444;
       padding-bottom: 0.4rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
       color: #adb5bd;
+      cursor: pointer; /* clickable */
+      user-select: none;
+    }
+
+    /* Collapsed state */
+    .section-body.collapsed {
+      display: none;
     }
 
     .entry {
@@ -69,6 +76,17 @@
     .notes {
       color: #868e96;
       font-style: normal;
+    }
+
+    /* visual indicator for collapsed state */
+    .section-title::after {
+      content: " ▼";
+      font-size: 0.8em;
+      color: #888;
+    }
+
+    .section-body.collapsed + .section-title::after {
+      content: " ▶";
     }
   </style>
 </head>
@@ -210,51 +228,58 @@
 <div id="vocab"></div>
 
 <script>
-  const data = jsyaml.load(
-    document.getElementById("vocab-data").textContent
-  )
+const data = jsyaml.load(
+  document.getElementById("vocab-data").textContent
+)
 
-  const root = document.getElementById("vocab")
+const root = document.getElementById("vocab")
 
-  data.forEach(renderSection)
+data.forEach(renderSection)
 
-  function renderSection(section) {
-    const wrapper = el("section", "vocab-section")
+function renderSection(section) {
+  const wrapper = el("section", "vocab-section")
 
-    const title = el("h2", "section-title", section.section)
-    wrapper.appendChild(title)
+  // section title
+  const title = el("h2", "section-title", section.section)
+  wrapper.appendChild(title)
 
-    section.entries.forEach(entry => {
-      wrapper.appendChild(renderEntry(entry))
-    })
+  // section body container (collapsible)
+  const body = el("div", "section-body collapsed")
+  section.entries.forEach(entry => {
+    body.appendChild(renderEntry(entry))
+  })
+  wrapper.appendChild(body)
 
-    root.appendChild(wrapper)
-  }
+  // Click listener toggles collapse
+  title.addEventListener("click", () => {
+    body.classList.toggle("collapsed")
+  })
 
-  function renderEntry(entry) {
-    const div = el("div", "entry")
+  root.appendChild(wrapper)
+}
 
-    add(div, "term", entry.term)
-    add(div, "reading", entry.reading)
-    add(div, "meaning", entry.meaning)
-    add(div, "explanation", entry.explanation)
-    add(div, "example", entry.example)
-    add(div, "notes", entry.notes)
+function renderEntry(entry) {
+  const div = el("div", "entry")
+  add(div, "term", entry.term)
+  add(div, "reading", entry.reading)
+  add(div, "meaning", entry.meaning)
+  add(div, "explanation", entry.explanation)
+  add(div, "example", entry.example)
+  add(div, "notes", entry.notes)
+  return div
+}
 
-    return div
-  }
+function add(parent, cls, value) {
+  if (!value) return
+  parent.appendChild(el("span", cls, value))
+}
 
-  function add(parent, cls, value) {
-    if (!value) return
-    parent.appendChild(el("span", cls, value))
-  }
-
-  function el(tag, cls, text) {
-    const e = document.createElement(tag)
-    if (cls) e.className = cls
-    if (text) e.textContent = text
-    return e
-  }
+function el(tag, cls, text) {
+  const e = document.createElement(tag)
+  if (cls) e.className = cls
+  if (text) e.textContent = text
+  return e
+}
 </script>
 
 </body>
