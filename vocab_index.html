@@ -1,5 +1,3 @@
-<!-- https://www.figma.com/color-palette-generator/?colors=C0391B-4DABF7-BF86DA-9084C8-0EA098-149F1C-2D4940 -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,13 +15,9 @@ body {
   padding: 2rem;
 }
 
-h1 {
-  margin-bottom: 2rem;
-}
+h1 { margin-bottom: 2rem; }
 
-.vocab-section {
-  margin-bottom: 2.5rem;
-}
+.vocab-section { margin-bottom: 2.5rem; }
 
 .section-title {
   font-size: 2rem;
@@ -35,72 +29,26 @@ h1 {
   user-select: none;
 }
 
-.section-body.collapsed {
-  display: none;
-}
+.section-body.collapsed { display: none; }
 
-/* Table layout */
-.table {
-  display: table;
-  width: 100%;
-  border-collapse: collapse;
-}
+/* Table layout for entries */
+.table { display: table; width: 100%; table-layout: auto; border-collapse: collapse; }
 
-.row {
-  display: table-row;
-  border-bottom: 1px dashed #9084C8;
-  white-space: nowrap;
-}
+.row { display: table-row; border-bottom: 1px dashed #9084C8; }
 
 .cell {
   display: table-cell;
   vertical-align: top;
   padding-right: 1rem;
+  white-space: nowrap;       /* keep everything on one line */
 }
 
-/* Term / reading / meaning styles */
-.term-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.term {
-  font-size: 2.5em;
-  color: #C0391B;
-}
-
-.example {
-  font-size: 1.6em;
-  color: #A37F33;
-  margin-top: 0.1em;
-}
-
-.reading {
-  font-size: 1.8em;
-  color: #4dabf7;
-}
-
-.meaning-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.meaning {
-  font-size: 1.8em;
-  color: #BF86DA;
-}
-
-.explanation {
-  font-size: 1.6em;
-  color: #0EA098;
-  margin-top: 0.1em;
-}
-
-.notes {
-  font-size: 1.6em;
-  color: #868e96;
-  margin-top: 0.1em;
-}
+.term { font-size: 2.5em; color: #C0391B; }
+.example { font-size: 1.6em; color: #A37F33; }
+.reading { font-size: 1.8em; color: #4dabf7; }
+.meaning { font-size: 1.8em; color: #BF86DA; }
+.explanation { font-size: 1.6em; color: #0EA098; }
+.notes { font-size: 1.6em; color: #868e96; }
 
 /* Collapse arrow */
 .section-title::after {
@@ -108,7 +56,6 @@ h1 {
   font-size: 0.8em;
   color: #888;
 }
-
 .section-body.collapsed + .section-title::after {
   content: " ▶";
 }
@@ -371,6 +318,28 @@ h1 {
 const data = jsyaml.load(document.getElementById("vocab-data").textContent);
 const root = document.getElementById("vocab");
 
+// Step 1: Create invisible master table to compute column widths
+const masterTable = document.createElement('div');
+masterTable.style.display = 'table';
+masterTable.style.visibility = 'hidden';
+masterTable.style.position = 'absolute';
+masterTable.style.top = '-9999px';
+masterTable.style.tableLayout = 'auto';
+document.body.appendChild(masterTable);
+
+data.forEach(section => {
+  section.entries.forEach(entry => masterTable.appendChild(renderEntry(entry)));
+});
+
+// Get computed widths from master table
+const masterCells = masterTable.querySelectorAll('.row:first-child .cell');
+const colWidths = [];
+masterCells.forEach(cell => colWidths.push(cell.getBoundingClientRect().width));
+
+// Remove the master table
+document.body.removeChild(masterTable);
+
+// Step 2: Render visible tables using consistent widths
 data.forEach(renderSection);
 
 function renderSection(section) {
@@ -388,7 +357,15 @@ function renderSection(section) {
   const table = document.createElement("div");
   table.className = "table";
 
-  section.entries.forEach(entry => table.appendChild(renderEntry(entry)));
+  section.entries.forEach(entry => {
+    const row = renderEntry(entry);
+    // Apply consistent column widths
+    row.querySelectorAll('.cell').forEach((cell, i) => {
+      cell.style.width = colWidths[i] + "px";
+    });
+    table.appendChild(row);
+  });
+
   body.appendChild(table);
   wrapper.appendChild(body);
 
@@ -400,14 +377,11 @@ function renderEntry(entry) {
   const row = document.createElement("div");
   row.className = "row";
 
-  // Term + example under it
+  // Term + example
   const termCell = document.createElement("div");
   termCell.className = "cell";
-  const termContainer = document.createElement("div");
-  termContainer.className = "term-container";
-  add(termContainer, "term", entry.term);
-  if (entry.example) add(termContainer, "example", entry.example);
-  termCell.appendChild(termContainer);
+  add(termCell, "term", entry.term);
+  if (entry.example) add(termCell, "example", entry.example);
   row.appendChild(termCell);
 
   // Reading
@@ -419,12 +393,9 @@ function renderEntry(entry) {
   // Meaning + explanation + notes
   const meaningCell = document.createElement("div");
   meaningCell.className = "cell";
-  const meaningContainer = document.createElement("div");
-  meaningContainer.className = "meaning-container";
-  add(meaningContainer, "meaning", entry.meaning);
-  if (entry.explanation) add(meaningContainer, "explanation", entry.explanation);
-  if (entry.notes) add(meaningContainer, "notes", entry.notes);
-  meaningCell.appendChild(meaningContainer);
+  add(meaningCell, "meaning", entry.meaning);
+  if (entry.explanation) add(meaningCell, "explanation", entry.explanation);
+  if (entry.notes) add(meaningCell, "notes", entry.notes);
   row.appendChild(meaningCell);
 
   return row;
