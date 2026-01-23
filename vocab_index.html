@@ -1,101 +1,124 @@
+<!-- https://www.figma.com/color-palette-generator/?colors=C0391B-4DABF7-BF86DA-9084C8-0EA098-149F1C-2D4940 -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>囲碁用語 Go Terminology</title>
+<meta charset="UTF-8">
+<title>囲碁用語 Go Terminology</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js"></script>
 
-  <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #111;
-      color: #eee;
-      line-height: 1.6;
-      padding: 2rem;
-    }
+<style>
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #111;
+  color: #eee;
+  line-height: 1.6;
+  padding: 2rem;
+}
 
-    h1 {
-      margin-bottom: 2rem;
-    }
+h1 {
+  margin-bottom: 2rem;
+}
 
-    .vocab-section {
-      margin-bottom: 2.5rem;
-    }
+.vocab-section {
+  margin-bottom: 2.5rem;
+}
 
-    .section-title {
-      font-size: 2rem;
-      border-bottom: 2px solid #444;
-      padding-bottom: 0.4rem;
-      margin-bottom: 0.5rem;
-      color: #adb5bd;
-      cursor: pointer; /* clickable */
-      user-select: none;
-    }
+.section-title {
+  font-size: 2rem;
+  border-bottom: 2px solid #444;
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
+  color: #adb5bd;
+  cursor: pointer;
+  user-select: none;
+}
 
-    .section-body.collapsed {
-      display: none;
-    }
+.section-body.collapsed {
+  display: none;
+}
 
-    .entry {
-      display: grid;
-      grid-template-columns: auto auto auto 1fr;
-      gap: 0.4rem 1rem;
-      padding: 0.6rem 0;
-      border-bottom: 1px dashed #333;
-    }
+/* Table layout */
+.table {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+}
 
-    .term {
-      font-size: 3em;
-      color: #C0391B;
-    }
+.row {
+  display: table-row;
+  border-bottom: 1px dashed #9084C8;
+  white-space: nowrap;
+}
 
-    .reading {
-      color: #4dabf7;
-      font-size: 2em;
-    }
+.cell {
+  display: table-cell;
+  vertical-align: top;
+  padding-right: 1rem;
+}
 
-    .meaning {
-      color: #BF86DA;
-      font-size: 2em;
-    }
+/* Term / reading / meaning styles */
+.term-container {
+  display: flex;
+  flex-direction: column;
+}
 
-    .explanation {
-      grid-column: auto;
-      font-style: italic;
-      color: #ffd43b;
-    }
+.term {
+  font-size: 2.5em;
+  color: #C0391B;
+}
 
-    .example,
-    .notes {
-      grid-column: 1 / -1;
-      margin-left: 0.2rem;
-      color: #b197fc;
-      font-style: italic;
-    }
+.example {
+  font-size: 1.6em;
+  color: #A37F33;
+  margin-top: 0.1em;
+}
 
-    .notes {
-      color: #868e96;
-      font-style: normal;
-    }
+.reading {
+  font-size: 1.8em;
+  color: #4dabf7;
+}
 
-    /* visual indicator for collapsed state */
-    .section-title::after {
-      content: " ▼";
-      font-size: 0.8em;
-      color: #888;
-    }
+.meaning-container {
+  display: flex;
+  flex-direction: column;
+}
 
-    .section-body.collapsed + .section-title::after {
-      content: " ▶";
-    }
-  </style>
+.meaning {
+  font-size: 1.8em;
+  color: #BF86DA;
+}
+
+.explanation {
+  font-size: 1.6em;
+  color: #0EA098;
+  margin-top: 0.1em;
+}
+
+.notes {
+  font-size: 1.6em;
+  color: #868e96;
+  margin-top: 0.1em;
+}
+
+/* Collapse arrow */
+.section-title::after {
+  content: " ▼";
+  font-size: 0.8em;
+  color: #888;
+}
+
+.section-body.collapsed + .section-title::after {
+  content: " ▶";
+}
+</style>
 </head>
 <body>
 
 <h1>囲碁用語 Go Terminology</h1>
 
-<script type="application/yaml" id="vocab-data"> 
+<script type="application/yaml" id="vocab-data">
 - section: 石運び (いしはこび) Haeng-ma
   entries:
     - term: 一間トビ
@@ -345,57 +368,74 @@
 <div id="vocab"></div>
 
 <script>
-const data = jsyaml.load(
-  document.getElementById("vocab-data").textContent
-)
+const data = jsyaml.load(document.getElementById("vocab-data").textContent);
+const root = document.getElementById("vocab");
 
-const root = document.getElementById("vocab")
-
-data.forEach(renderSection)
+data.forEach(renderSection);
 
 function renderSection(section) {
-  const wrapper = el("section", "vocab-section")
+  const wrapper = document.createElement("section");
+  wrapper.className = "vocab-section";
 
-  // section title
-  const title = el("h2", "section-title", section.section)
-  wrapper.appendChild(title)
+  const title = document.createElement("h2");
+  title.className = "section-title";
+  title.textContent = section.section;
+  wrapper.appendChild(title);
 
-  // section body container (collapsible)
-  const body = el("div", "section-body collapsed")
-  section.entries.forEach(entry => {
-    body.appendChild(renderEntry(entry))
-  })
-  wrapper.appendChild(body)
+  const body = document.createElement("div");
+  body.className = "section-body collapsed";
 
-  // Click listener toggles collapse
-  title.addEventListener("click", () => {
-    body.classList.toggle("collapsed")
-  })
+  const table = document.createElement("div");
+  table.className = "table";
 
-  root.appendChild(wrapper)
+  section.entries.forEach(entry => table.appendChild(renderEntry(entry)));
+  body.appendChild(table);
+  wrapper.appendChild(body);
+
+  title.addEventListener("click", () => body.classList.toggle("collapsed"));
+  root.appendChild(wrapper);
 }
 
 function renderEntry(entry) {
-  const div = el("div", "entry")
-  add(div, "term", entry.term)
-  add(div, "reading", entry.reading)
-  add(div, "meaning", entry.meaning)
-  add(div, "explanation", entry.explanation)
-  add(div, "example", entry.example)
-  add(div, "notes", entry.notes)
-  return div
+  const row = document.createElement("div");
+  row.className = "row";
+
+  // Term + example under it
+  const termCell = document.createElement("div");
+  termCell.className = "cell";
+  const termContainer = document.createElement("div");
+  termContainer.className = "term-container";
+  add(termContainer, "term", entry.term);
+  if (entry.example) add(termContainer, "example", entry.example);
+  termCell.appendChild(termContainer);
+  row.appendChild(termCell);
+
+  // Reading
+  const readingCell = document.createElement("div");
+  readingCell.className = "cell";
+  add(readingCell, "reading", entry.reading);
+  row.appendChild(readingCell);
+
+  // Meaning + explanation + notes
+  const meaningCell = document.createElement("div");
+  meaningCell.className = "cell";
+  const meaningContainer = document.createElement("div");
+  meaningContainer.className = "meaning-container";
+  add(meaningContainer, "meaning", entry.meaning);
+  if (entry.explanation) add(meaningContainer, "explanation", entry.explanation);
+  if (entry.notes) add(meaningContainer, "notes", entry.notes);
+  meaningCell.appendChild(meaningContainer);
+  row.appendChild(meaningCell);
+
+  return row;
 }
 
 function add(parent, cls, value) {
-  if (!value) return
-  parent.appendChild(el("span", cls, value))
-}
-
-function el(tag, cls, text) {
-  const e = document.createElement(tag)
-  if (cls) e.className = cls
-  if (text) e.textContent = text
-  return e
+  if (!value) return;
+  const el = document.createElement("div");
+  el.className = cls;
+  el.textContent = value;
+  parent.appendChild(el);
 }
 </script>
 
