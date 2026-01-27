@@ -1,5 +1,3 @@
-<!-- https://www.figma.com/color-palette-generator/?colors=C0391B-4DABF7-BF86DA-9084C8-0EA098-149F1C-2D4940 -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,22 +15,52 @@ body {
   padding: 2rem;
 }
 
-h1 {
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   margin-bottom: 2rem;
 }
 
+h1 {
+  margin: 0;
+}
+
+.search input {
+  background: #222;
+  color: #eee;
+  border: 1px solid #444;
+  padding: 0.4rem 0.6rem;
+}
+
+.search button {
+  margin-left: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  background: #444;
+  color: #eee;
+  border: 1px solid #555;
+  cursor: pointer;
+}
+
 .vocab-section {
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .section-title {
-  font-size: 2rem;
-  border-bottom: 2px solid #444;
-  padding-bottom: 0.4rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.8rem;
   color: #adb5bd;
   cursor: pointer;
   user-select: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem; /* space between text and arrow */
+  margin: 0.5rem 0;
+  border: none;
+}
+
+.section-arrow {
+  font-size: 0.8em;
+  color: #888;
 }
 
 .section-body.collapsed {
@@ -56,58 +84,54 @@ h1 {
   display: table-cell;
   vertical-align: top;
   padding-right: 1rem;
-  white-space: nowrap; /* limit entries to one line */
+  white-space: nowrap;
 }
 
 /* term & example in same column */
 .term {
-  font-size: 2.5em;
+  font-size: 2em;
   color: #C0391B;
 }
 .example {
-  font-size: 1.6em;
+  font-size: 1.4em;
   color: #A37F33;
   margin-top: 0.1em;
 }
 
 .reading {
-  font-size: 1.8em;
+  font-size: 1.6em;
   color: #4dabf7;
   text-align: center;
 }
 
 /* meaning & explanation in same column */
 .meaning {
-  font-size: 1.8em;
+  font-size: 1.6em;
   color: #BF86DA;
 }
 .explanation {
-  font-size: 1.6em;
+  font-size: 1.4em;
   color: #0EA098;
   margin-top: 0.1em;
 }
 .notes {
-  font-size: 1.6em;
+  font-size: 1.4em;
   color: #868e96;
   margin-top: 0.1em;
 }
 
-.section-title::after {
-  content: " ▼";
-  font-size: 0.8em;
-  color: #888;
-}
-.section-body.collapsed + .section-title::after {
-  content: " ▶";
-}
-
-/* Optional horizontal scroll if content too wide */
 #vocab { overflow-x: auto; }
 </style>
 </head>
 <body>
 
-<h1>囲碁用語 Go Terminology</h1>
+<div class="header">
+  <h1>囲碁用語 Go Terminology</h1>
+  <div class="search">
+    <input id="searchInput" type="text" placeholder="Search…" />
+    <button id="searchBtn">Search</button>
+  </div>
+</div>
 
 <script type="application/yaml" id="vocab-data">
 - section: 石運び (いしはこび) Haeng-ma
@@ -814,18 +838,22 @@ h1 {
 <script>
 const data = jsyaml.load(document.getElementById("vocab-data").textContent);
 const root = document.getElementById("vocab");
+const searchInput = document.getElementById("searchInput");
+const searchBtn = document.getElementById("searchBtn");
 
-// Step 1: Measure max width of each column across all entries
+let currentQuery = "";
+
+// Step 1: measure max widths
 const measureDiv = document.createElement('div');
 measureDiv.style.position = 'absolute';
 measureDiv.style.visibility = 'hidden';
 measureDiv.style.top = '-9999px';
 document.body.appendChild(measureDiv);
 
-const colMaxWidths = [0,0,0]; // term, reading, meaning
+const colMaxWidths = [0,0,0];
 data.forEach(section => {
   section.entries.forEach(entry => {
-    const row = renderEntry(entry, true); // temporary measure
+    const row = renderEntry(entry, true);
     measureDiv.appendChild(row);
     row.querySelectorAll('.cell').forEach((cell, i) => {
       const width = cell.getBoundingClientRect().width;
@@ -836,25 +864,47 @@ data.forEach(section => {
 });
 document.body.removeChild(measureDiv);
 
-// Step 2: Render visible sections using fixed column widths
-data.forEach(renderSection);
+function renderAll() {
+  root.innerHTML = "";
+  data.forEach(section => {
+    const filteredEntries = section.entries.filter(entry => {
+      const term = entry.term?.toLowerCase() || "";
+      const reading = entry.reading?.toLowerCase() || "";
+      const meaning = entry.meaning?.toLowerCase() || "";
+      return currentQuery === "" || term.includes(currentQuery) || reading.includes(currentQuery) || meaning.includes(currentQuery);
+    });
+    if (filteredEntries.length > 0) {
+      renderSection(section, filteredEntries);
+    }
+  });
+}
 
-function renderSection(section) {
+function renderSection(section, entries) {
   const wrapper = document.createElement("section");
   wrapper.className = "vocab-section";
 
   const title = document.createElement("h2");
   title.className = "section-title";
-  title.textContent = section.section;
+
+  const titleText = document.createElement("span");
+  titleText.textContent = section.section;
+
+  const arrow = document.createElement("span");
+  arrow.className = "section-arrow";
+  arrow.textContent = currentQuery ? "▼" : "▶"; // auto-open if searching
+
+  title.appendChild(titleText);
+  title.appendChild(arrow);
   wrapper.appendChild(title);
 
   const body = document.createElement("div");
-  body.className = "section-body collapsed";
+  body.className = "section-body";
+  if (!currentQuery) body.classList.add("collapsed");
 
   const table = document.createElement("div");
   table.className = "table";
 
-  section.entries.forEach(entry => {
+  entries.forEach(entry => {
     const row = renderEntry(entry);
     row.querySelectorAll('.cell').forEach((cell, i) => {
       cell.style.width = colMaxWidths[i] + "px";
@@ -864,7 +914,12 @@ function renderSection(section) {
 
   body.appendChild(table);
   wrapper.appendChild(body);
-  title.addEventListener("click", () => body.classList.toggle("collapsed"));
+
+  title.addEventListener("click", () => {
+    body.classList.toggle("collapsed");
+    arrow.textContent = body.classList.contains("collapsed") ? "▶" : "▼";
+  });
+
   root.appendChild(wrapper);
 }
 
@@ -872,20 +927,17 @@ function renderEntry(entry, forMeasure = false) {
   const row = document.createElement("div");
   row.className = "row";
 
-  // Term + example
   const termCell = document.createElement("div");
   termCell.className = "cell";
   add(termCell, "term", entry.term);
   if (entry.example) add(termCell, "example", entry.example);
   row.appendChild(termCell);
 
-  // Reading
   const readingCell = document.createElement("div");
   readingCell.className = "cell";
   add(readingCell, "reading", entry.reading);
   row.appendChild(readingCell);
 
-  // Meaning + explanation + notes
   const meaningCell = document.createElement("div");
   meaningCell.className = "cell";
   add(meaningCell, "meaning", entry.meaning);
@@ -903,6 +955,19 @@ function add(parent, cls, value) {
   el.textContent = value;
   parent.appendChild(el);
 }
+
+function performSearch() {
+  currentQuery = searchInput.value.trim().toLowerCase();
+  renderAll();
+}
+
+searchBtn.addEventListener("click", performSearch);
+searchInput.addEventListener("keydown", e => {
+  if (e.key === "Enter") performSearch();
+});
+
+// Initial render
+renderAll();
 </script>
 
 </body>
