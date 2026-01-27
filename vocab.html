@@ -1,3 +1,5 @@
+<!-- https://www.figma.com/color-palette-generator/?colors=C0391B-4DABF7-BF86DA-9084C8-0EA098-149F1C-2D4940 -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,9 +17,13 @@ body {
   padding: 2rem;
 }
 
-h1 { margin-bottom: 2rem; }
+h1 {
+  margin-bottom: 2rem;
+}
 
-.vocab-section { margin-bottom: 2.5rem; }
+.vocab-section {
+  margin-bottom: 2.5rem;
+}
 
 .section-title {
   font-size: 2rem;
@@ -29,33 +35,63 @@ h1 { margin-bottom: 2rem; }
   user-select: none;
 }
 
-.section-body.collapsed { display: none; }
+.section-body.collapsed {
+  display: none;
+}
 
 /* Table layout */
-.table { display: table; border-collapse: collapse; width: max-content; min-width: 100%; }
+.table {
+  display: table;
+  border-collapse: collapse;
+  width: max-content;
+  min-width: 100%;
+}
 
-.row { display: table-row; border-bottom: 1px dashed #9084C8; }
+.row {
+  display: table-row;
+  border-bottom: 1px dashed #9084C8;
+}
 
 .cell {
   display: table-cell;
   vertical-align: top;
   padding-right: 1rem;
-  white-space: nowrap; /* keep everything on one line */
+  white-space: nowrap; /* limit entries to one line */
 }
 
-/* Term + example */
-.term { font-size: 2.5em; color: #C0391B; }
-.example { font-size: 1.6em; color: #A37F33; margin-top: 0.1em; }
+/* term & example in same column */
+.term {
+  font-size: 2.5em;
+  color: #C0391B;
+}
+.example {
+  font-size: 1.6em;
+  color: #A37F33;
+  margin-top: 0.1em;
+}
 
-/* Reading */
-.reading { font-size: 1.8em; color: #4dabf7; text-align: center; }
+.reading {
+  font-size: 1.8em;
+  color: #4dabf7;
+  text-align: center;
+}
 
-/* Meaning + explanation + notes */
-.meaning { font-size: 1.8em; color: #BF86DA; }
-.explanation { font-size: 1.6em; color: #0EA098; margin-top: 0.1em; }
-.notes { font-size: 1.6em; color: #868e96; margin-top: 0.1em; }
+/* meaning & explanation in same column */
+.meaning {
+  font-size: 1.8em;
+  color: #BF86DA;
+}
+.explanation {
+  font-size: 1.6em;
+  color: #0EA098;
+  margin-top: 0.1em;
+}
+.notes {
+  font-size: 1.6em;
+  color: #868e96;
+  margin-top: 0.1em;
+}
 
-/* Collapse arrow */
 .section-title::after {
   content: " ▼";
   font-size: 0.8em;
@@ -175,7 +211,7 @@ h1 { margin-bottom: 2rem; }
     - term: 繋げます
       reading: つなげます
       meaning: connect (locally)
-      explanation: more general than ツギ (i.e. could be 掛け継ぎ)
+      explanation: general term, つなぎ is the noun
 
     - term: 連絡
       reading: れんらく
@@ -200,6 +236,10 @@ h1 { margin-bottom: 2rem; }
     - term: 見合い
       reading: みあい
       meaning: two strategically equivalent points
+
+    - term: 地
+      reading: チ
+      meaning: territory
 
     - term: 威力
       reading: いりょく
@@ -284,6 +324,10 @@ h1 { margin-bottom: 2rem; }
       meaning: to sacrifice
       explanation: 捨て石 (すていし) = sacrificed stones
 
+    - term: 交換
+      reading: こうかん
+      meaning: exchange
+
     - term: 凝り形
       reading: コリガタチ
       meaning: overconcentrated
@@ -349,6 +393,11 @@ h1 { margin-bottom: 2rem; }
       reading: ワリコミ
       meaning: wedge
 
+    - term: 当て込み
+      reading: アテコミ
+      meaning: angle wedge
+      explanation: lit. "hit inside", ツケ on コスミ cutting point
+
     - term: ハサミツケ
       reading: 
       meaning: clamp
@@ -360,6 +409,7 @@ h1 { margin-bottom: 2rem; }
     - term: ツキアタリ
       reading: 
       meaning: bump
+      explanation: ぶつかり / ブツカリ ok too (informal), from ぶつかる = to bump, collide
 
     - term: 引き
       reading: ヒキ
@@ -373,13 +423,18 @@ h1 { margin-bottom: 2rem; }
       reading: ボウシ
       meaning: cap
 
-    - term: 戻れ
-      reading: もたれ
+    - term: もたれ
+      reading:
       meaning: leaning technique
+      explanation: root verb 持たれる = to lean on
 
     - term: ツケ
       reading: 
       meaning: contact play
+
+    - term: 当て付け
+      reading: アテツケ
+      meaning: lit. "hit and attach", type of ツケ to gain shape
 
     - term: ノゾキ
       reading: 
@@ -468,6 +523,10 @@ h1 { margin-bottom: 2rem; }
       reading: たがいせん
       meaning: even game
 
+    - term: 上辺
+      reading: じょうへん
+      meaning: upper side (of the board)
+
     - term: 目算
       reading: もくさん
       meaning: estimating score midgame
@@ -479,6 +538,10 @@ h1 { margin-bottom: 2rem; }
     - term: 複雑
       reading: ふくざつ 
       meaning: complicated
+
+    - term: 戸惑いました
+      reading: とまどいました
+      meaning: I was confused
 
     - term: じっくり
       reading:
@@ -496,6 +559,11 @@ h1 { margin-bottom: 2rem; }
       reading: がまんして
       meaning: to endure
       explanation: e.g. a situation
+
+    - term: 守っていない
+      reading: まもっていない
+      meaning: didn't defend
+      explanation: まもっ内 (まもっない) is a colloquial contraction
 
     - term: 反発
       reading: はんぱつ
@@ -554,6 +622,10 @@ h1 { margin-bottom: 2rem; }
       meaning: timesuji
       explanation: sente move to buy time for reading
 
+    - term: 悩ましいタイミングで
+      reading: なやましいタイミングで
+      meaning: troublesome timing
+
     - term: ハマリ
       reading: 
       meaning: to get trapped
@@ -590,6 +662,10 @@ h1 { margin-bottom: 2rem; }
     - term: 弱体化はしたん
       reading: じゃくたいかはしたん
       meaning: it's been weakened
+
+    - term: 全然狙われますね
+      reading: ぜんぜん ねらわれますね
+      meaning: this group is vulnerable / being targeted
 
     - term: 真似しないで
       reading: まねしないで
