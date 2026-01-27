@@ -871,7 +871,9 @@ function renderAll() {
       const term = entry.term?.toLowerCase() || "";
       const reading = entry.reading?.toLowerCase() || "";
       const meaning = entry.meaning?.toLowerCase() || "";
-      return currentQuery === "" || term.includes(currentQuery) || reading.includes(currentQuery) || meaning.includes(currentQuery);
+      const example = entry.example?.toLowerCase() || "";
+      const explanation = entry.explanation?.toLowerCase() || "";
+      return currentQuery === "" || term.includes(currentQuery) || reading.includes(currentQuery) || meaning.includes(currentQuery) || example.includes(currentQuery) || explanation.includes(currentQuery);
     });
     if (filteredEntries.length > 0) {
       renderSection(section, filteredEntries);
