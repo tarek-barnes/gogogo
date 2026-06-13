@@ -135,7 +135,17 @@ h1 {
 
 <script type="application/yaml" id="vocab-data">
 - section: 石運び (いしはこび) Haeng-ma
+  # static -> dynamic -> situational
+    # static - a common "everyday" movement
+    # dynamic - more tempo, "i'm starting something"
+    # situational - more defensive, "i'm minimizing damage or being reactive"
+
   entries:
+    # ───────────────────────── static ─────────────────────────
+    - term: コスミ
+      reading: 
+      meaning: diagonal move
+
     - term: 一間トビ
       reading: いっけんとび
       meaning: one space jump
@@ -149,63 +159,14 @@ h1 {
       meaning: diagonal jump, elephant's move
       explanation: e.g. 6-6 from 4-4, named after chinese chess elephant
 
-    - term: ヒラキ
-      reading:
-      meaning: extension
-
-    - term: ヒラキヅメ
-      reading:
-      meaning: checking extension
-      explanation: dual purpose, e.g. invasion threat
-
-    - term: コスミ
-      reading: 
-      meaning: diagonal move
-
-    - term: 跳ね
-      reading: ハネ
-      meaning: to reach around
-      explanation: referred to as hane in english
-
-    - term: 二段バネ
-      reading: にだんばね
-      meaning: double hane
-
-    - term: ハネ返し
-      reading: はねかえし
-      meaning: counter-hane
-
-    - term: 伸び
-      reading: ノビ
-      meaning: stretch / extend
-      explanation: usually towards center
-
-    - term: 下がり
-      reading: サガリ
-      meaning: similar to 伸び, but away from center
-      explanation: 下がる（さがる）= to fall, drop, sink
-
-    - term: すべり
-      reading:
-      meaning: to slide under an opponent's stone
-
-    - term: ズラずらずら
-      reading: 
-      meaning: sliding along
-      explanation: onomatopoeia
-
-    - term: 二線のハイ
-      reading: にせんのハイ
-      meaning: crawling on the second line
-
-    - term: 曲がり
-      reading: マガリ
-      meaning: turn
-
     - term: ツギ
       reading: 
       meaning: direct connection
       explanation: solid but not heavy
+
+    - term: 鉄柱
+      reading: てっちゅう
+      meaning: iron pillar
 
     - term: 堅継ぎ
       reading: カタツギ
@@ -227,11 +188,6 @@ h1 {
       meaning: bamboo connection
       explanation: can also say タケフ
 
-    - term: 渡り
-      reading: ワタリ
-      meaning: connection underneath opponent's stone
-      explanation: usually on first or second line
-
     - term: 繋げます
       reading: つなげます
       meaning: connect (locally)
@@ -242,24 +198,101 @@ h1 {
       meaning: connect (strategic)
       explanation: group A and B are considered connected
 
+
+    # ───────────────────────── dynamic ─────────────────────────
+    - term: 押し
+      reading: オシ
+      meaning: push
+
+    - term: ツキダシ
+      reading: 
+      meaning: pushing through
+      explanation: デ also possible
+    
+    - term: 跳ね
+      reading: ハネ
+      meaning: to reach around
+      explanation: referred to as hane in english
+
+    - term: 二段バネ
+      reading: にだんばね
+      meaning: double hane
+
+    - term: ハネ返し
+      reading: はねかえし
+      meaning: counter-hane
+
+    - term: 曲がり
+      reading: マガリ
+      meaning: turn
+
+    - term: 伸び
+      reading: ノビ
+      meaning: stretch / extend
+      explanation: usually towards center
+
+    - term: 下がり
+      reading: サガリ
+      meaning: similar to 伸び, but away from center
+      explanation: 下がる（さがる）= to fall, drop, sink
+
+    - term: ヒラキ
+      reading:
+      meaning: extension
+
+    - term: ヒラキヅメ
+      reading:
+      meaning: checking extension
+      explanation: dual purpose, e.g. invasion threat
+
+
+    # ───────────────────────── situational ─────────────────────────
+    - term: すべり
+      reading:
+      meaning: to slide under an opponent's stone
+
+    - term: ズラずらずら
+      reading: 
+      meaning: sliding along
+      explanation: onomatopoeia
+
+    - term: 這い
+      reading: はい
+      meaning: to crawl
+      explanation: 這い這い = crawling of a baby
+
+    - term: 二線のハイ
+      reading: にせんのハイ
+      meaning: crawling on the second line
+
+    - term: 渡り
+      reading: ワタリ
+      meaning: connection underneath opponent's stone
+      explanation: usually on first or second line
+
     - term: 詰める
       reading: つめる
       meaning: to fill
       explanation: i.e. a liberty, a dame
 
+
 - section: 戦略 (せんりゃく) Strategy
+  # local -> global -> abstract
+
   entries:
+    # ───────────────────────── local ─────────────────────────
+    - term: 先手
+      reading: せんて
+      meaning: initiative, tempo
+
+    - term: 後手
+      reading: ごて
+      meaning: loss of initiative, oppposite of 先手
+
     - term: 手抜き
       reading: てぬき
       meaning: not responding locally
-
-    - term: 方向
-      reading: ほうこう
-      meaning: direction of play
-
-    - term: 見合い
-      reading: みあい
-      meaning: two strategically equivalent points
+      explanation: if your move is 後手, your opponent can 手抜き
 
     - term: 地
       reading: チ
@@ -277,29 +310,36 @@ h1 {
       reading: かべ
       meaning: wall
 
-    - term: 模様
-      reading: もよ
-      meaning: framework
+    - term: 見合い
+      reading: みあい
+      meaning: two strategically equivalent points
+
+    # ───────────────────────── global ─────────────────────────
+    - term: 方向
+      reading: ほうこう
+      meaning: direction of play
 
     - term: 消し
       reading: けし
       meaning: reduction
 
-    - term: 先手
-      reading: せんて
-      meaning: initiative, tempo
+    - term: 封鎖する
+      reading: ふうさする
+      meaning: to seal in, enclose
 
-    - term: 後手
-      reading: ごて
-      meaning: loss of initiative, oppposite of 先手
+    # ───────────────────────── abstract ─────────────────────────
+    - term: 花見コウ
+      reading: ハナミコウ
+      meaning: flower ko
+      explanation: unilaterally favorable ko fight
+
+    - term: 模様
+      reading: もよ
+      meaning: framework
 
     - term: 柔軟性
       reading: じゅうなんせい
       meaning: flexibility
-
-    - term: 封鎖する
-      reading: ふうさする
-      meaning: seal in, enclose
 
     - term: 軽い
       reading: かるい
@@ -310,29 +350,24 @@ h1 {
       reading: サバキ
       meaning: making light, flexible shape
 
-    - term: 花見コウ
-      reading: ハナミコウ
-      meaning: flower ko
-      explanation: unilaterally favorable ko fight
+    - term: 重い
+      reading: おもい
+      meaning: heavy shape
+      explanation: opposite of 軽い
 
-    - term: 弱い石
-      reading: よわいいし
-      meaning: weak group
-
-    - term: 薄い
-      reading: うすい
-      meaning: thin shape
-      explanation: opposite of 厚い
+    - term: 凝り形
+      reading: コリガタチ
+      meaning: overconcentrated
 
     - term: 厚い
       reading: あつい
       meaning: thick shape
       explanation: opposite of 薄い
 
-    - term: 重い
-      reading: おもい
-      meaning: heavy shape
-      explanation: opposite of 軽い
+    - term: 薄い
+      reading: うすい
+      meaning: thin shape
+      explanation: opposite of 厚い
 
     - term: 愚形
       reading: ぐけい
@@ -343,6 +378,10 @@ h1 {
       meaning: bad-looking shape that's good
       explanation: e.g. 空き三角 in certain contexts
 
+    - term: 弱い石
+      reading: よわいいし
+      meaning: weak group
+
     - term: 捨てる
       reading: すてる
       meaning: to sacrifice
@@ -352,41 +391,23 @@ h1 {
       reading: こうかん
       meaning: exchange
 
-    - term: 凝り形
-      reading: コリガタチ
-      meaning: overconcentrated
-
-    - term: ウソ手
-      reading: ウソテ
-      meaning: improper move, may look like a good move
-      explanation: opposite of 本手, similar to ハメ手 but simply a mistake
-
-    - term: 本手
-      reading: ほんて
-      meaning: proper move
-
-    - term: 要点
-      reading: よてん
-      meaning: key point
-      explanation: similar to 急所, but globally relevant
-
-    - term: 手割り
-      reading: てわり
-      meaning: form of analysis to measure stone efficiency
 
 - section: 作戦 (さくせん) Tactics
+  # simple -> complex
+
   entries:
+    # ───────────────────────── simple ─────────────────────────
     - term: シチョウ
       reading: 
       meaning: ladder
 
-    - term: 下駄
-      reading: ゲタ
-      meaning: net
-
     - term: シチョウ当り
       reading: シチョウアタリ
       meaning: ladder breaker
+
+    - term: 下駄
+      reading: ゲタ
+      meaning: net
 
     - term: 両アタリ
       reading: りょうアタリ
@@ -399,15 +420,6 @@ h1 {
     - term: 切り違え
       reading: キリチガイ
       meaning: cross-cut
-
-    - term: 押し
-      reading: オシ
-      meaning: push
-
-    - term: ツキダシ
-      reading: 
-      meaning: pushing through
-      explanation: often followed by cut
 
     - term: 出切り
       reading: でぎり
@@ -435,10 +447,6 @@ h1 {
       meaning: bump
       explanation: ぶつかり / ブツカリ ok too (informal), from ぶつかる = to bump, collide
 
-    - term: 引き
-      reading: ヒキ
-      meaning: pull back, draw back
-
     - term: カタツキ
       reading: 
       meaning: shoulder hit
@@ -446,11 +454,6 @@ h1 {
     - term: 帽子
       reading: ボウシ
       meaning: cap
-
-    - term: もたれ
-      reading:
-      meaning: leaning technique
-      explanation: root verb 持たれる = to lean on
 
     - term: ツケ
       reading: 
@@ -472,23 +475,16 @@ h1 {
       reading: よすみ
       meaning: probe
 
-    - term: 手筋
-      reading: てすじ
-      meaning: clever play
+    # ───────────────────────── complex ─────────────────────────
+    - term: もたれ
+      reading:
+      meaning: leaning technique
+      explanation: root verb 持たれる = to lean on
 
-    - term: 俗手
-      reading: ぞくしゅ
-      meaning: vulgar play
-      explanation: subset of 俗筋
-
-    - term: 俗筋
-      reading: ぞくすじ
-      meaning: crude pattern
-      explanation: tactical pattern which looks clever but costs too much
-
-    - term: 異筋
-      reading: いすじ
-      meaning: false tesuji
+    - term: 釣り上げる
+      reading: つりあげる
+      meaning: to lure an opponent's group
+      explanation: lit. to reel a fish
 
     - term: 鼻ヅケ
       reading: ハナヅケ
@@ -500,89 +496,30 @@ h1 {
       meaning: belly attachment
       explanation: like 鼻ヅケ, but playing ツケ on the side of two stones
 
-    - term: 鉄柱
-      reading: てっちゅう
-      meaning: iron pillar
-
     - term: シボリ
       reading: 
       meaning: squeeze tesuji
-
-    - term: 攻め取り
-      reading: セメドリ
-      meaning: player's forced to capture アゲハマ when opponent fills ダメ
 
     - term: 追い落とし
       reading: オイオトシ
       meaning: serial atari, connect and die due to ダメ詰まり
       explanation: "colloquial alternatives: トントン & バタバタ"
 
-    - term: 味
-      reading: あじ
-      meaning: potential
-      explanation: referred to as aji in english
-
-    - term: 味消し
-      reading: あじけし
-      meaning: removal of potential
-      explanation: usually a bad thing
-
-    - term: 狙い
-      reading: ねらい
-      meaning: threat
-      explanation: related to 味
-
-    - term: 利かし, 効かし
-      reading: きかし
-      meaning: sente move with whole board benefit
-      explanation: often treated lightly, complement to 味消し
-
 - section: 解説 (かいせつ) Commentary
+  # descriptive -> evaluative -> procedural
+  # descriptive - what a move does, function or effect only
+  # evaluative - how we feel about a move
+  # procedural - rules, bookkeeping details
+
   entries:
-    - term: 対戦開始
-      reading: たいせんかいし
-      meaning: game start
-
-    - term: 互先
-      reading: たがいせん
-      meaning: even game
-
+    # ───────────────────────── descriptive ─────────────────────────
     - term: 上辺
       reading: じょうへん
       meaning: upper side (of the board)
 
-    - term: 目算
-      reading: もくさん
-      meaning: estimating score midgame
-
-    - term: 投了
-      reading: とうりょう
-      meaning: to resign
-
-    - term: 複雑
-      reading: ふくざつ 
-      meaning: complicated
-
-    - term: 戸惑いました
-      reading: とまどいました
-      meaning: I was confused
-
     - term: じっくり
       reading:
       meaning: patient, deliberate play
-
-    - term: せっかち
-      reading:
-      meaning: impatient, hasty
-
-    - term: 悔し
-      reading: くやし
-      meaning: frustrating
-
-    - term: 我慢して
-      reading: がまんして
-      meaning: to endure
-      explanation: e.g. a situation
 
     - term: 守っていない
       reading: まもっていない
@@ -607,18 +544,20 @@ h1 {
       meaning: new move
       explanation: usually in joseki
 
-    - term: 妙手
-      reading: みょうしゅ
-      meaning: excellent move
-
-    - term: この一手
-      reading: このいって
-      meaning: only move
+    - term: 今の主流
+      reading: いまのしゅりゅう
+      meaning: current trend, fashionable joseki, etc.
+      explanation: the old joseki was X, the 今の主流 is this variation
 
     - term: 温い
       reading: ぬるい
-      meaning: slack move, tepid
-      explanation: strong criticism
+      meaning: slack move - not sharp
+      explanation: misses an obvious punishment
+
+    - term: 緩着
+      reading: かんちゃく
+      meaning: slack move - bad timing, inefficient
+      explanation: misses an obvious punishment
 
     - term: 失着
       reading: しっちゃく
@@ -637,6 +576,10 @@ h1 {
       reading: モチコミ
       meaning: tactical failure with no compensation
 
+    - term: 響く
+      reading: ひびく
+      meaning: to have lasting repercussions; come back to hurt later
+
     - term: 敗着
       reading: はいちゃく
       meaning: losing move
@@ -645,6 +588,43 @@ h1 {
       reading: じかんつなぎ
       meaning: timesuji
       explanation: sente move to buy time for reading
+
+    # ───────────────────────── evaluative ─────────────────────────
+    - term: 我慢して
+      reading: がまんして
+      meaning: to endure
+      explanation: e.g. a situation
+
+    - term: 妙手
+      reading: みょうしゅ
+      meaning: excellent move
+
+    - term: この一手
+      reading: このいって
+      meaning: only move
+
+    - term: 戸惑いました
+      reading: とまどいました
+      meaning: I was confused
+
+    - term: 複雑
+      reading: ふくざつ 
+      meaning: complicated
+
+    - term: せっかち
+      reading:
+      meaning: impatient, hasty
+
+    - term: 悔し
+      reading: くやし
+      meaning: frustrating
+
+    - term: いやいや、そんな悟ってる場合でもない?
+      reading: いやいや、そんなさとってるばあいでもない?
+      meaning: no no, it's not time to accept defeat
+      explanation: 悟ってる implies mental resignation, lit. enlightened
+
+
 
     - term: 悩ましいタイミングで
       reading: なやましいタイミングで
@@ -696,7 +676,90 @@ h1 {
       meaning: don't imitate this
       explanation: e.g. that was a mistake, not honte, etc.
 
+    - term: 手詰まり
+      reading: てずまり
+      meaning: standstill, being stuck, no good continuation locally
+
+    - term: ウソ手
+      reading: ウソテ
+      meaning: improper move, may look like a good move
+      explanation: opposite of 本手, similar to ハメ手 but simply a mistake
+
+    - term: 本手
+      reading: ほんて
+      meaning: proper move
+
+    - term: 要点
+      reading: よてん
+      meaning: key point
+      explanation: similar to 急所, but globally relevant
+
+    - term: 手割り
+      reading: てわり
+      meaning: form of analysis to measure stone efficiency
+
+    - term: 手筋
+      reading: てすじ
+      meaning: clever play
+
+    - term: 俗手
+      reading: ぞくしゅ
+      meaning: vulgar play
+      explanation: subset of 俗筋
+
+    - term: 俗筋
+      reading: ぞくすじ
+      meaning: crude pattern
+      explanation: tactical pattern which looks clever but costs too much
+
+    - term: 異筋
+      reading: いすじ
+      meaning: false tesuji
+
+    - term: 攻め取り
+      reading: セメドリ
+      meaning: situation where player must capture アゲハマ bc opponent fills ダメ
+
+    - term: 味
+      reading: あじ
+      meaning: potential
+      explanation: referred to as aji in english
+
+    - term: 味消し
+      reading: あじけし
+      meaning: removal of potential
+      explanation: usually a bad thing
+
+    - term: 狙い
+      reading: ねらい
+      meaning: threat
+      explanation: related to 味
+
+    - term: 利かし, 効かし
+      reading: きかし
+      meaning: sente move with whole board benefit
+      explanation: often treated lightly, complement to 味消し
+
+    # ───────────────────────── procedural ─────────────────────────
+    - term: 対戦開始
+      reading: たいせんかいし
+      meaning: game start
+
+    - term: 互先
+      reading: たがいせん
+      meaning: even game
+
+    - term: 目算
+      reading: もくさん
+      meaning: estimating score midgame
+
+    - term: 投了
+      reading: とうりょう
+      meaning: to resign
+
 - section: 形 (かたち) Shapes
+  # basic -> efficiency -> subtle
+
   entries:
     - term: 猫の顔
       reading: ねこのかお
@@ -734,6 +797,8 @@ h1 {
       explanation: part of a group to be sacrificed so the head can live
 
 - section: 布石 (ふせき) Opening Theory
+  # fixed -> variations -> stylistic
+
   entries:
     - term: 締まり
       reading: シマリ
@@ -777,6 +842,8 @@ h1 {
       meaning: big place, high-value move
 
 - section: 死活 (しかつ) Life and Death
+  # obvious -> complex -> counterintuitive
+
   entries:
     - term: 眼形
       reading: がんけい
@@ -818,11 +885,17 @@ h1 {
       explanation: アゲ石 (アゲイシ) is also possible
 
 - section: 防衛 (ぼうえい) Defense
+  # passive -> active -> prophylactic
+
   entries:
     - term: 手入れ
       reading: ていれ
       meaning: reinforcing play
       explanation: often at the later stage of a game
+
+    - term: 手は打った
+      reading: てはうった
+      meaning: to have taken measures to address a threat
 
     - term: オサエ
       reading:
@@ -831,6 +904,10 @@ h1 {
     - term: 治まる
       reading: おさまる
       meaning: to settle, become stable
+
+    - term: 引き
+      reading: ヒキ
+      meaning: pull back, draw back
 </script>
 
 <div id="vocab"></div>

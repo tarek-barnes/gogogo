@@ -1,15 +1,257 @@
-# from selenium import webdriver
-# from selenium.common.exceptions import ElementNotInteractableException
-# from selenium.webdriver.common.by import By
-# from selenium.webdriver.remote.webelement import WebElement
 from sgfmill import sgf
 
 import os
 
 PRO_DIR_ROOT = "/Users/tarek/github/gogogo/pro_games"
 
+# to do:
+# - email myself professional game record
+# - load games into database
+#  > games
+#  > game_sources
+#  > players
+#  > player_aliases
+#  > game_players (who is black vs white for a game_id)
+#  > game_metadata
 
-### handling raw data files
+
+# i want to add functionality that covers all bases for go games
+# so just to describe those different bases:
+# - primitives can refer to helper funcs which do basic board manipulation (also parse_sgf)
+# - manipulation can refer to those which change the board or add semantic meaning to it (e.g. get_all_symmetries)
+# - fingerprinting can refer to bookkeeping board states and game records
+# - validation can refer to finding bad records (e.g. consecutive same-player moves)
+# - metadata can refer to user-friendly info handling/storage (e.g. normalize_player_name)
+# - analysis can refer to comparing games (e.g. deduplication)
+# - eventually: ingestion pipeline 
+# - eventually: reporting, data health
+
+# currently being used:
+#     analyze_two_similar_games,
+#     count_moves_in_a_game,
+#     count_number_of_same_moves,
+#     get_game,
+#     get_list_of_pro_filepaths,
+#     get_matching_games,
+#     are_these_two_games_the_same
+
+# to do:
+# Board Primitives
+
+# apply_move(board, move) → new board state with captures applied
+# get_liberties(board, group) → liberty count for a connected group
+# get_connected_group(board, coordinate) → flood fill from a stone
+# remove_captures(board, move) → returns board with captured stones removed
+# detect_ko(board, move, board_history) → simple and superko variants
+# is_legal_move(board, move, board_history) → combines liberty and ko checks
+# score_board(board, ruleset) → Chinese vs Japanese scoring
+
+# Symmetry & Canonicalization
+
+# rotate_board(board, n) → 90° rotation n times
+# reflect_board(board, axis) → horizontal, vertical, diagonal
+# get_all_symmetries(board) → all 8 transformations
+# canonical_orientation(board) → lexicographically smallest of the 8
+# transform_move(move, symmetry) → apply a symmetry transform to a coordinate
+# canonical_game_sequence(move_list) → full game as canonical board states
+
+# Fingerprinting
+
+# position_fingerprint(board) → hash of canonical board state
+# game_fingerprint(move_list) → hash of full canonical sequence
+# prefix_fingerprint(move_list, n) → fingerprint at move n, for AI cache keys
+# fingerprint_all_positions(move_list) → returns fingerprint at every move, used for position-level AI caching
+
+# Validation
+
+# validate_sgf(path) → top-level validator, calls everything below
+# validate_move_legality(board_history, move_list) → checks every move is legal
+# validate_player_alternation(move_list) → catches consecutive same-color moves
+# validate_metadata_completeness(metadata) → flags missing komi, ruleset, result, players
+# validate_result_consistency(move_list, result) → e.g. game ends at move 50 but result says resignation at move 200
+# validate_board_size(sgf) → confirm it's actually 19x19 (or flag 9x9, 13x13 explicitly)
+
+# Metadata Extraction
+
+# extract_metadata(sgf) → players, ranks, date, komi, result, ruleset, event
+# normalize_player_name(name) → handles encoding differences, alternate romanizations
+# detect_ruleset(sgf) → infer from metadata or source if not explicit
+# extract_move_timestamps(sgf) → if time data exists, useful for game quality signals
+
+# Similarity & Deduplication
+
+# find_common_prefix(move_list_a, move_list_b) → index where games first diverge
+# similarity_score(move_list_a, move_list_b) → float 0–1 based on common prefix length relative to total
+# is_prefix_game(move_list_a, move_list_b) → one game is a truncated version of the other
+# find_duplicate_candidates(fingerprint_db) → exact match lookup
+# find_similar_candidates(fingerprint_db, threshold) → near-duplicate clustering
+# classify_discrepancy(move_list_a, move_list_b) → single divergence vs scattered vs prefix
+
+# Ingestion Pipeline
+
+# ingest_sgf(path, db, log) → orchestrates parse → validate → canonicalize → fingerprint → store
+# batch_ingest(directory, db, log) → runs ingest_sgf across all files with error isolation
+# resolve_duplicate(game_a, game_b, policy) → applies your tiered deduplication logic
+# write_ingestion_log(event, path, details) → structured JSONL logging
+
+# Reporting & Data Health
+
+# generate_health_report(db) → summary of validation failures, duplicates, missing metadata
+# diff_games(move_list_a, move_list_b) → move-by-move diff output
+# estimate_game_quality(sgf) → composite score flagging short games, missing data, suspicious patterns
+# cluster_by_opening(fingerprint_db, depth) → group games by shared prefix up to move N, useful early signal for joseki work later
+
+
+
+
+
+### BOARD PRIMITIVES
+
+def extract_game_moves_from_filepath(sgf_filepath) -> list:
+    """Returns list of coords. e.g.: [((15, 16), (15, 3), ...)]"""
+    (_, moves) = extract_raw_game_data_from_filepath(sgf_filepath)
+    return moves
+
+def extract_raw_game_data_from_filepath(sgf_file_path: str) -> tuple:
+    """Returns (metadata, moves) where each entry is a list."""
+    metadata, moves = [], []
+
+    with open(sgf_file_path, 'rb') as f:
+        sgf_content = f.read()
+
+    game = sgf.Sgf_game.from_bytes(sgf_content)
+
+    for node in game.get_main_sequence():
+        color, point = node.get_move()
+        if color is not None:
+            moves.append(point)
+    
+    for node in game.get_main_sequence():
+        for key in [k for k in node.properties() if k not in ['B', 'W']]:
+            raw_values = node.get_raw_list(key)
+            for raw in raw_values:
+                if isinstance(raw, bytes):
+                    value = raw.decode("utf-8", errors="replace")
+                else:
+                    value = raw
+                metadata.append((key, value))
+    return (metadata, moves)
+
+# to do: format player name to include rank
+# to do: add AB/AW - in case handicap? verify this doesn't break 'moves'
+# to do: figure out comments
+# to do: add file format FF
+# to do: add time limit TM
+# chicken
+def parse_sgf(sgf_filepath: str) -> dict:
+    """Returns a dict of parsed game data."""
+    (metadata, moves) = extract_raw_game_data_from_filepath(sgf_filepath)
+    metadata_dict = {k: v for (k, v) in metadata}
+
+    return {
+        "moves": moves,
+        "num_moves": len(moves),
+        "black_player": parse_metadata_black_player(metadata_dict),
+        "white_player": parse_metadata_white_player(metadata_dict),
+        "event": parse_metadata_event(metadata_dict),
+        "round_num": parse_metadata_round_num(metadata_dict),
+        "date": parse_metadata_date(metadata_dict),
+        "board_size": parse_metadata_board_size(metadata_dict),
+        "komi": parse_metadata_komi(metadata_dict),
+        "handicap": parse_metadata_handicap(metadata_dict),
+        "result": parse_metadata_game_result(metadata_dict),
+        "ruleset": parse_metadata_ruleset(metadata_dict),
+        "raw_metadata": metadata
+    }
+
+
+
+### METADATA
+
+def extract_raw_metadata_dict_from_filepath(sgf_filepath) -> dict:
+    """Returns dict s.t. keys are properties described here: https://en.wikipedia.org/wiki/Smart_Game_Format"""
+    (metadata, _) = extract_raw_game_data_from_filepath(sgf_filepath)
+    return {k: v for (k, v) in metadata}
+
+def is_black_player_name_included_in_metadata(metadata: dict) -> bool:
+    return 'PB' in metadata
+
+def is_black_player_rank_included_in_metadata(metadata: dict) -> bool:
+    return 'BR' in metadata
+
+def is_white_player_name_included_in_metadata(metadata: dict) -> bool:
+    return 'PW' in metadata
+
+def is_white_player_rank_included_in_metadata(metadata: dict) -> bool:
+    return 'WR' in metadata
+
+def is_board_size_included_in_metadata(metadata: dict) -> bool:
+    return 'SZ' in metadata
+
+def is_komi_included_in_metadata(metadata: dict) -> bool:
+    return 'KM' in metadata
+
+def is_handicap_included_in_metadata(metadata: dict) -> bool:
+    return 'HA' in metadata
+
+def is_event_included_in_metadata(metadata: dict) -> bool:
+    return 'EV' in metadata
+
+def is_round_num_included_in_metadata(metadata: dict) -> bool:
+    return 'RO' in metadata
+
+def is_date_included_in_metadata(metadata: dict) -> bool:
+    return 'DT' in metadata
+
+def is_game_result_included_in_metadata(metadata: dict) -> bool:
+    return 'RE' in metadata
+
+def is_ruleset_included_in_metadata(metadata: dict) -> bool:
+    return 'RU' in metadata
+
+def is_application_source_included_in_metadata(metadata: dict) -> bool:
+    return 'AP' in metadata
+
+def parse_metadata_black_player(metadata: dict) -> str:
+    return metadata['PB'] if is_black_player_name_included_in_metadata(metadata) else ''
+
+def parse_metadata_white_player(metadata: dict) -> str:
+    return metadata['PW'] if is_black_player_name_included_in_metadata(metadata) else ''
+
+def parse_metadata_event(metadata: dict) -> str:
+    return metadata['EV'] if is_event_included_in_metadata(metadata) else ''
+
+def parse_metadata_board_size(metadata: dict) -> int:
+    return metadata['SZ'] if is_board_size_included_in_metadata(metadata) else 0
+
+def parse_metadata_komi(metadata: dict) -> str:
+    return metadata['KM'] if is_komi_included_in_metadata(metadata) else ''
+
+def parse_metadata_handicap(metadata: dict) -> int:
+    return metadata['HA'] if is_handicap_included_in_metadata(metadata) else 0
+
+def parse_metadata_game_result(metadata: dict) -> str:
+    return metadata['RE'] if is_game_result_included_in_metadata(metadata) else ''
+
+def parse_metadata_ruleset(metadata: dict) -> str:
+    return metadata['RU'] if is_ruleset_included_in_metadata(metadata) else ''
+
+def parse_metadata_date(metadata: dict) -> str:
+    return metadata['DT'] if is_date_included_in_metadata(metadata) else ''
+
+def parse_metadata_round_num(metadata: dict) -> int:
+    return metadata['RO'] if is_round_num_included_in_metadata(metadata) else 0
+
+
+# def normalize_player_name(name):
+#     pass
+
+
+
+
+
+
+### to do: handling raw data files
 
 def get_enumerated_game_record(sgf_file_path: str) -> list:
     """1-indexed."""
@@ -17,6 +259,7 @@ def get_enumerated_game_record(sgf_file_path: str) -> list:
     return list(enumerate(game_record, start=1))
 
 
+# parse_sgf will deprecate this
 def get_game(sgf_file_path: str) -> list:
     metadata, moves = [], []
 

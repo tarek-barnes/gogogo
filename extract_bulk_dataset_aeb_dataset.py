@@ -226,7 +226,9 @@ def get_game_similarity_score(filepath_a: str, filepath_b: str) -> int:
 def run_ai_prediction_network(filepath: str, list_of_existing_pro_filepaths: list, result_dict: dict) -> dict:
     """A bunch of if-statements. Shhhhh."""
     if list_of_existing_pro_filepaths == [] or list_of_existing_pro_filepaths == ['']:
-        return (None, None)
+        # return (None, None)
+        result_dict['matching_game_records'] = []
+        return result_dict
 
     if 'matching_game_records' not in result_dict:
         result_dict['matching_game_records'] = []
@@ -425,9 +427,14 @@ def main():
     mapping_aeb_to_existing_pros = get_mapping_bulk_dataset_filepath_to_existing_pro_filepath()
     aeb_pros = sorted(mapping_aeb_to_existing_pros.keys())
 
-    for aeb_pro in aeb_pros:
+    # todo: remove filter for testing
+    for aeb_pro in aeb_pros[2:]:
         list_of_existing_pro_filepaths = mapping_aeb_to_existing_pros[aeb_pro]
         filepaths_to_process = get_sgf_filepaths_for_source_dir(aeb_pro)
+
+        # if 'Female Honinbo' in aeb_pro:
+        #     print("You are in the place")
+        #     breakpoint()
 
         print(f"\nImporting '{'/'.join(aeb_pro.split('/')[-2:])}'...")
         new_games_for_user = collate_new_games_for_user_review(
@@ -435,16 +442,23 @@ def main():
                                 list_of_existing_pro_filepaths)
         (mapping_filename_to_file_status, mapping_filename_to_matching_games) = new_games_for_user
 
+        # if 'Female Honinbo' in aeb_pro:
+        #     print("You are in the place")
+        #     breakpoint()
+
         new_games = [fp for fp in mapping_filename_to_file_status if mapping_filename_to_file_status[fp] == (1, 0, 0)]
-        process_new_games(new_games, list_of_existing_pro_filepaths)
+        # process_new_games(new_games, list_of_existing_pro_filepaths)
+        print(f"{len(new_games)} new games found.")
 
         existing_games = [fp for fp in mapping_filename_to_file_status if mapping_filename_to_file_status[fp] == (0, 1, 0)]
-        process_existing_games(existing_games)
+        # process_existing_games(existing_games)
+        print(f"{len(existing_games)} existing games found.")
 
         similar_games = [fp for fp in mapping_filename_to_file_status if mapping_filename_to_file_status[fp] == (0, 0, 1)]
-        process_similar_games(similar_games, mapping_filename_to_matching_games)
+        # process_similar_games(similar_games, mapping_filename_to_matching_games)
+        print(f"{len(similar_games)} similar games found.")
 
-        breakpoint()
+        # breakpoint()
 
 if __name__ == '__main__':
     main()
