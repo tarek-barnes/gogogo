@@ -1,0 +1,62 @@
+(;FF[4]CA[UTF-8]GM[1]DT[2025-05-23]PC[OGS: https://online-go.com/game/75566897]GN[NAGF Online League Match]PB[milanm]PW[vo0d0ochild]BR[2k]WR[3k]TM[2700]OT[3x30 byo-yomi]RE[B+R]SZ[19]KM[7.5]RU[AGA]C[Move 24 - responding to a probe in moyo
+Move 81 - interesting forced line to a 2-step ko
+Move 86 - game-ending semeai mistake (very complicated)
+
+milanm: hi have a nice game 
+vo0d0ochild: GM
+]AP[Sabaki:0.51.1];B[qd]C[vo0d0ochild: GM
+];W[cq];B[pq];W[cc];B[oc];W[qo];B[qp];W[po];B[nq];W[qk];B[qi];W[cj];B[jd];W[hc]C[vo0d0ochild: Reread an old fuseki encyclopedia 
+milanm: :)
+vo0d0ochild: So trying something besides 6-4 cheese
+milanm: looks cool 
+vo0d0ochild: Not many books on cool openings for W though.
+milanm: well it is hard since you kind of have to follow your opponent 
+];B[qm]C[This is actually well-timed by Black. Because Black has a strong position on the top right, and if White were to play A first, it might detract from that.]TR[jd][oc][qd][qi]LB[ok:A];W[pm];B[pl]C[Correct idea. Sacrifice one stone to get influence.]TR[qm];W[ql];B[om];W[pn];B[pk];W[rm]LB[ri:A]C[A is also possible. But capturing the one stone is fine too.];B[qj]C[Good result for Black.];W[rd];B[rc]C[A is better. Because it reduces White's forcing moves later. Consider White playing around X later. If Black had played A, then White B wouldn't be scary because Black could just respond with D. However, when Black plays S17, Black would be more inclined to respond to White B with Black C.
+
+It's subtle, but the optimization is how many extra forcing moves can White get from this probe?]MA[nf]LB[pd:C][pe:D][qc:A][qe:B]TR[rd];W[ld]C[Overplay. Because Black has so much strength in the area. A is a better idea, because White can build up a comparable moyo to Black, which is more of an equivalent exchange.]LB[ie:A][if:C][ig:E][je:B][jf:D][kh:F]TR[oc][om][pk][pl][qd][qi][qj][rc];B[lc]C[This helps White too much. A is better because it strengthens the center, blocks against White trying to connect at X, and puts more pressure on the White invader.]LB[ie:A]MA[jc];W[mc];B[kc];W[mf];B[md]C[Black's first big mistake. This is helping White fix his light shape. Of course White is happy to sacrifice one stone to do that.]TR[ld][mc][mf];W[nd];B[me];W[ne];B[le];W[lf];B[ke];W[og]C[Good result for White. Black's area of influence has been heavily reduced. Furthermore, Black's shape is overcontentrated -- investing all those stones in his own area to capture 1 stone. And, K16 looks very inefficient.]TR[jd][kc][ke][lc][le][md][me];B[nc];W[pd]C[Very powerful move by White. Because Black is almost forced to pull back at A, and White can make more use of the marked stone.]TR[mc]LB[qe:A];B[qe];W[pc];B[od];W[pe];B[oe];W[pf];B[nf]C[vo0d0ochild: After 3 sacrifices somethings gonna live eventually
+];W[qc]C[milanm: maybe but you give for that life might be too much 
+];B[re];W[rb];B[sd];W[qg];B[sb];W[oi];B[oj];W[pi];B[pj];W[mi]C[vo0d0ochild: If I cant have a moyo no one can
+milanm: hahahah lets see 
+];B[jp];W[fq];B[rl]C[This is very aggressive by Black. It's a nice idea, but maybe better saved for later. Something like A would utilize Black's thickness on the top.]LB[ec:A];W[rk];B[rn];W[qn];B[ro]C[milanm: here is my moyo :)
+];W[pp];B[qq];W[rh]C[vo0d0ochild: Guess we both run out
+];B[ri];W[mo]C[The problem for Black is that the White group is difficult to attack. It's a risky strategy.];B[nn];W[np]C[A is better shape for White. Because this shape doesn't fix White's cutting point at A.
+
+vo0d0ochild: Who's Clalet?
+milanm: ?
+vo0d0ochild: They're spectating lol
+milanm: oh i have no idea 
+milanm: i think i can cut you 
+milanm: lets see
+]LB[no:A];B[op]C[This seems like an overextension for Black. A is a more normal move, and it's hard for White to find a good local response because the cut at B is still a big threat.]LB[mq:A][no:B];W[oo]C[vo0d0ochild: id hope not
+];B[no];W[oq];B[mp];W[op];B[mq];W[or];B[rr]LB[rs:A]C[White has this annoying move at A in his back pocket. It leads to a 2-step ko. See the variation.](;W[pr]C[This is a mistake. Because it's aji keshi against the 2-step ko in the corner with A.]LB[rs:A];B[qr];W[sn];B[rp]C[Trevoke: > After 3 sacrifices somethings gonna live eventually
+Trevoke: I have learned that this is not true :p
+Trevoke: well, not *necessarily* true
+];W[sq]C[Surprisingly, this is a game-ending blunder by White. Because if Black plays A, White is in trouble. See variation.]LB[lo:A](;B[sr];W[nr];B[mr];W[ns];B[ps];W[lo];B[kq];W[mm]LB[nm:A]C[A is the local tesuji for White.];B[nl];W[nm];B[on];W[ol];B[ok];W[mn];B[ol];W[ll]C[Small detail, but White A is better. Because it takes away one of Black's liberties and isn't any less efficient otherwise.
+
+vo0d0ochild: I cant count the liberties,  its all on you
+milanm: hahah i was just thinking the same thing for me 
+milanm: so i am looking for a way where i do not need to count liberties 
+]LB[ml:A];B[ni]C[This is complicated. If the capturing race is between groups 1 & 2, Black A might be better from a liberties perspective. However, it doesn't really matter since the capturing race is still favorable for White.
+
+So Black is trying to drag group 3 into the capturing race. It seems difficult for Black, but it's a nice idea.]LB[nj:A][pf:3][pl:1][pm:2];W[nj]C[Mistake. White A has less aji. When White plays the atari from O10, Black A is difficult to respond to, because Black has resources at 1 and 2 to solidify his group.]LB[mj:1][nh:A][qh:2];B[nh];W[ng];B[qh];W[rg];B[oh];W[mh];B[ph]C[With this capture, the result is favorable for Black.];W[mj];B[pg]C[Huge move.];W[of]C[If White connects at A, White's entire group would be in danger given Black's eye.]TR[oi][pi]LB[qf:A];B[qf];W[io];B[jo];W[jn];B[hp];W[ip];B[iq];W[hq];B[hr];W[gq];B[jr];W[in];B[fc];W[fe];B[gd];W[ge];B[hd];W[ig];B[dd];W[ed];B[dc];W[ec];B[cd];W[db];B[cb];W[fb];B[cg];W[bc];B[bb];W[bd];B[be];W[cf]LB[bd:1]C[Nice tesuji by White to cut off Black. The turn at 1 followed by C14, very nice.];B[ce]LB[ac:A]C[Black can make his life easier by simply capturing at A.];W[bf];B[df];W[de]C[Tricky. If Black captures with 1, 2-4 is painful.
+
+milanm: oh wow did i mess up ? 
+vo0d0ochild: There are no thoughts here
+]LB[ae:2][de:3][dg:4][ee:1];B[ae]C[milanm: nah i am good :) 
+milanm: you just scared me 
+];W[dg]C[vo0d0ochild: Thats the job
+];B[bg]C[A is better. Keep in mind that the capture at B is sente for Black.]LB[ee:B][ef:A];W[ef];B[af];W[sl];B[sj]C[milanm: i do not think i needed it but since i am up and in bioyomi ...
+];W[ca];B[ac]C[A is better for Black. Because it's more points. Furthermore, 1 was a mistake by White because A is good endgame for reduction later.
+
+vo0d0ochild: Think you had to or I make an eye or connect under and get more libs
+milanm: yeah maybe
+milanm: as i said did not read it at all
+]LB[ba:A][ca:1];W[ba];B[ad];W[ch];B[bh];W[bi];B[df];W[cf]LB[dh:A]C[A is better to defend against invasions.];B[cp]C[White has a large moyo and now the game will be determined by whether or not Black can live.];W[co]C[Mistake. This helps Black. Pulling back at A is better.]LB[dq:A];B[dq];W[dp];B[bp];W[dr];B[do];W[eq];B[cn];W[dn]C[Mistake. White can consider reducing eyespace with A.]LB[bm:A];B[bo];W[dm];B[bl];W[cl];B[bm];W[bq];B[an]C[Now that Black has lived easily, the game is very difficult for White.];W[ah];B[bc];W[eo];B[cm];W[bk];B[ic];W[gc];B[he];W[hf];B[fd]C[vo0d0ochild: Went double san san and still just got the middle
+];W[ie]C[milanm: hahahha yeah that is strange 
+];B[id];W[kf];B[dl];W[ck];B[el];W[fm];B[dh];W[ci];B[eg];W[df];B[ei]C[milanm: lets see about that middle 
+];W[gj];B[ej];W[fh];B[dk];W[eh];B[di];W[fk];B[aj];W[al];B[ak];W[ek];B[dj];W[fl];B[ag]C[vo0d0ochild: [object Object\]
+milanm: thank you for the game 
+vo0d0ochild: ggs
+vo0d0ochild: huh I played a minus 54 point move
+milanm: oh my god we were both sooo bad hahah 
+])(;B[lo];W[qs];B[rs];W[sr];B[so];W[sm];B[ps]C[Now this capture race is difficult for White.];W[os];B[nr];W[rq];B[ns];W[sp];B[ss];W[sq];B[on];W[qm];B[rj];W[rq];B[sk];W[qs]C[Black is happy with this ko.]))(;W[rs]C[Later, White can play 1.];B[qs];W[pr];B[qr];W[nr];B[mr];W[ps];B[ns]C[Black must stop White from making a second eye];W[sr]C[Black wants to play A, but White B would be atari, forcing Black C, then White could capture the 2 stones with D. So A is probably not feasible for Black.]LB[rp:B][so:D][sq:A][ss:C];B[rp];W[sq];B[sn];W[sp]C[This 2-step ko is annoying for Black.]))

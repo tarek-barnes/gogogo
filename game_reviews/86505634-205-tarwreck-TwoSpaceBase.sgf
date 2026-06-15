@@ -1,0 +1,41 @@
+(;FF[4]CA[UTF-8]GM[1]DT[2026-04-29]PC[OGS: https://online-go.com/game/86505634]GN[Friendly Match]PB[TwoSpaceBase]PW[tarwreck]BR[4k]WR[3k]TM[2700]OT[3x30 byo-yomi]RE[B+R]SZ[19]KM[7.5]RU[AGA]C[tarwreck: have a nice game
+TwoSpaceBase: have a good game!
+]AP[Sabaki:0.51.1];B[pd];W[dp];B[pp];W[dc];B[de];W[cg]C[First mistake: picking a joseki I didn't really know.];B[cc];W[cb];B[cd];W[eb];B[ef];W[gd];B[dh];W[ci];B[ch];W[bh];B[dg]C[I thought this was a mistake by Black, but it was perfectly fine. Well, -0.5pts. I thought White A would live, but Black has 1, which is a nice idea.]LB[bg:1][cf:A];W[cf]LB[bj:B][di:A]C[A or B is better.];B[bg];W[bf]C[Wrong idea. White should connect on the outside. A or B are good.]LB[bi:B][bj:A];B[bi];W[ag];B[cj];W[bd]C[This is too much. White needs to cut his losses and tenuki. Living in the corner isn't damaging Black, so it's simply too small.];B[bc];W[ce]C[Again, this is damaging White's top group, which is why it's a blunder here. Now, White is 10pts behind, even counting komi.];B[dd];W[ed];B[ad];W[ae];B[be];W[bj]C[Bad ko threat. A corner approach is better.];B[di];W[bd];B[fq];W[ac];B[dn]C[White has given Black 3 moves in exchange for making 2pts on the left side. So at this point, Black is up by 15-20pts.]LB[di:3][dn:2][fq:1];W[fp]C[This is a mistake but I don't understand why. Apparently A is better.]LB[cn:A];B[gp];W[fo];B[dq];W[cq];B[eq];W[do];B[cn]C[This is a small inaccuracy. Black A would be better.]LB[cr:A];W[go]C[Also a mistake. White should play at A now that Black didn't take 1.]LB[bp:A][cr:1];B[hp];W[ho];B[ip];W[io];B[jo];W[jp]C[Now White must cut, it's a bit slow to play A.]LB[bp:A];B[jq]C[Black can actually play A or B. If White descends at K3, Black has nice local follow-ups like 1 and 2 to be safe. But K3 is OK.]LB[cr:2][hr:1][jn:A][ko:B];W[kp];B[ko]C[This is a mistake by Black. Better to push from the other side, at A. The idea is that after Black A, White must extend at M4. If White turns at L5, Black K6 leaves White unsettled. So after White M4, Black can still take K6, then White has to run out with M6.
+
+Black L5 is a mistake because it lets White find some counterplay.]LB[kq:A];W[kq];B[jr];W[kr];B[lp]C[I thought this was a mistake, but it's a great move by Black.];W[lo]LB[mq:A]C[White cannot cut, White must try to make a base with A but it's still very uncomfortable.](;B[mp]C[Here, Black can atari from the outside, at A. Then after White extends at N5, Black N4 is good. The idea is that White cannot consider O4 because Black always has M2. So, letting White play A is too generous.]LB[ln:A];W[ln];B[jn]C[The right move.];W[jm]LB[mr:A]C[While this is the right local shape point, maybe, White should still prioritize making a base at A.];B[in];W[im];B[hn];W[gq];B[hq];W[hr]C[Katago says A is better, but I don't understand why.]LB[gr:A];B[gr];W[ir];B[is];W[hs];B[iq];W[js];B[gq];W[mr]C[This is hopeless now. White should play at A, then follow up with B to squeeze from the outside. That's the best White can do. Black is still ahead by 20pts.]LB[em:B][hm:A];B[hm]C[Black continues to increase his lead.];W[hl];B[gm];W[cr]C[This move is not really helpful for White. White should consider making a base at A to solidify the bottom group. Maybe B.]LB[nq:B][oq:A];B[bp];W[cp]LB[bo:A]C[Apparently White A is a bit better.];B[nq]C[This is a good move. Black is now ahead by 35pts.];W[nr];B[or];W[pr];B[os];W[pq]LB[bo:A]C[White shouldn't make another group. White A is better.];B[oq];W[qp];B[po];W[qo];B[pn];W[qn];B[bq]LB[bo:A]C[Black A is better. Because it leaves less aji behind.];W[bo];B[co];W[bn];B[bm];W[br];B[an];W[en]LB[fm:A]C[White A is a better way to run out. Then after Black G8, White can play E6.];B[fl]LB[fm:A]C[KataGo says this is a blunder and that Black A is better. Maybe it's because White A now becomes a forcing move. Not sure exactly.];W[el]C[White blunder. A is better.]LB[fm:A];B[fk]LB[fm:A]C[Black A is better.];W[fm];B[gl];W[aq];B[ao];W[dr];B[ep];W[eo];B[gs];W[gn]C[Somehow White lives, but Black is still ahead by 35pts.];B[qm];W[pm]LB[rm:A]C[This is OK, but White should consider playing more safely at A.];B[ql];W[on];B[op]LB[no:A]C[Black A is better shape here.];W[pl];B[qk];W[pk];B[qj];W[pj]LB[rr:A]C[White should just live at A now.];B[pi];W[oi];B[ph];W[oh]C[This push is not helpful for White really. A is bigger.]LB[rr:A];B[pg]LB[rr:A]C[Black could ignore and administer a finishing blow at A.];W[qc]C[Too much. White A is bigger. The KataGo score graph zigzags since both players miss A for a bit.]LB[rr:A];B[qd];W[pc];B[nc];W[nb];B[oc];W[ob];B[mc];W[rd];B[re];W[rc];B[qf];W[rr]C[Now White is only 25pts behind!];B[lj];W[no];B[mq];W[lr]C[This move does nothing. At this point, it's difficult for White to make up 20+ pts. White has very little territory on the board, and Black's bottom side looks to be about 30pts.];B[ic];W[ek];B[fj];W[ej];B[fi];W[ll];B[fc];W[gc];B[ec];W[db];B[fd];W[fb]LB[fe:A]C[White should play A first.];B[fe];W[id];B[jc];W[bb];B[hb];W[jj];B[lh];W[gb];B[mb];W[jd];B[nk];W[mk];B[nj];W[nl];B[mj];W[oj];B[km];W[kl];B[lm]C[This helps White. Not much though.];W[mm];B[kn];W[jh];B[ng];W[og];B[of];W[nf]C[This was a bad cut by White. I'm not sure how White can play to make up 15-20pts now though.];B[mg];W[oe];B[pf];W[me];B[le];W[ld];B[md];W[lf];B[ke];W[mf]C[This doesn't work. So it's game over for White now.];B[kf];W[lg];B[kg];W[ne];B[mh];W[kh];B[kd];W[if];B[dm]C[tarwreck: i am too far behind
+tarwreck: thanks for the game
+TwoSpaceBase: thank you for the game
+tarwreck: hmmm i was always behind haha
+tarwreck: i think the first joseki didn't pan out as i'd hoped
+TwoSpaceBase: You lived very cleverly on the bottom, I thought for sure you were dead
+TwoSpaceBase: Yeah, I've been studying that one recently so I guess I got a little lucky
+tarwreck: i didn't know d13 was joseki
+tarwreck: it looked wrong to me
+tarwreck: but after c14 and your throw-in, it was tough to manage cleanly
+TwoSpaceBase: I don't think its 100% optimal but its playable and simple
+tarwreck: yeah tough game, my flailing didn't work out this time :P
+TwoSpaceBase: I was so worried the entire game that I was miscounting one of the capturing races
+tarwreck: on the bottom?
+TwoSpaceBase: yeah
+tarwreck: i think you always had m2, which would really limit my liberties
+TwoSpaceBase: Also, do you think k5 was too much? I'm always afraid to play hanes like that but katago and stronger players always tell me to
+TwoSpaceBase: Yeah m2 was my reading
+tarwreck: i think if you played k4, you would've been perfectly fine, because white was pushing from behind
+tarwreck: but k5 seemed fine, i was too cut-happy so it was a nice trap
+tarwreck: it would've avoided the capturing race though
+TwoSpaceBase: [object Object\]
+TwoSpaceBase: idk if thats at all good but I wasn't even considering the cut
+tarwreck: i thought the outside squeeze was too easy on you tbh
+TwoSpaceBase: You're probably right
+tarwreck: or well, gave you a ton of solid territory and didn't leave much aji for me
+tarwreck: i do think c6 was strange by you
+tarwreck: was expecting c2
+TwoSpaceBase: hmm, I didn't consider c2
+TwoSpaceBase: It felt like I could put pressure on the whole group but maybe once you get out I don't get much
+tarwreck: well, think about it like this
+tarwreck: if you double pincered with c6 instead of d6
+tarwreck: would you play d6 after d5?
+tarwreck: or wait, idk if that's right
+tarwreck: maybe the idea is that if you wanted to play c6, it could've been played first
+tarwreck: not sure, i'll have to look at it with katago later
+])(;B[ln];W[mo];B[mp];W[np];B[lr];W[mq];B[lq]))

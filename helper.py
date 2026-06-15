@@ -247,9 +247,53 @@ def parse_metadata_round_num(metadata: dict) -> int:
 #     pass
 
 
+### ANALYSIS
+
+def get_list_of_all_pros_in_collection() -> list:
+    return os.listdir(PRO_DIR_ROOT)
+
+def is_this_a_pro_we_have_in_our_collection(pro_name: str) -> bool:
+    return pro_name in get_list_of_all_pros_in_collection()
+
+def get_list_of_all_pros_games_in_collection(pro_name: str) -> list:
+    if not is_this_a_pro_we_have_in_our_collection(pro_name):
+        return []
+    return os.listdir(f"{PRO_DIR_ROOT}/{pro_name}")
+
+def get_list_of_all_games_between_two_pro_players_in_collection(pro_name_one: str, pro_name_two: str) -> list:
+    if not (is_this_a_pro_we_have_in_our_collection(pro_name_one) and is_this_a_pro_we_have_in_our_collection(pro_name_one)):
+        return []
+    elif (is_this_a_pro_we_have_in_our_collection(pro_name_one) or is_this_a_pro_we_have_in_our_collection(pro_name_one)):
+        our_pro = pro_name_one if is_this_a_pro_we_have_in_our_collection(pro_name_one) else pro_name_two
+        untracked_pro = pro_name_one if our_pro != pro_name_one else pro_name_two
+        our_pro_games = get_list_of_all_pros_games_in_collection(our_pro)
+        if any([k for k in our_pro_games if untracked_pro in k]):
+            return [k for k in our_pro_games if untracked_pro in k]
+        # to do: probably worth adding more filters here
+        else:
+            return []
+    (a, b) = (get_list_of_all_pros_games_in_collection(pro_name_one), get_list_of_all_pros_games_in_collection(pro_name_two))
+    (a, b) = (set(a), set(b))
+    return list(a&b)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+############################################################################################
+# everything below here needs to be refactored carefully later... generalizations above this line
+############################################################################################
 
 ### to do: handling raw data files
 

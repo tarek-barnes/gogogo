@@ -1,0 +1,22 @@
+(;FF[4]CA[UTF-8]GM[1]DT[2025-05-25]PC[OGS: https://online-go.com/game/75637866]GN[NAGF Online League Match]PB[go-ya]PW[WillZ]BR[3k]WR[2k]TM[2700]OT[3x30 byo-yomi]RE[W+R]SZ[19]KM[7.5]RU[AGA]C[Move 33 - efficient outside shape
+Move 109 - ladderable stones?
+Move 146 - solid vs sabaki
+Move 162 - captured stones?
+Move 204 - why is capture sente?
+Move 279 - face block
+
+go-ya: Have a good game
+]AP[Sabaki:0.51.1];B[pd];W[cq];B[pp]C[WillZ: Gg hf gl
+];W[dd];B[fc];W[cf];B[dc];W[cc];B[cb];W[ec];B[db];W[fd];B[eb];W[ed];B[gc];W[qn];B[nq];W[pj];B[dp];W[cp];B[do];W[er];B[co];W[ck];B[fq];W[eq];B[fp];W[ep];B[eo];W[fr];B[hq];W[gr](;B[gn]C[Why is A better shape for Black? Answer in variation.]LB[ho:A];W[qf];B[nc];W[qp];B[qq];W[rq];B[qo];W[rp];B[po];W[ro];B[pn];W[qm];B[qh];W[ph];B[qi];W[pi];B[qj];W[qk];B[rk];W[rl];B[pk];W[ql];B[rf];W[re];B[rg];W[pe];B[sk];W[ri];B[si];W[sh];B[rj];W[sj];B[pg];W[og];B[si];W[qg];B[qd];W[qe];B[rd];W[sd];B[oe];W[of];B[sc];W[se];B[oj];W[ni];B[dj];W[cj];B[di];W[ci];B[dh];W[ch];B[dg];W[sj];B[oh];W[oi];B[si];W[od];B[oc];W[sj];B[sf];W[ne];B[si];W[hr];B[rh];W[iq];B[me];W[he];B[id];W[kd];B[ge];W[gd];B[hd];W[ie];B[je];W[jd];B[ke]TR[he][ie]C[Can these 2 stones be laddered? Assume it's Black's turn.];W[hc];B[ic];W[hb];B[ib];W[fb];B[mh];W[gf];B[cd];W[bc];B[bd];W[be];B[bb];W[ce];B[ac];W[jb];B[nh];W[mf];B[ld];W[ok];B[pl];W[md];B[le];W[nd];B[mc];W[nk];B[kb];W[jc];B[mi];W[nj];B[ip];W[jp];B[jq];W[ir];B[kq];W[io];B[hp];W[kn]LB[jo:A]C[Why is A better?];B[kp];W[im];B[ll];W[gl];B[el];W[dk];B[ek];W[fj];B[gk];W[hk];B[gj];W[kh];B[lg];W[fk];B[fi];W[gi]TR[gj][gk]C[Has White captured these 2 stones?];B[hj];W[ij];B[hi];W[hh];B[ii];W[ji];B[ih];W[jk];B[hl];W[ik];B[fl];W[lk];B[lj];W[ig];B[ej];W[kk];B[mk];W[mj];B[ki];W[li];B[lh];W[kj];B[li];W[jh];B[ml];W[jf];B[kg];W[jg];B[qr];W[pm];B[ln];W[nn];B[on];W[nm];B[ol];W[nl];B[om];W[sn];B[sl];W[sm];B[km];W[ia]C[White just captured 4 stones in sente. Why is this move sente?]TR[hd][ib][ic][id];B[lb];W[rc];B[qb];W[np];B[mp];W[mo]C[WillZ: ?
+go-ya: ?
+WillZ: Why did you just flash?
+WillZ: Your profile picture 
+go-ya: idk my screenflashed too
+WillZ: Oh
+WillZ: Let’s continue 
+];B[lp];W[lo];B[jn];W[ko];B[jm];W[jo];B[in];W[ho];B[hn];W[gp];B[cg];W[bg];B[bl];W[oq];B[op];W[no];B[or];W[mq];B[nr];W[lr];B[kr];W[ks];B[mr];W[jr];B[bk];W[fo];B[fn];W[bo];B[bn];W[bp];B[go];W[gq];B[dq];W[dr];B[bj];W[rr];B[ff];W[fg];B[gg];W[hf];B[eg];W[fe];B[fh];W[hg];B[ef];W[de];B[rb];W[sb];B[rs];W[oo];B[pq];W[mm];B[bi];W[bh];B[il];W[lm];B[kl];W[fo];B[fp];W[cl];B[cm];W[dl];B[dm];W[gh];B[fa];W[ga];B[ea];W[ng];B[mg]C[Black's move is a big mistake here. Can you see why?];W[lf]C[WillZ: Gg
+WillZ: Thanks for the game.
+go-ya: ty gg
+])(;B[ho];W[gq]C[Because now this cut doesn't work for White.
+
+If Black's A-stone were at B (like in the game), White could cut off the marked stone.]LB[go:B][ho:A]MA[hq];B[gp]C[Black is fully connected on the outside.]TR[co][do][eo][fp][gp][ho][hq]))

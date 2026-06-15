@@ -1,0 +1,19 @@
+(;FF[4]CA[UTF-8]GM[1]DT[2025-07-22]PC[OGS: https://online-go.com/game/77561751]GN[NAGF Online League Match]PB[FootofGod]PW[Slowlylearning]BR[2d]WR[3k]TM[2700]OT[3x30 byo-yomi]RE[B+R]SZ[19]KM[7.5]RU[AGA]C[Move 29
+Move 111
+Move 119
+
+Slowlylearning: May we both enjoy the game and play well!
+FootofGod: glhf!
+]AP[Sabaki:0.51.1];B[pd];W[pp];B[dc];W[cq];B[cf];W[qf];B[nc];W[qd];B[qc];W[rc];B[qe];W[rd];B[pf];W[re];B[pe];W[qg];B[qq];W[pq];B[qp];W[qo];B[ro];W[rn];B[qn];W[po];B[rm];W[rp];B[sn];W[rq];B[qr]C[What is the correct response for White in this common joseki?];W[rr];B[oh];W[fc];B[ic];W[cc];B[ec];W[dd];B[ed];W[de];B[cd];W[ce];B[bd];W[be];B[bc];W[ee];B[fe];W[eg];B[ff];W[dg];B[fg];W[fh];B[gh];W[fi];B[gi];W[fj];B[dl];W[dn];B[ci];W[ck];B[dk];W[cl]C[curry2xmvp: quite the rank difference!
+];B[dj];W[dm];B[fl];W[fk];B[eh];W[dh];B[ei];W[di];B[ej];W[cj];B[el];W[hj];B[hl];W[hk];B[il];W[jj];B[ho];W[ih];B[hg];W[kh];B[ik];W[ij];B[jf];W[kl];B[hq];W[gp];B[hp];W[gm];B[gl];W[lq];B[lo];W[mp];B[lg];W[kg];B[kf];W[lh];B[mg];W[kn];B[kp];W[ig];B[if];W[kq];B[fn];W[jp];B[ep];W[dp];B[eq];W[eo];B[fo];W[pn](;B[qk]C[This is a small mistake by Black. Do you see why?
+
+Answer in variation](;W[pc](;B[oc]C[This is a common mistake in this joseki. It's natural for White to play 1. What is the correct idea for Black?
+
+Answer in variation.]LB[pc:1];W[pb]C[It's better for White to simply capture at 1. This rewards Black for making the mistake at A.]LB[oc:A][qb:1];B[ob];W[qb];B[bf];W[bh];B[ae]C[White tenukis at A, which is a mistake. Do you see why?]LB[ol:A];W[ol];B[pm];W[om];B[jq];W[jo];B[jr];W[in];B[hn];W[kr];B[nj];W[ni];B[oi];W[nh];B[ng];W[nk];B[mj];W[li];B[pk];W[lj];B[mk];W[ok];B[oj];W[qi];B[rj];W[ml];B[lk];W[kk];B[ll];W[lm];B[mm];W[nl];B[ln];W[km];B[dr];W[cr];B[cs];W[bs];B[ds];W[dq];B[fr];W[ar];B[ef];W[df];B[ch]C[FootofGod: thanks for the game!
+Slowlylearning: Thank you, too!
+FootofGod: I really thought you'd just give me half the stones 😭
+])(;B[qb]C[Black cashes in on A's aji. In other words, Black's A-stone is already dead and Black wants to extend its value. This is an intermediate-advanced tactic.
+
+The point is that White, in turn, has to spend more resources capturing the sacrificed group, and Black can use that time to strengthen his outside shape.]TR[nc][pd][pe][pf][qe]LB[qc:A](;W[pb];B[ob]C[This is an important point in the shape. If Black had played 1, White would take this point, and Black would have to fall back to 2. It would be too comfortable for White.
+
+Furthermore, White cannot play 1 now, because play can play Q19 and White is short of liberties.]LB[nb:2][oc:1];W[rb];B[oc];W[qa]SQ[ob][oc]TR[pb][qa]C[The point: Black is happy with the exchange of squares for triangles.])(;W[oc])))(;W[qm]C[Because White has this atari and can disrupt Black's base.];B[rn];W[ql];B[rl]C[Annoying for Black.]))(;B[pm]LB[qm:A]C[This proactively defends against the weak point and builds a stronger base.];W[om];B[pl]C[Black is much stronger this way.]))

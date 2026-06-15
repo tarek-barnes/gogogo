@@ -292,9 +292,15 @@ def collate_new_games_for_user_review(filepaths_to_process: list, list_of_existi
     print(f"Total games to process: {limit_n_games}")
 
     for fp in filepaths_to_process:
-        result_dict = import_new_game(fp, list_of_existing_pro_filepaths)
-        mapping_filename_to_file_status[get_new_filepath(fp)] = result_dict['game_type']
-        mapping_filename_to_matching_games[get_new_filepath(fp)] = result_dict['matching_game_records']
+        try:
+            result_dict = import_new_game(fp, list_of_existing_pro_filepaths)
+            mapping_filename_to_file_status[get_new_filepath(fp)] = result_dict['game_type']
+            mapping_filename_to_matching_games[get_new_filepath(fp)] = result_dict['matching_game_records']
+        except Exception as e:
+            print(f"we dun broke - skipping '{fp}'")
+            # breakpoint()
+            print(e)
+            continue
 
     game_stats = Counter(mapping_filename_to_file_status.values())
     num_new = game_stats[(1, 0, 0)]
@@ -317,7 +323,7 @@ def get_mapping_bulk_dataset_filepath_to_existing_pro_filepath():
             f'{base_dataset}/Kisei': [],
             f'{base_dataset}/Female Honinbo': [],
             f'{base_dataset}/Meijin': [],
-            f'{base_dataset}/Honinbo_Jowa': [],
+            f'{base_dataset}/Honinbo_Jowa': [f'{PRO_DIR_ROOT}/Honinbo Jowa'],
             f'{base_dataset}/Tengen': [],
             f'{base_dataset}/Go_Seigen': [f'{PRO_DIR_ROOT}/Go Seigen'],
             f'{base_dataset}/Ing': [],
@@ -332,45 +338,72 @@ def get_mapping_bulk_dataset_filepath_to_existing_pro_filepath():
             f'{base_dataset}/Takagawa': [f'{PRO_DIR_ROOT}/Takagawa Kaku', f'{PRO_DIR_ROOT}/Takagawa Shukaku']}
 
 
-def process_existing_games(existing_games: list):
-    # to do
-    # delete games from staging
-    pass
+def process_existing_games(aeb_pro: str, existing_games: list, list_of_existing_pro_filepaths: list):
+    if len(existing_games) == 0:
+        return
+
+    matching_pro = list_of_existing_pro_filepaths[0].split('/')[-1]
+    os.mkdir(f"{DESTINATION_DIR}/{matching_pro} - DUPLICATE")
+    print(f"Created directory in STAGING: '{matching_pro} - DUPLICATE'")
+
+    for eg in existing_games:
+        eg_filename = eg.split("/")[-1]
+        shutil.move(eg, f"{DESTINATION_DIR}/{matching_pro} - DUPLICATE/{eg_filename}")
 
 
-def process_similar_games(similar_games: list, mapping_filename_to_matching_games: dict):
+def process_similar_games(aeb_pro: str, similar_games: list, list_of_existing_pro_filepaths: list, mapping_filename_to_matching_games: dict):
+    if len(similar_games) == 0:
+        return
+
+    matching_pro = list_of_existing_pro_filepaths[0].split('/')[-1]
+    os.mkdir(f"{DESTINATION_DIR}/{matching_pro} - SIMILAR BUT NOT DUPLICATE")
+    print(f"Created directory in STAGING: '{matching_pro} - SIMILAR BUT NOT DUPLICATE'")
+
+    # to do - improve analysis specificity:
     # case 1:
     #  len(game_a) > len(game_b) and 100% of game_b in game_a (or visa versa)
     #
     # case 2:
     #  1 move delta b/w game_a and game_b
+    print(">>> Here's some analysis:")
     for sg in similar_games:
         matching_games = mapping_filename_to_matching_games[sg]
         analyze_two_similar_games(sg, matching_games)
 
+        sg_filename = sg.split("/")[-1]
+        shutil.move(sg, f"{DESTINATION_DIR}/{matching_pro} - SIMILAR BUT NOT DUPLICATE/{sg_filename}")
 
-def process_new_games(new_games: list, list_of_existing_pro_filepaths: list):
-    print(f"Let's start with the new games")
 
-    #  figure out which directory to send the new games to
+def process_new_games(aeb_pro: str, new_games: list, list_of_existing_pro_filepaths: list):
+    if len(new_games) == 0:
+        return
+
     if len(list_of_existing_pro_filepaths) == 0 or list_of_existing_pro_filepaths == [""]:
-        print("It seems like you don't have a collection for this pro yet")
-        name_of_new_collection_response = get_user_input(">>>>> What should we name the new directory? > ")
-        name_of_new_collection = name_of_new_collection_response.title()
-        collection_filepath = f"{PRO_DIR_ROOT}/{name_of_new_collection}"
-        os.makedirs(collection_filepath, exist_ok=True)
+        print("It seems like you don't have a collection for this pro yet... using AEB naming convention")
+        aeb_pro_name = aeb_pro.split("/")[-1]
+        os.mkdir(f"{DESTINATION_DIR}/{aeb_pro_name}")
+
+        for ng in new_games:
+            ng_filename = ng.split("/")[-1]
+            shutil.move(ng, f"{DESTINATION_DIR}/{aeb_pro_name}/{ng_filename}")
+
     elif len(list_of_existing_pro_filepaths) > 1:
-        print("This pro has multiple collections")
-        pros_with_nums = list(enumerate(list_of_existing_pro_filepaths, start=1))
-        collection_filepath = get_user_input__enumerated_list(pros_with_nums)
+        print("This pro has multiple collections... using AEB naming convention")
+        aeb_pro_name = aeb_pro.split("/")[-1]
+        os.mkdir(f"{DESTINATION_DIR}/{aeb_pro_name}")
+        for ng in new_games:
+            ng_filename = ng.split("/")[-1]
+            shutil.move(ng, f"{DESTINATION_DIR}/{aeb_pro_name}/{ng_filename}")
+
     elif len(list_of_existing_pro_filepaths) == 1:
         collection_filepath = list_of_existing_pro_filepaths[0]
+        matching_pro = list_of_existing_pro_filepaths[0].split('/')[-1]
+        os.mkdir(f"{DESTINATION_DIR}/{matching_pro} - NEW")
+        print(f"Created directory in STAGING: '{matching_pro}'")
 
-    # to do
-    # move game from staging -> pro dir
-
-    for ng in new_games[:20]:
-        print(f"'{ng}' ---> '{collection_filepath}/{ng.split('/')[-1]}'")
+        for ng in new_games:
+            ng_filename = ng.split("/")[-1]
+            shutil.move(ng, f"{DESTINATION_DIR}/{matching_pro} - NEW/{ng_filename}")
 
 
 def pretty_print_enumerated_list(enumerated_list: list):
@@ -427,14 +460,11 @@ def main():
     mapping_aeb_to_existing_pros = get_mapping_bulk_dataset_filepath_to_existing_pro_filepath()
     aeb_pros = sorted(mapping_aeb_to_existing_pros.keys())
 
-    # todo: remove filter for testing
-    for aeb_pro in aeb_pros[2:]:
+    for aeb_pro in aeb_pros:
         list_of_existing_pro_filepaths = mapping_aeb_to_existing_pros[aeb_pro]
         filepaths_to_process = get_sgf_filepaths_for_source_dir(aeb_pro)
 
-        # if 'Female Honinbo' in aeb_pro:
-        #     print("You are in the place")
-        #     breakpoint()
+        # breakpoint()
 
         print(f"\nImporting '{'/'.join(aeb_pro.split('/')[-2:])}'...")
         new_games_for_user = collate_new_games_for_user_review(
@@ -442,23 +472,21 @@ def main():
                                 list_of_existing_pro_filepaths)
         (mapping_filename_to_file_status, mapping_filename_to_matching_games) = new_games_for_user
 
-        # if 'Female Honinbo' in aeb_pro:
-        #     print("You are in the place")
-        #     breakpoint()
+        # to do: check raw count of pro games matches in source file compared to outputs
+        # to do: check a few games dont exist manually
+        # to do: check a few of each actually
+        # to do: helper func to verify player name in title matches game info (sgf specs) player name
+        # to do: for process_new_games logic, my filtering for identifying new vs existing games needs tightening
 
         new_games = [fp for fp in mapping_filename_to_file_status if mapping_filename_to_file_status[fp] == (1, 0, 0)]
-        # process_new_games(new_games, list_of_existing_pro_filepaths)
-        print(f"{len(new_games)} new games found.")
+        process_new_games(aeb_pro, new_games, list_of_existing_pro_filepaths)
 
         existing_games = [fp for fp in mapping_filename_to_file_status if mapping_filename_to_file_status[fp] == (0, 1, 0)]
-        # process_existing_games(existing_games)
-        print(f"{len(existing_games)} existing games found.")
+        process_existing_games(aeb_pro, existing_games, list_of_existing_pro_filepaths)
 
         similar_games = [fp for fp in mapping_filename_to_file_status if mapping_filename_to_file_status[fp] == (0, 0, 1)]
-        # process_similar_games(similar_games, mapping_filename_to_matching_games)
+        process_similar_games(aeb_pro, similar_games, list_of_existing_pro_filepaths, mapping_filename_to_matching_games)
         print(f"{len(similar_games)} similar games found.")
-
-        # breakpoint()
 
 if __name__ == '__main__':
     main()

@@ -1,0 +1,76 @@
+(;FF[4]CA[UTF-8]GM[1]DT[2026-05-20]PC[OGS: https://online-go.com/game/87135056]GN[NAGF Online League Match]PB[Esteban42]PW[tarwreck]BR[3k]WR[3k]TM[2700]OT[3x30 byo-yomi]RE[W+10.5]SZ[19]KM[7.5]RU[AGA]C[tarwreck: have a nice game
+Esteban42: Hi!
+Esteban42: Have a good game
+]AP[Sabaki:0.51.1];B[pp];W[dd];B[dq];W[pd];B[dn];W[qn];B[nq];W[rp];B[qq];W[qk];B[cf];W[fc];B[cd];W[cc];B[bc];W[ce];B[bd];W[df];B[be];W[de];B[cg];W[iq];B[kq];W[fq]C[Mike Chen said this is a fine move, but there are options to play more actively.
+
+First, Black's left corner is still very unstable - this gives Black tempo to solidify with A or B.
+
+Second, Black's bottom right group is relatively strong, so now is the time to consider attaching, like 1. Especially if Black simply pulls back, a sequence like 2-6 could be powerful.]LB[bq:5][cp:3][cq:4][cr:6][dp:2][fp:A][hp:B][kp:1];B[qc];W[qd];B[pc];W[od];B[nb];W[mc];B[mb];W[lc];B[rc];W[rd]C[A bit small, but not sure where is better.
+
+Mike Chen said this is completely fine.];B[dg];W[eg];B[eh];W[fh];B[fi]LB[fg:A]C[Black should play A.](;W[fg]LB[ei:A]C[Slap atari is probably better. During the match, I thought it was a poor exchange for White.
+
+Mike Chen didn't insist on it during review. He didn't mention it. He usually does mention those.];B[ej]LB[ei:A]C[Mike Chen says A is more efficient here. Because it dilutes D12 aji.];W[gi];B[gj];W[hj];B[pj]C[ChadThunder: [object Object\]
+];W[pk]LB[gk:A]C[A is probably bigger.];B[nj];W[oj];B[nk];W[oi];B[ni];W[nh];B[nm];W[mh]C[Probably too small for now. A is still bigger.
+
+Mike Chen said that N12 is actually quite decent, though it does look small. He also said A is another option, also good.]LB[gk:A];B[hi];W[gh];B[ii]C[Black plays aggressively.];W[gk];B[fj];W[ij];B[ji];W[jj];B[ki]C[White fights back in an even manner.];W[kj];B[li];W[el]C[Not sure about this. I saw a tactic if Black played 1. See variation.
+
+Mike Chen said it was decent.
+
+ChadThunder: [object Object\]
+]LB[dl:1](;B[dk];W[dl];B[ck];W[cl]C[Mike Chen said it's good to force Black to spend several moves surrounding a modest, even inefficient, territory.];B[ep]C[Black plays this calm, slow, powerful move.];W[fp]C[Might be an inaccuracy. Fixing the top group seems more important.
+
+Mike Chen said White should consider a move like A. The idea is "defending by attacking" and putting more pressure on Black. Then White can play lightly in the bottom area to connect.]LB[bn:A];B[fn];W[gm];B[fo];W[ho]C[Seems like a reasonable result for White.];B[gn]C[Mike Chen warned about situations like this. He gave a heuristic: "when your opponent has played several slow, defensive moves in an area, you should pull back a bit, avoid direct confrontation, because the opponent has surprising latent resources".
+
+So here, it seems like White should block directly at A, and maybe so, but the upcoming cut will be incredibly severe. Why? That empty triangle is suddenly excellent shape.]TR[fn][fo][gn]LB[hn:A];W[hn];B[fm](;W[fl]C[I looked at A but ruled it out. It was probably a much better move. See variation.
+
+Mike Chen talked about this. This situation is ulimately so difficult because 1) White is trying to connect very directly and 2) Black has valuable thickness nearby.
+
+He says connecting at 1 would be the "pulling back a bit", or "avoiding direct confrontation" idea. One stone can be sacrificed, no big deal. White might be trying too hard with F8. It's an idea, anyway.
+
+Nice sabaki shape.]LB[ek:A][fk:1];B[hm];W[gl];B[im]C[This is painful for White. Because those 2 stones will be a pain to catch.];W[jn];B[jm];W[km];B[in]C[I thought this was a mistake, because it lowers Black's liberties, but it's a good move.];W[io];B[kn];W[jo];B[kl];W[lm];B[ll](;W[ln]C[Blunder. White must play A here. I misread again, thinking Black could refute with M6 where White would have to connect. Not so. See variation.
+
+Mike Chen said it was a very messy situation. A isn't trivial to find. Even assuming A would exist, the shape seemed difficult for White since connecting up stiffly recently.]LB[ml:A];B[jl]C[Now the game is very difficult for White.];W[lj];B[mi];W[lp];B[lq];W[mp];B[jr]C[ChadThunder: [object Object\]
+];W[ml];B[mk];W[nl];B[lk];W[hl]C[It's probably too slow to connect directly at this point. White was hoping to exploit the capturing race for outside gains.];B[ik];W[hk];B[bn];W[bk];B[bj];W[bm]C[This was probably an overplay. Maybe better to fix the outside with A and then look to squeeze with B.]LB[jg:B][ok:A];B[cm];W[co]C[Some flailing.];B[cn];W[cq];B[cr];W[dp];B[do];W[cp];B[eq];W[br];B[dr];W[bo];B[an];W[cj]C[More flailing.];B[ci];W[bi];B[aj];W[ak];B[dj];W[jg];B[lg];W[lh];B[kh];W[kg]C[Mike Chen skipped through most of this fighting and just said "flailing!!!" while laughing.];B[ol];W[mm];B[mn];W[ko];B[ok];W[oh];B[on];W[pm];B[om];W[mq];B[pn]C[Reasonable trade. I thought this was a mistake by Black, but it's actually very pragmatic.];W[nr];B[pl];W[ql];B[qo];W[rn];B[ro];W[so];B[rq]C[Too small. Although White's shape on the side is very brittle at this point.];W[sc];B[sb];W[sd];B[ra]LB[lb:A]C[Black should simply push at A.];W[lb];B[ig];W[if];B[hg];W[hf];B[sq];W[cb]LB[gf:A]C[A is probably bigger.];B[fr];W[hr];B[gr];W[gq];B[sp];W[qm];B[bb];W[oq];B[pr];W[ba]LB[gf:A]C[A is still bigger.];B[gs];W[hs];B[es]C[???];W[oc];B[ob];W[no]C[This is also a strange move. A is better.
+
+txwolf: what the heck is this E1? lol
+]LB[gf:A];B[la];W[ka];B[ma];W[kb];B[nc];W[nd]C[ChadThunder: He saves a few points by not having to go back and capture either dead group
+];B[nn];W[oo];B[po];W[sn];B[mo];W[lo];B[ap];W[gf]C[ChadThunder: Which he's now trying to do with A4 for no reason
+txwolf: he played like he has already won, lol
+];B[op]C[txwolf: should've taken t6 as sente
+];W[np];B[gp]C[txwolf: h1 is also sente
+];W[hq];B[go];W[hp];B[ab];W[or]C[txwolf: and he played m1, lol
+];B[pq]C[txwolf: p2 is bigger
+];W[ps];B[qs];W[os];B[gg];W[hh];B[ih];W[ff];B[aa];W[ca]C[Esteban42: i see
+tarwreck: i think so anyway
+Esteban42: i always forget online
+Esteban42: yes i think so
+tarwreck: np
+];B[jh]C[tarwreck: we need to fill dame for aga
+Esteban42: thx
+];W[]C[tarwreck: thanks for the game
+];B[]C[Esteban42: gg
+Esteban42: thanks for the game
+tarwreck: wow that was stressful
+Esteban42: losing the bottom tipped the scale
+Esteban42: you did well at the end
+tarwreck: i thought the capturing race would've been less bumpy somehow
+Esteban42: not sure where i went wrong at the end tbh
+tarwreck: i think your moves in the bottom right weren't that big, globally
+tarwreck: like T3 struck me as a little too small
+Esteban42: yep!
+Esteban42: that was the losing move i think.
+Esteban42: well
+Esteban42: one of them lol
+tarwreck: it got very complicated... i lost the plot for a while
+tarwreck: hopefully we can get it reviewed
+Esteban42: i was afraid of a capture race
+tarwreck: if there's someone you want, milan is open to considering it
+tarwreck: haha my only strategy is flailing, so capturing races suit me
+Esteban42: in which i have to fill my own territory to capture
+tarwreck: yeah you did quite well to defend against a lot of my prodding
+tarwreck: i was hoping you'd not play A6 for example
+Esteban42: well i think a review from any of the stronger reviewers would be amazing
+tarwreck: yeah definitely
+tarwreck: hopefully i see you there
+tarwreck: thanks again for the game 👍
+])(;W[ml];B[ln](;W[lj]C[This is the key idea.](;B[mi];W[mm];B[mn];W[mk]C[Smooth sailing for White.])(;B[mm];W[mi];B[mj];W[jg]C[Looks good for White.]))(;W[mm]C[This would be a mistake. Because...];B[mn];W[lj];B[mj]C[Black can block this way now. Whereas before, White 1 forced Black 2.]LB[lj:1][mi:2])))(;W[ek];B[gl];W[fk]C[I read that White would connect at 1. But this connect is sente.]LB[hm:1];B[hm];W[dj]))(;B[dl];W[dk];B[ek];W[dm];B[cl];W[cm];B[em];W[fl];B[cn];W[bm]LB[dh:A]C[Looking at the weakness at A.]))(;W[ei];B[dh](;W[fg];B[gi])(;W[gi](;B[fg];W[fj];B[ef])(;B[fj];W[fg]))))
