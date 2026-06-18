@@ -1,12 +1,14 @@
 from sgfmill import sgf
 
+import copy
 import os
 
 PRO_DIR_ROOT = "/Users/tarek/github/gogogo/pro_games"
 
 # to do:
-# - email myself professional game record
-# - load games into database
+# get "frames" of a game state (so i could later play it out)
+# email myself professional game record
+# load games into database
 #  > games
 #  > game_sources
 #  > players
@@ -15,116 +17,144 @@ PRO_DIR_ROOT = "/Users/tarek/github/gogogo/pro_games"
 #  > game_metadata
 
 
-# i want to add functionality that covers all bases for go games
-# so just to describe those different bases:
-# - primitives can refer to helper funcs which do basic board manipulation (also parse_sgf)
-# - manipulation can refer to those which change the board or add semantic meaning to it (e.g. get_all_symmetries)
-# - fingerprinting can refer to bookkeeping board states and game records
-# - validation can refer to finding bad records (e.g. consecutive same-player moves)
-# - metadata can refer to user-friendly info handling/storage (e.g. normalize_player_name)
-# - analysis can refer to comparing games (e.g. deduplication)
-# - eventually: ingestion pipeline 
-# - eventually: reporting, data health
-
-# currently being used:
-#     analyze_two_similar_games,
-#     count_moves_in_a_game,
-#     count_number_of_same_moves,
-#     get_game,
-#     get_list_of_pro_filepaths,
-#     get_matching_games,
-#     are_these_two_games_the_same
-
-# to do:
-# Board Primitives
-
-# apply_move(board, move) → new board state with captures applied
-# get_liberties(board, group) → liberty count for a connected group
-# get_connected_group(board, coordinate) → flood fill from a stone
-# remove_captures(board, move) → returns board with captured stones removed
+### BOARD PRIMITIVES
 # detect_ko(board, move, board_history) → simple and superko variants
 # is_legal_move(board, move, board_history) → combines liberty and ko checks
 # score_board(board, ruleset) → Chinese vs Japanese scoring
 
-# Symmetry & Canonicalization
+def get_empty_board(size: int = 19) -> list[list]:
+    # (0,0) is the bottom left
+    return [['' for _ in range(size)] for _ in range(size)]
 
-# rotate_board(board, n) → 90° rotation n times
-# reflect_board(board, axis) → horizontal, vertical, diagonal
-# get_all_symmetries(board) → all 8 transformations
-# canonical_orientation(board) → lexicographically smallest of the 8
-# transform_move(move, symmetry) → apply a symmetry transform to a coordinate
-# canonical_game_sequence(move_list) → full game as canonical board states
+def get_neighbors(board: list[list], point: tuple) -> list[tuple]:
+    # for floodfill
+    board_size = len(board)
+    (y, x) = point
+    neighbors = []
+    if y > 0:
+        neighbors.append((y-1, x))
+    if y < board_size - 1:
+        neighbors.append((y+1, x))
+    if x > 0:
+        neighbors.append((y, x-1))
+    if x < board_size - 1:
+        neighbors.append((y, x+1))
+    return neighbors
 
-# Fingerprinting
+def get_group_and_liberties(board: list[list], point: tuple):
+    # floodfill
+    color =  board[point[0]][point[1]]
+    visited = set()
+    liberties = set()
+    stack = [point]
 
-# position_fingerprint(board) → hash of canonical board state
-# game_fingerprint(move_list) → hash of full canonical sequence
-# prefix_fingerprint(move_list, n) → fingerprint at move n, for AI cache keys
-# fingerprint_all_positions(move_list) → returns fingerprint at every move, used for position-level AI caching
+    while stack:
+        curr = stack.pop()
+        if curr in visited:
+            continue
+        visited.add(curr)
+        for neighbor in get_neighbors(board, curr):
+            (y, x) = neighbor
+            if board[y][x] == '':
+                liberties.add(neighbor)
+            elif board[y][x] == color and neighbor not in visited:
+                stack.append(neighbor)
+    return visited, liberties
 
-# Validation
+def remove_captured_stones(board: list[list], point: tuple, opponent_color: str) -> list[list]:
+    for neighbor in get_neighbors(board, point):
+        (ny, nx) = neighbor
+        if board[ny][nx] == opponent_color:
+            (group, liberties) = get_group_and_liberties(board, neighbor)
+            if len(liberties) == 0:
+                for gy, gx in group:
+                    board[gy][gx] = ''
+    return board
 
-# validate_sgf(path) → top-level validator, calls everything below
-# validate_move_legality(board_history, move_list) → checks every move is legal
-# validate_player_alternation(move_list) → catches consecutive same-color moves
-# validate_metadata_completeness(metadata) → flags missing komi, ruleset, result, players
-# validate_result_consistency(move_list, result) → e.g. game ends at move 50 but result says resignation at move 200
-# validate_board_size(sgf) → confirm it's actually 19x19 (or flag 9x9, 13x13 explicitly)
+def apply_move(board: list[list], move: tuple) -> list[list]:
+    (color, point) = move
+    board_size = len(board)
 
-# Metadata Extraction
+    color = color.upper()
+    opponent_color = 'W' if color == 'B' else 'B'
+    (y, x) = point
 
-# extract_metadata(sgf) → players, ranks, date, komi, result, ruleset, event
-# normalize_player_name(name) → handles encoding differences, alternate romanizations
-# detect_ruleset(sgf) → infer from metadata or source if not explicit
-# extract_move_timestamps(sgf) → if time data exists, useful for game quality signals
+    new_board = copy.deepcopy(board)
 
-# Similarity & Deduplication
+    board_y = board_size - 1 - y
+    new_board[board_y][x] = color
+    new_board = remove_captured_stones(new_board, (board_y, x), opponent_color)
+    return new_board
 
-# find_common_prefix(move_list_a, move_list_b) → index where games first diverge
-# similarity_score(move_list_a, move_list_b) → float 0–1 based on common prefix length relative to total
-# is_prefix_game(move_list_a, move_list_b) → one game is a truncated version of the other
-# find_duplicate_candidates(fingerprint_db) → exact match lookup
-# find_similar_candidates(fingerprint_db, threshold) → near-duplicate clustering
-# classify_discrepancy(move_list_a, move_list_b) → single divergence vs scattered vs prefix
+def get_final_board_state(sgf_filepath: str, force_canonicalization: bool = False) -> list:
+    if force_canonicalization:
+        moves = canonical_game_sequence(parse_sgf(sgf_filepath=sgf_filepath, include_colors=True)['moves'])
+    else:
+        # to do: refactor this to parse_sgf(...)['moves]
+        _, moves = extract_raw_game_data_from_filepath(sgf_filepath=sgf_filepath, include_colors=True)
 
-# Ingestion Pipeline
+    board = get_empty_board()
 
-# ingest_sgf(path, db, log) → orchestrates parse → validate → canonicalize → fingerprint → store
-# batch_ingest(directory, db, log) → runs ingest_sgf across all files with error isolation
-# resolve_duplicate(game_a, game_b, policy) → applies your tiered deduplication logic
-# write_ingestion_log(event, path, details) → structured JSONL logging
+    for move in moves:
+        board = apply_move(board, move)
+        
+    return board
 
-# Reporting & Data Health
+# to do: refactor to simply accept sgf filepath
+# def pretty_print_board_state(game_data: dict, board: list[list]) -> None:
+def pretty_print_board_state(sgf_filepath: str, force_canonicalization: bool = False) -> None:
+    game_data = parse_sgf(sgf_filepath)
+    board = get_final_board_state(sgf_filepath, force_canonicalization)
 
-# generate_health_report(db) → summary of validation failures, duplicates, missing metadata
-# diff_games(move_list_a, move_list_b) → move-by-move diff output
-# estimate_game_quality(sgf) → composite score flagging short games, missing data, suspicious patterns
-# cluster_by_opening(fingerprint_db, depth) → group games by shared prefix up to move N, useful early signal for joseki work later
+    board_size = len(board)
+    columns = [k for k in 'ABCDEFGHJKLMNOPQRST'][:board_size]
+    col_header = '    ' + '  '.join(columns) + '    '
+    print(" "+col_header+"\n")
 
+    for i, row in enumerate(board):
+        row_num = board_size - i
+        row_str = ' '
+        for cell in row:
+            if cell == 'B':
+                row_str += '●  '
+            elif cell == 'W':
+                row_str += '○  '
+            else:
+                row_str += '·  '
+        print(f'{row_num:2}  {row_str}{row_num:2}')
+    print("\n"+" "+col_header)
+    print("\n")
+    try:
+        print(f"Black Player: {game_data['black_player']}")
+        print(f"White Player: {game_data['white_player']}")
+        print(f"Event: {game_data['event']}")
+        print(f"Date of Match: {game_data['date']}")
+        print(f"Komi: {game_data['komi']}")
+        print(f"Result: {game_data['result']}")
+    except Exception as e:
+        print("Some game details not available")
 
-
-
-
-### BOARD PRIMITIVES
-
-def extract_game_moves_from_filepath(sgf_filepath) -> list:
+def extract_game_moves_from_filepath(sgf_filepath,  include_colors: bool = False) -> list:
     """Returns list of coords. e.g.: [((15, 16), (15, 3), ...)]"""
-    (_, moves) = extract_raw_game_data_from_filepath(sgf_filepath)
+    (_, moves) = extract_raw_game_data_from_filepath(sgf_filepath, include_colors)
     return moves
 
-def extract_raw_game_data_from_filepath(sgf_file_path: str) -> tuple:
+def extract_raw_game_data_from_filepath(sgf_filepath: str, include_colors: bool = False) -> tuple:
     """Returns (metadata, moves) where each entry is a list."""
     metadata, moves = [], []
 
-    with open(sgf_file_path, 'rb') as f:
+    with open(sgf_filepath, 'rb') as f:
         sgf_content = f.read()
-
     game = sgf.Sgf_game.from_bytes(sgf_content)
 
     for node in game.get_main_sequence():
         color, point = node.get_move()
-        if color is not None:
-            moves.append(point)
+        if include_colors:
+            if color is not None:
+                moves.append((color, point))
+        else:
+            if color is not None:
+                moves.append(point)
     
     for node in game.get_main_sequence():
         for key in [k for k in node.properties() if k not in ['B', 'W']]:
@@ -142,10 +172,10 @@ def extract_raw_game_data_from_filepath(sgf_file_path: str) -> tuple:
 # to do: figure out comments
 # to do: add file format FF
 # to do: add time limit TM
-# chicken
-def parse_sgf(sgf_filepath: str) -> dict:
+# to do: option for adding colors in moves
+def parse_sgf(sgf_filepath: str, include_colors: bool = False) -> dict:
     """Returns a dict of parsed game data."""
-    (metadata, moves) = extract_raw_game_data_from_filepath(sgf_filepath)
+    (metadata, moves) = extract_raw_game_data_from_filepath(sgf_filepath, include_colors)
     metadata_dict = {k: v for (k, v) in metadata}
 
     return {
@@ -164,11 +194,62 @@ def parse_sgf(sgf_filepath: str) -> dict:
         "raw_metadata": metadata
     }
 
+### CANONICALIZATION
+# canonical_orientation(board) → lexicographically smallest of the 8
+# transform_move(move, symmetry) → apply a symmetry transform to a coordinate
+# canonical_game_sequence(move_list) → full game as canonical board states
 
+def rotate_board(board: list[list], n: int) -> list[list]:
+    n = n % 4
+    result = copy.deepcopy(board)
+    for _ in range(n):
+        # this is a cute trick to transpose?
+        result = [list(row) for row in zip(*result[::-1])]
+    return result
+
+def get_all_symmetries(board: list[list]) -> list[list[list]]:
+    # equivalent representations of a board state
+    symmetries = []
+    current = copy.deepcopy(board)
+    for n in range(4):
+        rotated = rotate_board(board, n)
+        symmetries.append(rotated)
+        symmetries.append([row[::-1] for row in rotated])
+    return symmetries
+
+def transform_move(move: tuple, symmetry_index: int, board_size: int = 19) -> tuple:
+    color, point = move
+    if point is None:  # pass move
+        return (color, None)
+    y, x = point
+    n_rotations = symmetry_index // 2
+    do_flip = symmetry_index % 2 == 1
+    for _ in range(n_rotations):
+        y, x = x, board_size - 1 - y
+    if do_flip:
+        x = board_size - 1 - x
+    return (color, (y, x))
+
+def board_to_string(board: list[list]) -> str:
+    # for establishing a canonical representation -- so we can sort and pick the "smallest"
+    return ''.join(''.join(cell for cell in row) for row in board)
+
+def canonical_game_sequence(moves: list, anchor_move: int = 10) -> list:
+    if not moves:
+        return []
+    
+    board = get_empty_board()
+    for move in moves[:anchor_move]:
+        board = apply_move(board, move)
+
+    # check symmetries early on, in case one game is a prefix of another
+    symmetries = get_all_symmetries(board)
+    canonical_index = min(range(len(symmetries)), key=lambda i: board_to_string(symmetries[i]))
+
+    return [transform_move(move, canonical_index) for move in moves]
 
 ### METADATA
-
-def extract_raw_metadata_dict_from_filepath(sgf_filepath) -> dict:
+def extract_raw_metadata_dict_from_filepath(sgf_filepath: str) -> dict:
     """Returns dict s.t. keys are properties described here: https://en.wikipedia.org/wiki/Smart_Game_Format"""
     (metadata, _) = extract_raw_game_data_from_filepath(sgf_filepath)
     return {k: v for (k, v) in metadata}
@@ -242,13 +323,13 @@ def parse_metadata_date(metadata: dict) -> str:
 def parse_metadata_round_num(metadata: dict) -> int:
     return metadata['RO'] if is_round_num_included_in_metadata(metadata) else 0
 
-
-# def normalize_player_name(name):
-#     pass
+# to do
+def normalize_player_name(name):
+    # add rank?
+    pass
 
 
 ### ANALYSIS
-
 def get_list_of_all_pros_in_collection() -> list:
     return os.listdir(PRO_DIR_ROOT)
 
@@ -275,6 +356,222 @@ def get_list_of_all_games_between_two_pro_players_in_collection(pro_name_one: st
     (a, b) = (get_list_of_all_pros_games_in_collection(pro_name_one), get_list_of_all_pros_games_in_collection(pro_name_two))
     (a, b) = (set(a), set(b))
     return list(a&b)
+
+
+### VALIDATION
+# validate_sgf(path) → top-level validator, calls everything below
+# validate_move_legality(board_history, move_list) → checks every move is legal
+# validate_player_alternation(move_list) → catches consecutive same-color moves
+# validate_metadata_completeness(metadata) → flags missing komi, ruleset, result, players
+# validate_result_consistency(move_list, result) → e.g. game ends at move 50 but result says resignation at move 200
+# validate_board_size(sgf) → confirm it's actually 19x19 (or flag 9x9, 13x13 explicitly)
+
+
+
+### DEDUPLICATION
+def find_common_prefix_length(game_one_filepath: str, game_two_filepath: str) -> int:
+    # add 1 to length because it's 0-indexed
+    game_one_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_one_filepath, include_colors=True)['moves'])
+    game_two_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_two_filepath, include_colors=True)['moves'])
+
+    for k in range(min(len(game_one_moves), len(game_two_moves))):
+        if game_one_moves[k] != game_two_moves[k]:
+            return k
+    return k+1
+
+def find_number_of_same_moves(game_one_filepath: str, game_two_filepath: str) -> int:
+    game_one_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_one_filepath, include_colors=True)['moves'])
+    game_two_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_two_filepath, include_colors=True)['moves'])
+
+    counter = 0
+    for k in range(min(len(game_one_moves), len(game_two_moves))):
+        if game_one_moves[k] == game_two_moves[k]:
+            counter += 1
+    return counter
+
+def find_number_of_different_moves(game_one_filepath: str, game_two_filepath: str) -> int:
+    game_one_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_one_filepath, include_colors=True)['moves'])
+    game_two_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_two_filepath, include_colors=True)['moves'])
+
+    counter = 0
+    for k in range(min(len(game_one_moves), len(game_two_moves))):
+        if game_one_moves[k] != game_two_moves[k]:
+            counter += 1
+    return counter
+
+def is_this_game_a_subset(game_one_filepath: str, game_to_compare_with_filepath: str) -> bool:
+    # game_one is entirely contained in game_to_compare_with
+    game_one_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_one_filepath, include_colors=True)['moves'])
+    common_prefix_length = find_common_prefix_length(game_one_filepath, game_to_compare_with_filepath)
+    return len(game_one_moves) == common_prefix_length
+
+def is_this_game_a_superset(game_one_filepath: str, game_to_compare_with_filepath: str) -> bool:
+    # game_one is game_to_compare_with + moves
+    # note: this func distinguishes a superset from the set itself... it MUST extend the set
+    # note: for set = superset, use `do_these_games_have_identical_moves` for reliable code
+    game_one_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_one_filepath, include_colors=True)['moves'])
+    game_to_compare_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_to_compare_with_filepath, include_colors=True)['moves'])
+    common_prefix_length = find_common_prefix_length(game_one_filepath, game_to_compare_with_filepath)
+    return (len(game_to_compare_moves) == common_prefix_length) and (len(game_one_moves) > common_prefix_length)
+
+def similarity_score(game_one_filepath: str, game_two_filepath: str) -> float:
+    # 0-1 as a percent of overlapping moves
+
+    game_one_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_one_filepath, include_colors=True)['moves'])
+    game_two_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_two_filepath, include_colors=True)['moves'])
+
+    num_moves_to_compare = min(len(game_one_moves), len(game_two_moves))
+    num_same_moves = 0
+
+    if num_moves_to_compare == 0:
+        return 0
+
+    for k in range(num_moves_to_compare):
+        if game_one_moves[k] == game_two_moves[k]:
+            num_same_moves += 1
+    return num_same_moves / num_moves_to_compare
+
+def do_these_games_have_identical_moves(game_one_filepath: str, game_two_filepath: str) -> bool:
+    # 100% same moves, metadata can differ
+    game_one_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_one_filepath, include_colors=True)['moves'])
+    game_two_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_two_filepath, include_colors=True)['moves'])
+    return (similarity_score(game_one_filepath, game_two_filepath) == 1) and (len(game_one_moves) == len(game_two_moves))
+
+def find_duplicate_candidates(game_one_filepath: str, list_of_filepaths_to_reference: list) -> list:
+    # to do
+    pass
+
+def find_similar_candidates(game_one_filepath: str, list_of_filepaths_to_reference: list, minimum_threshold: float = 0.2) -> list:
+    # cross-references a filepath against a parent dir containing many pro game filepaths
+    # returns a list with tuples: (candidate_match, similarity_score)
+    similar_candidates = []
+    for filename in os.listdir(list_of_filepaths_to_reference):
+        fp = f"{list_of_filepaths_to_reference}/{filename}"
+        # ignore stuff like .DS_Store
+        if not filename.endswith('.sgf'):
+            continue
+        sim_score = similarity_score(game_one_filepath, fp)
+        if sim_score >= minimum_threshold:
+            similar_candidates.append((fp, sim_score))
+    return similar_candidates
+
+def are_these_games_compositions_of_eachother(game_one_filepath: str, game_two_filepath: str) -> bool:
+    # a composition would be:
+    #   > 1) games end at same canonical board state
+    #   > 2) non-zero common_prefix_length
+    #   > 3) (follows naturally) any move discrepancies are resolved such that the net delta is 0
+
+    game_one_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_one_filepath, include_colors=True)['moves'])
+    game_two_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_two_filepath, include_colors=True)['moves'])
+
+    # games end at same canonical board state
+    if not (get_final_board_state(game_one_filepath, True) == get_final_board_state(game_two_filepath, True)):
+        return False
+    
+    # non-zero common_prefix_length
+    if find_common_prefix_length(game_one_filepath, game_two_filepath) == 0:
+        return False
+    
+    # discrepancies must be mid-game (and they can't be the same game)
+    if (is_this_game_a_subset(game_one_filepath, game_two_filepath) or is_this_game_a_superset(game_one_filepath, game_two_filepath)):
+        return False
+    return True
+
+def classify_discrepancy(game_one_filepath: str, game_two_filepath: str) -> str:
+    game_one_data = parse_sgf(sgf_filepath=game_one_filepath, include_colors=True)
+    game_two_data = parse_sgf(sgf_filepath=game_two_filepath, include_colors=True)
+
+    # identical everything
+    if game_one_data == game_two_data:
+        return 'EXACT_MATCH'
+    
+    # identical moves, conflicting metadata
+    if do_these_games_have_identical_moves(game_one_filepath, game_two_filepath):
+        return 'SAME_MOVES_DIFFERENT_METADATA'
+
+    # one is a subset of two
+    if is_this_game_a_subset(game_one_filepath, game_two_filepath):
+        return 'SUBSET'
+
+    # one is a superset of two (where set != superset)
+    if is_this_game_a_superset(game_one_filepath, game_two_filepath):
+        return 'SUPERSET'
+
+    # a composition - some moves played out of order but same end game state (e.g. ko threats not played in the right order due to a transcription error)
+    if are_these_games_compositions_of_eachother(game_one_filepath, game_two_filepath):
+        return 'COMPOSITION'
+
+    # a single mid-game discrepancy - must happen mid-game otherwise would be sub/superset
+    if find_number_of_different_moves(game_one_filepath, game_two_filepath) == 1:
+        return 'SINGLE_DISCREPANCY'
+    
+    # 2-3 mid-game discrepancies
+    if (find_number_of_different_moves(game_one_filepath, game_two_filepath) == 2 or 
+        find_number_of_different_moves(game_one_filepath, game_two_filepath) == 3):
+        return 'TWO_OR_THREE_DISCREPANCIES'
+
+    # a few mid-game discrepancies (<10)
+    if (find_number_of_different_moves(game_one_filepath, game_two_filepath) > 3 and 
+        find_number_of_different_moves(game_one_filepath, game_two_filepath) < 10):
+        return 'MORE_THAN_THREE_LESS_THAN_TEN_DISCREPANCIES'
+
+
+
+# Fingerprinting
+
+# position_fingerprint(board) → hash of canonical board state
+# game_fingerprint(move_list) → hash of full canonical sequence
+# prefix_fingerprint(move_list, n) → fingerprint at move n, for AI cache keys
+# fingerprint_all_positions(move_list) → returns fingerprint at every move, used for position-level AI caching
+
+# Metadata Extraction
+
+# extract_metadata(sgf) → players, ranks, date, komi, result, ruleset, event
+# normalize_player_name(name) → handles encoding differences, alternate romanizations
+# detect_ruleset(sgf) → infer from metadata or source if not explicit
+# extract_move_timestamps(sgf) → if time data exists, useful for game quality signals
+
+# Ingestion Pipeline
+
+# ingest_sgf(path, db, log) → orchestrates parse → validate → canonicalize → fingerprint → store
+# batch_ingest(directory, db, log) → runs ingest_sgf across all files with error isolation
+# resolve_duplicate(game_a, game_b, policy) → applies your tiered deduplication logic
+# write_ingestion_log(event, path, details) → structured JSONL logging
+
+# Reporting & Data Health
+
+# generate_health_report(db) → summary of validation failures, duplicates, missing metadata
+# diff_games(move_list_a, move_list_b) → move-by-move diff output
+# estimate_game_quality(sgf) → composite score flagging short games, missing data, suspicious patterns
+# cluster_by_opening(fingerprint_db, depth) → group games by shared prefix up to move N, useful early signal for joseki work later
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
