@@ -367,7 +367,6 @@ def get_list_of_all_games_between_two_pro_players_in_collection(pro_name_one: st
 # validate_board_size(sgf) → confirm it's actually 19x19 (or flag 9x9, 13x13 explicitly)
 
 
-
 ### DEDUPLICATION
 def find_common_prefix_length(game_one_filepath: str, game_two_filepath: str) -> int:
     # add 1 to length because it's 0-indexed
@@ -380,6 +379,7 @@ def find_common_prefix_length(game_one_filepath: str, game_two_filepath: str) ->
     return k+1
 
 def find_number_of_same_moves(game_one_filepath: str, game_two_filepath: str) -> int:
+    # similar to `find_common_prefix_length`, but looks at entire game, not just until collision
     game_one_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_one_filepath, include_colors=True)['moves'])
     game_two_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_two_filepath, include_colors=True)['moves'])
 
@@ -390,14 +390,25 @@ def find_number_of_same_moves(game_one_filepath: str, game_two_filepath: str) ->
     return counter
 
 def find_number_of_different_moves(game_one_filepath: str, game_two_filepath: str) -> int:
+    # game_one_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_one_filepath, include_colors=True)['moves'])
+    # game_two_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_two_filepath, include_colors=True)['moves'])
+
+    # counter = 0
+    # for k in range(min(len(game_one_moves), len(game_two_moves))):
+    #     if game_one_moves[k] != game_two_moves[k]:
+    #         counter += 1
+    # return counter
+    return len(get_different_moves(game_one_filepath, game_two_filepath).values())
+
+def get_different_moves(game_one_filepath: str, game_two_filepath: str) -> dict:
+    different_moves_dict = {}
     game_one_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_one_filepath, include_colors=True)['moves'])
     game_two_moves = canonical_game_sequence(parse_sgf(sgf_filepath=game_two_filepath, include_colors=True)['moves'])
 
-    counter = 0
     for k in range(min(len(game_one_moves), len(game_two_moves))):
         if game_one_moves[k] != game_two_moves[k]:
-            counter += 1
-    return counter
+            different_moves_dict[k] = (game_one_moves[k], game_two_moves[k])
+    return different_moves_dict
 
 def is_this_game_a_subset(game_one_filepath: str, game_to_compare_with_filepath: str) -> bool:
     # game_one is entirely contained in game_to_compare_with
@@ -478,12 +489,17 @@ def are_these_games_compositions_of_eachother(game_one_filepath: str, game_two_f
     return True
 
 def classify_discrepancy(game_one_filepath: str, game_two_filepath: str) -> str:
+    """"""
     game_one_data = parse_sgf(sgf_filepath=game_one_filepath, include_colors=True)
     game_two_data = parse_sgf(sgf_filepath=game_two_filepath, include_colors=True)
 
     # identical everything
     if game_one_data == game_two_data:
         return 'EXACT_MATCH'
+    
+    # identical nothing
+    if find_number_of_same_moves(game_one_filepath, game_two_filepath) == 0:
+        return 'COMPLETELY_DIFFERENT_GAMES'
     
     # identical moves, conflicting metadata
     if do_these_games_have_identical_moves(game_one_filepath, game_two_filepath):
@@ -514,6 +530,15 @@ def classify_discrepancy(game_one_filepath: str, game_two_filepath: str) -> str:
     if (find_number_of_different_moves(game_one_filepath, game_two_filepath) > 3 and 
         find_number_of_different_moves(game_one_filepath, game_two_filepath) < 10):
         return 'MORE_THAN_THREE_LESS_THAN_TEN_DISCREPANCIES'
+    
+    if find_number_of_same_moves(game_one_filepath, game_two_filepath) > 0:
+        num_same_moves = find_number_of_same_moves(game_one_filepath, game_two_filepath)
+        num_diff_moves = find_number_of_different_moves(game_one_filepath, game_two_filepath)
+        return f'VARIATION_{num_same_moves} SAME MOVES-{num_diff_moves} DISCREPANCIES'
+    
+    else:
+        return 'UNKNOWN'
+
 
 
 

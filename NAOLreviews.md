@@ -7,12 +7,173 @@
 ### Round 5
 
 ### Round 4
+Yilun Yang (7P) - https://www.youtube.com/watch?v=9EkWmruGgw4
+Jia Chen 4d Moxuan Liu 6d - https://online-go.com/game/87346166
+Jordan Lampenfeld 1k Enzo Aozono-Araldi 1d - https://online-go.com/game/87346139
+Gabe Schwartz 2k Thanushiyan Nagarathinam 2k - https://online-go.com/game/87283837
+
+Michael Chen (1P) - https://www.youtube.com/watch?v=TVEjmKcJiZo
+Jonathan Buss 3d Jake Kim 3d - https://online-go.com/game/87317668
+Brian McKeithan 5k Stephen Leone 3k - https://online-go.com/game/87248851
+Enrique Garcia 5k Laura Wu 5k - https://online-go.com/game/87313946
+
+Jeremiah Donley (5D) - https://www.youtube.com/watch?v=4euCPzPzAb0
+Ken Munoz 8k JOSEPH CHAVES 8k - https://online-go.com/game/87315549
+David Heerema 9k Paul Salaets 9k - https://online-go.com/game/87346608
+Madeleine Hsu 14k Hyun Joo 12k - https://online-go.com/game/87214300
+
+Shawn Ray (4D) - https://www.youtube.com/watch?v=MRDLk-sB8Is
+Madeleine Hsu 14k Reena Jiameng Zhang 14k - https://online-go.com/game/87346052.
+Elizabeth H Small 15k Zachary Tan 16k - https://online-go.com/game/87346143
+Monica Maroon 15k Zachary W Dragsbaek 16k - https://online-go.com/game/87345166
+
+Dwyrin (5D) - https://www.youtube.com/watch?v=OspF7tkKFyU
+Zaher A Nazif 8k Robert Gilman 8k - https://online-go.com/game/87248864
+Ryan A Miller 9k Steven Bertrand 9k - https://online-go.com/game/87345275
+Terri Schurter 11k Patrick Rogers 12k - https://online-go.com/game/87346165
+
+Alexander Qi (3P) - https://www.youtube.com/watch?v=001ZoSyk8eA
+Joel Kenny 4d Ivan Lo 7d - https://online-go.com/game/87346429
+Bob Zhao 4k Jonathan Green 4k - https://online-go.com/game/87346141
+Laura Wu 5k Monsoon Shrestha 6k - https://online-go.com/game/87346152
+
+Soren Jaffe (6D) - https://www.youtube.com/watch?v=AYrLyC5r5VA
+Andy Ji 7k Max Poltoranos 6k - https://online-go.com/game/87227955
+Bryan Xie 8k Rentaro Matsukata 8k - https://online-go.com/game/87346176
+Chloe Hazzard 11k Bharath Mohan 11k - https://online-go.com/game/87346308
+
+BenKyo Baduk (5D) - https://www.youtube.com/watch?v=4is1mX9e3JQ
+William R Mungas 7k Andrew Landry 7k - https://online-go.com/game/87346147
+Ken Deugau 11k JEFF HUTSON 9k - https://online-go.com/game/86802127
+Evan Knowles 12k Yutian Wang 11k - https://online-go.com/game/87345229
 
 ### Round 3
+Yilun Yang (7P) - https://www.youtube.com/watch?v=bQ169wAHzzM
+Evan Tan 6d Jia Chen 4d - https://online-go.com/game/87137259
+Steve Stringfellow 2d Jordan Lampenfeld 1k - https://online-go.com/game/87072317
+Sam Chen 2k Caleb Vickers 2k - https://online-go.com/game/87135149
+
+Michael Chen (1P) - https://www.youtube.com/watch?v=zAuKp8Vfjic
+Esteban Ley 3k Tarek Barnes 3k - https://online-go.com/game/87135056
+Brian McKeithan 5k Elijah Blank-Edelman 4k - https://online-go.com/game/86974439
+David Rodriguez 6k Monsoon Shrestha 6k - https://online-go.com/game/87014299
+
+Jeremiah Donley (5D) - https://www.youtube.com/watch?v=TnjGDP8bkrU
+Bharath Mohan 11k Yutian Wang 11k - https://online-go.com/game/86984173
+Wayne Chapeskie 15k Reena Jiameng Zhang 14k - https://online-go.com/game/86983074
+Greg Hendricks 20k Andrew Perry 19k - https://online-go.com/game/86921290
+
+Shawn Ray (4D) - https://www.youtube.com/watch?v=EYkI6t5hS60
+William Richmond 30k Joe Guo 29k - https://online-go.com/game/87134020 
+Foster Williams 25k Laurie Ensworth 24k - https://online-go.com/game/86859334
+Damon Carey 23k YUJI ICHIHASHI 27k - https://online-go.com/game/87060789 
+
+Dwyrin (5D) - https://www.youtube.com/watch?v=eV_ITbLnkbs
+Rentaro Matsukata 8k JOSEPH CHAVES 8k - https://online-go.com/game/87135033
+Wayne Chapeskie 15k Vanessa Sabino 15k - https://online-go.com/game/87135020
+Jacqueline Hood 17k Andrew Perry 19k - https://online-go.com/game/86935513
+
+Yoonyoung Kim (8P) - https://www.youtube.com/watch?v=0jQfbzqyvFs
+Moxuan Liu 6d Joel Kenny 4d - https://online-go.com/game/86984101
+Zhaorong Ma 2k Gabe Schwartz 2k - https://online-go.com/game/87015443
+Huck Kim 3k Xilong Zhang 2k - https://online-go.com/game/87135003
+
+Soren Jaffe (6D) - https://www.youtube.com/watch?v=YkXtRaeODwM
+Hanson Yuan 7k Sue x. Wang 7k - https://online-go.com/game/87014305
+Rich Newman 9k JEFF HUTSON 9k - https://online-go.com/game/87071086
+Cameron Perrier 10k Ryan A Miller 9k - https://online-go.com/game/87104141
+
+BenKyo Baduk (5D) - https://www.youtube.com/watch?v=APjWKPiWTrw
+Zachary W Dragsbaek 16k Tommy Castle 16k - https://online-go.com/game/87133987
+Chue L Vang 17k Monica Maroon 15k - https://online-go.com/game/86921456
+Arunas Rudvalis 8k Yifan Li 8k - https://online-go.com/game/87047887
 
 ### Round 2
+Michael Chen (1P) - https://www.youtube.com/watch?v=VtkuHjbSkqk
+Jake Kim 3d Jiyu Huang 2d - https://online-go.com/game/86863751
+Johannes Nop 3k Esteban Ley 3k - https://online-go.com/game/86801784
+Matt Redman 5k Jonathan Green 4k - https://online-go.com/game/86922130
+
+Jeremiah Donley (5D) - https://www.youtube.com/watch?v=p2K4BleJrgg
+David Rodriguez 6k Maria Aozono-Araldi 6k - https://online-go.com/game/86890113
+Paul Howard 7k alberto ramirez 7k - https://online-go.com/game/86890114
+Josh Peyton 8k William R Mungas 7k - https://online-go.com/game/86922139
+
+Shawn Ray (4D) - https://www.youtube.com/watch?v=eqeKMdzp8zs
+Zaher A Nazif 8k Ken Munoz 8k - https://online-go.com/game/86849831
+Travis Goeden 8k David Heerema 9k - https://online-go.com/game/867434573
+Cameron Perrier 10k Ken Deugau 11k - https://online-go.com/game/86922136
+
+Dwyrin (5D) - https://www.youtube.com/watch?v=HwYjU1frkKM
+Stephen Leone 3k Bob Zhao 4k - https://online-go.com/game/86922154
+Paul Howard 7k Robert Huxtable 6k - https://online-go.com/game/86922143
+alberto ramirez 7k Max Poltoranos 6k - https://online-go.com/game/86921140
+
+Yilun Yang (7P) - 
+Joel Kenny 4d Evan Tan 6d - https://online-go.com/game/86924323
+Anthony Zuo 1d Enzo Aozono-Araldi 1d - https://online-go.com/game/86800756
+Dawei Zhang 2k Zhaorong Ma 2k - https://online-go.com/game/86799530
+
+Yoonyoung Kim (8P) - https://www.youtube.com/watch?v=xip2xx7gFl4
+Ivan Lo 7d Jia Chen 4d - https://online-go.com/game/86922291
+Zhaorong Ma 2k Thanushiyan Nagarathinam 2k - https://online-go.com/game/86861284
+Dawei Zhang 2k William Zhen 2k - https://online-go.com/game/86889054
+
+Alexander Qi (3P) - https://www.youtube.com/watch?v=8Z-yE9I2dyo
+Jonathan Buss 3d Riannie Duan 3d - https://online-go.com/game/86922119
+eric osman 3k Xilong Zhang 2k - https://online-go.com/game/86922765
+Esteban Ley 3k Huck Kim 3k - https://online-go.com/game/86922395
+
+Soren Jaffe (6D) - https://www.youtube.com/watch?v=6zUKJfdI6q0
+Johannes Nop 3k Tarek Barnes 3k - https://online-go.com/game/86852877
+Maria Aozono-Araldi 6k Laura Wu 5k - https://online-go.com/game/86801165
+Andy Ji 7k Jonathan Moody 6k - https://online-go.com/game/86922117
+
+BenKyo Baduk (5D) - https://www.youtube.com/watch?v=2vniusy7OUE
+Maria Aozono-Araldi 6k Benjamin Parrott 5k - https://online-go.com/game/86922161
+Monsoon Shrestha 6k Enrique Garcia 5k - https://online-go.com/game/86894810
+Andrew Landry 7k Hanson Yuan 7k - https://online-go.com/game/86801851
 
 ### Round 1
+Michael Chen (1P) - https://www.youtube.com/watch?v=0AX5Q8T3MLc
+milan mladenovic 2k Gabe Schwartz 2k - https://online-go.com/game/86684360
+Stephen Leone 3k Matt Redman 5k - https://online-go.com/game/86714378
+Benjamin Parrott 5k Enrique Garcia 5k - https://online-go.com/game/86714389
+
+Jeremiah Donley (5D) - https://www.youtube.com/watch?v=YVmDbJgstAI
+Sue x. Wang 7k Josh Peyton 8k - https://online-go.com/game/86684306
+Rich Newman 9k Steven Bertrand 9k - https://online-go.com/game/86650908
+Marc Valente 14k Madeleine Hsu 14k - https://online-go.com/game/86714404
+
+Shawn Ray (4D) - https://www.youtube.com/watch?v=TxEQIPyVtYU
+Evonne Yuan 30k Brendan L Stratton 30k - https://online-go.com/game/86713300
+Joe Guo 29k MAI ICHIHASHI 30k - https://online-go.com/game/86714453
+YUJI ICHIHASHI 27k Daniel Flaherty 22k - https://online-go.com/game/86714411
+
+Dwyrin (5D) - https://www.youtube.com/watch?v=CJdd_XDr7mA
+Max Poltoranos 6k Robert Huxtable 6k - https://online-go.com/game/86714375
+Robert Gilman 8k Rentaro Matsukata 8k - https://online-go.com/game/86715348
+Zachary W Dragsbaek 16k Zachary Tan 16k - https://online-go.com/game/86714317
+
+Yilun Yang (7P) - https://www.youtube.com/watch?v=V3BIwMwD1go
+Riannie Duan 3d Mani Sanford 3d - https://online-go.com/game/86712255
+William Zhen 2k Zhaorong Ma 2k - https://online-go.com/game/86714370
+Huck Kim 3k eric osman 3k - https://online-go.com/game/86714396
+
+Yoonyoung Kim (8P) - https://www.youtube.com/watch?v=oTeC89X2Kgw
+Enzo Aozono-Araldi 1d Sam Chen 2k - https://online-go.com/game/86714421
+Anthony Zuo 1d Steve Stringfellow 2d - https://online-go.com/game/86684802
+Bob Zhao 4k Elijah Blank-Edelman 4k - https://online-go.com/game/86714415
+
+Soren Jaffe (6D) - https://www.youtube.com/watch?v=SNplU_ZfEFQ
+Thanushiyan Nagarathinam 2k Dawei Zhang 2k - https://online-go.com/game/86712510
+Paul Salaets 9k Kevin Cho 8k - https://online-go.com/game/86714379 
+JOSEPH CHAVES 8k Bryan Xie 8k - https://online-go.com/game/86714364
+
+BenKyo Baduk (5D) - https://www.youtube.com/watch?v=5Z8xVQrD1xY
+Jonathan Moody 6k Paul Howard 7k - https://online-go.com/game/86714371
+Chloe Hazzard 11k Terri Schurter 11k - https://online-go.com/game/86714348
+Patrick Rogers 12k Evan Knowles 12k - https://online-go.com/game/86714456
 
 ---
 
